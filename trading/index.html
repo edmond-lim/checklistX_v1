@@ -59,6 +59,19 @@
     color:var(--text-faint);
     margin-bottom:6px;
   }
+  .home-link{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+    text-decoration:none;
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:100px;
+    padding:5px 11px;
+    margin-bottom:12px;
+  }
+  .home-link:hover{ border-color:var(--gold); color:var(--gold); }
   .title-row{
     display:flex;
     align-items:baseline;
@@ -422,6 +435,7 @@
 <body>
 
 <div class="header">
+  <a href="../index.html" class="home-link">🏠 All tools</a>
   <div class="eyebrow">Trading Plan V1.0 &middot; Quarter Execution</div>
   <div class="title-row">
     <h1>Trading Operations</h1>
