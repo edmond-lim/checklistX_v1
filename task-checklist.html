@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 Task Report Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-a: #FDF2F8;
+    --bg-b: #F3EFFC;
+    --bg-c: #EAF6FB;
+    --surface: #FFFFFF;
+    --surface-2: #FBF2F8;
+    --ink: #4A3B52;
+    --ink-soft: #A594AE;
+    --line: #F1DCEA;
+    --accent: #C68FD9;
+    --accent-dark: #A96BC2;
+    --accent-2: #7EC8E3;
+    --status-pending: #A79BD9;
+    --status-ongoing: #F0A354;
+    --status-done: #4FAF7C;
+    --status-issue: #E8607E;
+    --status-reference: #4FA9CC;
+    --status-next: #D9A441;
+    --danger: #E0607A;
+    --wa-wallpaper: #E5DDD3;
+    --wa-bubble: #DCF8C6;
+    --wa-tick: #4FA8DC;
+    --font-display: 'Baloo 2', sans-serif;
+    --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body{
+    background: linear-gradient(135deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 20px 14px 60px;
+  }
+  @media (max-width: 480px){
+    body{ padding: 14px 10px 50px; }
+    .card{ padding: 14px; border-radius: 16px; }
+    h1{ font-size: 21px; }
+  }
+
+  .app{ max-width: 980px; margin: 0 auto; }
+
+  .top{ margin-bottom: 18px; }
+  .eyebrow{
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+  }
+  h1{
+    font-family: var(--font-display);
+    font-size: 25px;
+    font-weight: 700;
+    margin: 4px 0 0;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .sub{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 5px;
+    font-weight: 600;
+  }
+
+  .grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  @media (min-width: 860px){
+    .grid{ grid-template-columns: 1.1fr 0.9fr; align-items: start; }
+  }
+
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 6px 20px rgba(198,143,217,0.14);
+  }
+
+  .field-row{ margin-bottom: 10px; }
+  .field-row label{
+    display:block;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .field-row input[type="text"], .field-row input[type="date"]{
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-2);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .field-row input:focus{ outline: none; border-color: var(--accent); }
+  .row2{ display:flex; gap: 10px; }
+  .row2 > div{ flex:1; }
+  .row2 .date-field{ max-width: 160px; }
+  @media (max-width: 480px){
+    .row2{ flex-direction: column; }
+    .row2 .date-field{ max-width: 100%; }
+  }
+
+  .add-row{
+    display:flex;
+    gap: 8px;
+    margin: 14px 0 10px;
+  }
+  .add-row input{
+    flex:1;
+    padding: 10px 12px;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: var(--font-body);
+    font-weight: 600;
+  }
+  .add-row input:focus{ outline: none; border-color: var(--accent); }
+  .add-row button{
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 0 20px;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .add-row button:hover{ opacity: 0.88; }
+
+  .list{ list-style: none; margin: 0; padding: 0; }
+  .item{
+    display:flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 6px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .item:last-child{ border-bottom: none; }
+  .item select.status{
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 8px;
+    background: var(--surface-2);
+    color: var(--ink);
+    flex-shrink: 0;
+    width: 112px;
+    cursor: pointer;
+  }
+  .item[data-status="pending"] select.status{ color: var(--status-pending); border-color: var(--status-pending); }
+  .item[data-status="ongoing"] select.status{ color: var(--status-ongoing); border-color: var(--status-ongoing); }
+  .item[data-status="done"] select.status{ color: var(--status-done); border-color: var(--status-done); }
+  .item[data-status="issue"] select.status{ color: var(--status-issue); border-color: var(--status-issue); }
+  .item[data-status="reference"] select.status{ color: var(--status-reference); border-color: var(--status-reference); }
+  .item[data-status="next"] select.status{ color: var(--status-next); border-color: var(--status-next); }
+  .item input[type="text"]{
+    flex:1;
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ink);
+    padding: 6px 2px;
+    min-width: 0;
+  }
+  @media (max-width: 480px){
+    .item{ flex-wrap: wrap; row-gap: 4px; }
+    .item select.status{ order: 1; width: auto; flex: 0 1 auto; }
+    .item .del{ order: 2; margin-left: auto; padding: 6px 10px; font-size: 18px; }
+    .item input[type="text"]{ order: 3; flex: 1 1 100%; }
+  }
+  .item input[type="text"]:focus{ outline: none; background: var(--surface-2); border-radius: 8px; }
+  .item[data-status="done"] input[type="text"]{ color: var(--ink-soft); text-decoration: line-through; }
+  .item[data-status="issue"] input[type="text"]{ color: var(--status-issue); }
+  .item[data-status="ongoing"] input[type="text"]{ color: var(--status-ongoing); }
+  .item[data-status="reference"] input[type="text"]{ color: var(--status-reference); }
+  .item[data-status="next"] input[type="text"]{ color: var(--status-next); }
+  .item .del{
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 6px;
+    flex-shrink: 0;
+  }
+  .item .del:hover{ color: var(--danger); }
+
+  .empty{
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    padding: 10px 4px;
+  }
+
+  .toolbar{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .counts{
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+  .counts span{ white-space: nowrap; }
+  .counts .d{ color: var(--status-done); }
+  .counts .o{ color: var(--status-ongoing); }
+  .counts .i{ color: var(--status-issue); }
+  .counts .r{ color: var(--status-reference); }
+  .counts .n{ color: var(--status-next); }
+  .counts .p{ color: var(--status-pending); }
+  .ghost-btn{
+    background: none;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .ghost-btn:hover{ border-color: var(--accent); color: var(--accent-dark); }
+
+  .history{ margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 10px; }
+  .history-toggle{
+    background:none; border:none; cursor:pointer;
+    font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--accent-dark);
+    padding: 0;
+  }
+  .history-panel{ margin-top: 8px; }
+  .history-panel.hidden{ display:none; }
+  .hist-row{
+    display:flex; justify-content: space-between; align-items:center;
+    padding: 6px 4px; font-size: 12.5px; font-weight: 600; font-family: var(--font-body);
+    border-bottom: 1px dashed var(--line);
+  }
+  .hist-row:last-child{ border-bottom:none; }
+  .hist-row button{
+    background:none; border:none; color: var(--accent-dark);
+    cursor:pointer; font-family: var(--font-body); font-weight: 700; font-size: 12px;
+  }
+  .hist-row .hist-del{ color: var(--ink-soft); margin-left: 8px; }
+  .hist-row .hist-del:hover{ color: var(--danger); }
+  .hist-empty{ font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+
+  /* Phone / WhatsApp preview */
+  .preview-wrap{ }
+  @media (min-width: 860px){
+    .preview-wrap{ position: sticky; top: 16px; }
+  }
+  .phone{
+    background: var(--wa-wallpaper);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(198,143,217,0.14);
+  }
+  .phone-bar{
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    color: #fff;
+    font-family: var(--font-display);
+    font-size: 13.5px;
+    font-weight: 700;
+    padding: 12px 16px;
+    display:flex; align-items:center; gap: 8px;
+  }
+  .phone-bar .dot{ width:7px; height:7px; border-radius:50%; background: #fff; opacity:0.85; }
+  .chat-bg{
+    padding: 16px 12px;
+    min-height: 260px;
+  }
+  .bubble{
+    background: var(--wa-bubble);
+    border-radius: 14px;
+    padding: 10px 12px 6px;
+    max-width: 92%;
+    margin-left: auto;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    color: #24401f;
+  }
+  .bubble .meta{
+    display:flex; justify-content:flex-end; align-items:center; gap:4px;
+    margin-top: 2px;
+    font-size: 10.5px;
+    color: #6b7d6f;
+  }
+  .bubble .meta .ticks{ color: var(--wa-tick); }
+
+  .preview-actions{
+    display:flex; align-items:center; gap: 10px;
+    margin-top: 12px;
+  }
+  .copy-btn{
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    flex: 1;
+  }
+  .copy-btn:hover{ opacity: 0.9; }
+  .toast{
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--status-done);
+  }
+  .toast.hidden{ display:none; }
+
+  .hint{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <span class="eyebrow">🌸 Task Report</span>
+    <h1>📝 Checklist → WhatsApp Message</h1>
+    <p class="sub">Build your list, pick a status, copy the cute message straight into WhatsApp 💌</p>
+  </div>
+
+  <div class="grid">
+    <!-- Editor -->
+    <div class="card">
+      <div class="row2">
+        <div class="field-row">
+          <label>✏️ Title</label>
+          <input type="text" id="title" placeholder="e.g. Site Survey — SJKC Kai Chee">
+        </div>
+        <div class="field-row date-field">
+          <label>📅 Date</label>
+          <input type="date" id="date">
+        </div>
+      </div>
+
+      <div class="add-row">
+        <input type="text" id="newItem" placeholder="Add a task, press Enter ✨">
+        <button id="addBtn">➕ Add</button>
+      </div>
+
+      <ul class="list" id="list"></ul>
+      <div id="emptyMsg" class="empty">🌷 No tasks yet — add your first one above!</div>
+
+      <div class="toolbar">
+        <div class="counts" id="counts"></div>
+        <button class="ghost-btn" id="clearBtn">🧹 New report</button>
+      </div>
+
+      <div class="history">
+        <button class="history-toggle" id="historyToggle">🎀 Past reports</button>
+        <div class="history-panel hidden" id="historyPanel"></div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-wrap">
+      <div class="phone">
+        <div class="phone-bar"><span class="dot"></span> 💬 WhatsApp Preview</div>
+        <div class="chat-bg">
+          <div class="bubble" id="bubble"></div>
+        </div>
+      </div>
+      <div class="preview-actions">
+        <button class="copy-btn" id="copyBtn">💌 Copy formatted message</button>
+        <span class="toast hidden" id="toast">Copied! 🎉</span>
+      </div>
+      <p class="hint">✨ Tip: you can also screenshot the bubble above and share it as a picture!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+  const titleEl = $('title'), dateEl = $('date'), newItemEl = $('newItem'), listEl = $('list'),
+        emptyMsg = $('emptyMsg'), countsEl = $('counts'), bubbleEl = $('bubble'),
+        historyToggle = $('historyToggle'), historyPanel = $('historyPanel'),
+        copyBtn = $('copyBtn'), toast = $('toast'), clearBtn = $('clearBtn'), addBtn = $('addBtn');
+
+  let state = { title: '', items: [] };
+  let saveTimer = null;
+
+  const STATUS_LABELS = {
+    pending: '🐣 Pending',
+    ongoing: '🌱 Ongoing',
+    done: '🎉 Done',
+    issue: '🚧 Issue',
+    next: '🎯 Next Action',
+    reference: '🔖 Reference'
+  };
+
+  function todayStr(){
+    const d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  function fmtDateNice(iso){
+    const [y,m,d] = iso.split('-').map(Number);
+    const dt = new Date(y, m-1, d);
+    return dt.toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric' });
+  }
+  function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  // ---- storage wrapper: uses Claude's artifact storage when available, ----
+  // ---- falls back to the browser's own localStorage once hosted elsewhere ----
+  async function sGet(key){
+    if(window.storage){
+      try{ const r = await window.storage.get(key, false); return r ? r.value : null; }catch(e){}
+    }
+    try{ return localStorage.getItem(key); }catch(e){ return null; }
+  }
+  async function sSet(key, value){
+    if(window.storage){
+      try{ await window.storage.set(key, value, false); return; }catch(e){}
+    }
+    try{ localStorage.setItem(key, value); }catch(e){}
+  }
+  async function sDelete(key){
+    if(window.storage){
+      try{ await window.storage.delete(key, false); return; }catch(e){}
+    }
+    try{ localStorage.removeItem(key); }catch(e){}
+  }
+  async function sList(prefix){
+    if(window.storage){
+      try{ const r = await window.storage.list(prefix, false); return r ? r.keys : []; }catch(e){}
+    }
+    try{
+      const keys = [];
+      for(let i=0;i<localStorage.length;i++){
+        const k = localStorage.key(i);
+        if(k && k.indexOf(prefix)===0) keys.push(k);
+      }
+      return keys;
+    }catch(e){ return []; }
+  }
+
+  function keyFor(date){ return 'report:' + date; }
+
+  function scheduleSave(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(async () => {
+      await sSet(keyFor(dateEl.value), JSON.stringify(state));
+    }, 350);
+  }
+
+  function renderList(){
+    listEl.innerHTML = '';
+    if(state.items.length === 0){
+      emptyMsg.style.display = 'block';
+    } else {
+      emptyMsg.style.display = 'none';
+    }
+    state.items.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'item';
+      li.dataset.status = item.status;
+
+      const sel = document.createElement('select');
+      sel.className = 'status';
+      Object.keys(STATUS_LABELS).forEach(key => {
+        const opt = document.createElement('option');
+        opt.value = key; opt.textContent = STATUS_LABELS[key];
+        if(key === item.status) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      sel.addEventListener('change', () => {
+        item.status = sel.value;
+        li.dataset.status = item.status;
+        renderPreview(); scheduleSave(); renderCounts();
+      });
+
+      const txt = document.createElement('input');
+      txt.type = 'text';
+      txt.value = item.text;
+      txt.addEventListener('input', () => { item.text = txt.value; renderPreview(); scheduleSave(); });
+
+      const del = document.createElement('button');
+      del.className = 'del';
+      del.innerHTML = '✕';
+      del.addEventListener('click', () => {
+        state.items = state.items.filter(i => i.id !== item.id);
+        renderList(); renderPreview(); scheduleSave(); renderCounts();
+      });
+
+      li.appendChild(sel); li.appendChild(txt); li.appendChild(del);
+      listEl.appendChild(li);
+    });
+  }
+
+  function renderCounts(){
+    const c = (s) => state.items.filter(i => i.status === s).length;
+    countsEl.innerHTML =
+      '<span class="d" title="Done">🎉 ' + c('done') + '</span>' +
+      '<span class="o" title="Ongoing">🌱 ' + c('ongoing') + '</span>' +
+      '<span class="i" title="Issue">🚧 ' + c('issue') + '</span>' +
+      '<span class="n" title="Next Action">🎯 ' + c('next') + '</span>' +
+      '<span class="r" title="Reference">🔖 ' + c('reference') + '</span>' +
+      '<span class="p" title="Pending">🐣 ' + c('pending') + '</span>';
+  }
+
+  function escapeText(t){
+    return t.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function buildMessageText(){
+    const title = (state.title || 'Task Report').trim();
+    const dateNice = fmtDateNice(dateEl.value || todayStr());
+    const groups = [
+      { key: 'done',      label: '🎉 *Done*' },
+      { key: 'ongoing',   label: '🌱 *Ongoing*' },
+      { key: 'issue',     label: '🚧 *Issue*' },
+      { key: 'next',      label: '🎯 *Next Action*' },
+      { key: 'reference', label: '🔖 *Reference*' },
+      { key: 'pending',   label: '🐣 *Pending*' }
+    ].map(g => ({ ...g, items: state.items.filter(i => i.status === g.key && i.text.trim()) }));
+
+    let lines = [];
+    lines.push(`*${title}*`);
+    lines.push(`📅 ${dateNice}`);
+    lines.push('');
+
+    let any = false;
+    groups.forEach(g => {
+      if(g.items.length){
+        any = true;
+        lines.push(`${g.label} (${g.items.length})`);
+        g.items.forEach((it, idx) => lines.push(`${idx+1}. ${it.text.trim()}`));
+        lines.push('');
+      }
+    });
+    if(!any){ lines.push('_No tasks added yet._'); }
+    return lines.join('\n').replace(/\n+$/,'');
+  }
+
+  function markdownToHtml(text){
+    let html = escapeText(text);
+    html = html.replace(/\*(.+?)\*/g, '<strong>$1</strong>');
+    html = html.replace(/_(.+?)_/g, '<em>$1</em>');
+    html = html.replace(/~(.+?)~/g, '<s>$1</s>');
+    return html.replace(/\n/g, '<br>');
+  }
+
+  function renderPreview(){
+    const text = buildMessageText();
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    bubbleEl.innerHTML = markdownToHtml(text) +
+      `<div class="meta"><span>${time}</span><span class="ticks">✓✓</span></div>`;
+  }
+
+  function addItem(text){
+    const t = text.trim();
+    if(!t) return;
+    state.items.push({ id: uid(), text: t, status: 'pending' });
+    renderList(); renderPreview(); scheduleSave(); renderCounts();
+  }
+
+  addBtn.addEventListener('click', () => { addItem(newItemEl.value); newItemEl.value=''; newItemEl.focus(); });
+  newItemEl.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){ e.preventDefault(); addItem(newItemEl.value); newItemEl.value=''; }
+  });
+  titleEl.addEventListener('input', () => { state.title = titleEl.value; renderPreview(); scheduleSave(); });
+
+  clearBtn.addEventListener('click', () => {
+    if(state.items.length === 0 && !state.title) return;
+    if(!confirm('Start a new report? This clears the current title and tasks for this date.')) return;
+    state = { title: '', items: [] };
+    titleEl.value = '';
+    renderList(); renderPreview(); scheduleSave(); renderCounts();
+  });
+
+  async function loadDate(date){
+    const raw = await sGet(keyFor(date));
+    if(raw){
+      try{ state = JSON.parse(raw); }catch(e){ state = { title:'', items: [] }; }
+      state.items = (state.items || []).map(i => ({
+        id: i.id || uid(),
+        text: i.text || '',
+        status: i.status || (i.done ? 'done' : 'pending')
+      }));
+    } else {
+      state = { title: '', items: [] };
+    }
+    titleEl.value = state.title || '';
+    renderList(); renderPreview(); renderCounts();
+  }
+
+  dateEl.addEventListener('change', () => loadDate(dateEl.value));
+
+  copyBtn.addEventListener('click', async () => {
+    const text = buildMessageText();
+    let ok = false;
+    try{
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    }catch(e){
+      try{
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus(); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        ok = true;
+      }catch(e2){ ok = false; }
+    }
+    toast.textContent = ok ? 'Copied! 🎉' : 'Copy failed — select text manually 😅';
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 1800);
+  });
+
+  historyToggle.addEventListener('click', async () => {
+    const hidden = historyPanel.classList.contains('hidden');
+    if(hidden){ await refreshHistory(); }
+    historyPanel.classList.toggle('hidden');
+    historyToggle.textContent = '🎀 Past reports';
+  });
+
+  async function refreshHistory(){
+    historyPanel.innerHTML = '<div class="hist-empty">Loading…</div>';
+    const keys = await sList('report:');
+    const dates = keys
+      .map(k => k.replace('report:',''))
+      .filter(d => d !== dateEl.value)
+      .sort((a,b) => b.localeCompare(a));
+
+    if(dates.length === 0){
+      historyPanel.innerHTML = '<div class="hist-empty">No other saved reports yet.</div>';
+      return;
+    }
+    historyPanel.innerHTML = '';
+    for(const d of dates){
+      const row = document.createElement('div');
+      row.className = 'hist-row';
+      const raw = await sGet(keyFor(d));
+      let label = fmtDateNice(d);
+      let count = '';
+      if(raw){
+        try{
+          const parsed = JSON.parse(raw);
+          const items = parsed.items || [];
+          const n = items.length;
+          const doneN = items.filter(i => (i.status || (i.done ? 'done':'pending')) === 'done').length;
+          count = ` — ${parsed.title ? parsed.title + ', ' : ''}${doneN}/${n} done`;
+        }catch(e){}
+      }
+      const openBtn = document.createElement('button');
+      openBtn.textContent = label + count;
+      openBtn.addEventListener('click', () => {
+        dateEl.value = d;
+        loadDate(d);
+        historyPanel.classList.add('hidden');
+        historyToggle.textContent = '🎀 Past reports';
+      });
+      const delBtn = document.createElement('button');
+      delBtn.className = 'hist-del';
+      delBtn.textContent = '🗑';
+      delBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if(!confirm('Delete the saved report for ' + label + '?')) return;
+        await sDelete(keyFor(d));
+        refreshHistory();
+      });
+      row.appendChild(openBtn);
+      row.appendChild(delBtn);
+      historyPanel.appendChild(row);
+    }
+  }
+
+  // init
+  dateEl.value = todayStr();
+  loadDate(dateEl.value);
+})();
+</script>
+</body>
+</html>
