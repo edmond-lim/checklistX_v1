@@ -53,6 +53,20 @@
   .app{ max-width: 980px; margin: 0 auto; }
 
   .top{ margin-bottom: 18px; }
+  .home-link{
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--accent-dark);
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 12px;
+    margin-bottom: 10px;
+  }
+  .home-link:hover{ border-color: var(--accent); }
   .eyebrow{
     font-family: var(--font-display);
     font-size: 12px;
@@ -114,9 +128,13 @@
     color: var(--ink);
   }
   .field-row input:focus{ outline: none; border-color: var(--accent); }
+  input[type="date"]::-webkit-calendar-picker-indicator{
+    filter: invert(48%) sepia(28%) saturate(1200%) hue-rotate(240deg) opacity(0.7);
+    cursor: pointer;
+  }
   .row2{ display:flex; gap: 10px; }
   .row2 > div{ flex:1; }
-  .row2 .date-field{ max-width: 160px; }
+  .row2 .date-field{ max-width: 200px; }
   @media (max-width: 480px){
     .row2{ flex-direction: column; }
     .row2 .date-field{ max-width: 100%; }
@@ -148,15 +166,17 @@
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
   }
   .add-row button:hover{ opacity: 0.88; }
+  .add-row button:active{ transform: scale(0.96); }
 
   .list{ list-style: none; margin: 0; padding: 0; }
   .item{
     display:flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 6px;
+    gap: 10px;
+    padding: 10px 6px;
     border-bottom: 1px dashed var(--line);
   }
   .item:last-child{ border-bottom: none; }
@@ -166,13 +186,21 @@
     font-size: 12px;
     border: 2px solid var(--line);
     border-radius: 999px;
-    padding: 6px 8px;
+    padding: 7px 22px 7px 10px;
     background: var(--surface-2);
     color: var(--ink);
     flex-shrink: 0;
-    width: 112px;
+    width: 118px;
     cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23A594AE' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 8l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+    background-size: 13px;
+    transition: transform 0.1s ease;
   }
+  .item select.status:active{ transform: scale(0.97); }
   .item[data-status="pending"] select.status{ color: var(--status-pending); border-color: var(--status-pending); }
   .item[data-status="ongoing"] select.status{ color: var(--status-ongoing); border-color: var(--status-ongoing); }
   .item[data-status="done"] select.status{ color: var(--status-done); border-color: var(--status-done); }
@@ -210,8 +238,11 @@
     font-size: 15px;
     padding: 2px 6px;
     flex-shrink: 0;
+    border-radius: 8px;
+    transition: transform 0.1s ease, color 0.15s ease, background 0.15s ease;
   }
-  .item .del:hover{ color: var(--danger); }
+  .item .del:hover{ color: var(--danger); background: rgba(224,96,122,0.08); }
+  .item .del:active{ transform: scale(0.9); }
 
   .empty{
     font-size: 13.5px;
@@ -254,8 +285,10 @@
     font-size: 12.5px;
     color: var(--ink-soft);
     cursor: pointer;
+    transition: transform 0.1s ease, border-color 0.15s ease, color 0.15s ease;
   }
   .ghost-btn:hover{ border-color: var(--accent); color: var(--accent-dark); }
+  .ghost-btn:active{ transform: scale(0.96); }
 
   .history{ margin-top: 16px; border-top: 1px dashed var(--line); padding-top: 10px; }
   .history-toggle{
@@ -342,15 +375,19 @@
     font-size: 14px;
     cursor: pointer;
     flex: 1;
+    transition: transform 0.1s ease, opacity 0.15s ease;
   }
   .copy-btn:hover{ opacity: 0.9; }
+  .copy-btn:active{ transform: scale(0.97); }
   .toast{
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 12.5px;
     color: var(--status-done);
+    opacity: 1;
+    transition: opacity 0.25s ease;
   }
-  .toast.hidden{ display:none; }
+  .toast.hidden{ opacity: 0; pointer-events: none; }
 
   .hint{
     font-size: 12px;
@@ -364,6 +401,7 @@
 <body>
 <div class="app">
   <div class="top">
+    <a href="index.html" class="home-link">🏠 All tools</a>
     <span class="eyebrow">🌸 Task Report</span>
     <h1>📝 Checklist → WhatsApp Message</h1>
     <p class="sub">Build your list, pick a status, copy the cute message straight into WhatsApp 💌</p>
@@ -375,7 +413,7 @@
       <div class="row2">
         <div class="field-row">
           <label>✏️ Title</label>
-          <input type="text" id="title" placeholder="e.g. Site Survey — SJKC Kai Chee">
+          <input type="text" id="title" placeholder="e.g. Daily Progress Report">
         </div>
         <div class="field-row date-field">
           <label>📅 Date</label>
@@ -444,9 +482,8 @@
     return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   }
   function fmtDateNice(iso){
-    const [y,m,d] = iso.split('-').map(Number);
-    const dt = new Date(y, m-1, d);
-    return dt.toLocaleDateString(undefined, { day:'numeric', month:'short', year:'numeric' });
+    const [y,m,d] = iso.split('-');
+    return `${d}/${m}/${y}`;
   }
   function uid(){ return 'i' + Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 
