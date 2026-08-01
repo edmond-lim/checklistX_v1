@@ -1,5 +1,5 @@
 // Bump CACHE_NAME whenever you edit any page — that's what forces phones to pick up changes.
-const CACHE_NAME = 'checklists-v4';
+const CACHE_NAME = 'checklists-v6';
 
 const ASSETS = [
   './',
