@@ -35,6 +35,7 @@
   }
 
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}
   html,body{background:var(--bg); color:var(--text); overflow-x:hidden;}
   body{
     font-family:'Inter', sans-serif;
@@ -99,7 +100,7 @@
   h1{
     font-family:'Space Grotesk', sans-serif;
     font-weight:700;
-    font-size:26px;
+    font-size:clamp(21px, 6vw, 28px);
     letter-spacing:-.01em;
     color:var(--text);
   }
@@ -125,12 +126,14 @@
   .rail-top{
     display:flex;
     justify-content:space-between;
-    align-items:center;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:4px 12px;
     margin-bottom:14px;
   }
   .rail-clock{
     font-family:'IBM Plex Mono', monospace;
-    font-size:13px;
+    font-size:clamp(11.5px, 3.2vw, 13px);
     color:var(--text-muted);
   }
   .rail-clock b{color:var(--text); font-weight:600;}
@@ -149,7 +152,7 @@
     transition:all .25s ease;
   }
   .rail-seg .seg-label{
-    font-size:10.5px;
+    font-size:clamp(9.5px, 2.7vw, 10.5px);
     letter-spacing:.08em;
     text-transform:uppercase;
     color:var(--text-faint);
@@ -157,7 +160,8 @@
   }
   .rail-seg .seg-time{
     font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px;
+    font-size:clamp(9px, 2.6vw, 10.5px);
+    white-space:nowrap;
     color:var(--text-faint);
     margin-top:2px;
   }
@@ -175,8 +179,8 @@
     flex-wrap:wrap;
   }
   .cd-chip{
-    flex:1;
-    min-width:150px;
+    flex:1 1 140px;
+    min-width:0;
     background:var(--surface-raised);
     border:1px solid var(--border);
     border-radius:10px;
@@ -311,6 +315,8 @@
     font-weight:600;
     font-size:15px;
     flex:1;
+    min-width:0;
+    overflow-wrap:break-word;
   }
   .stage-progress{
     font-family:'IBM Plex Mono', monospace;
@@ -357,6 +363,8 @@
     font-size:14px;
     line-height:1.45;
     color:var(--text);
+    min-width:0;
+    overflow-wrap:break-word;
     transition:color .15s ease, opacity .15s ease;
   }
   .item.checked .item-text{color:var(--text-faint); opacity:.75; text-decoration:line-through; text-decoration-color:var(--text-faint);}
@@ -437,6 +445,35 @@
     margin:22px 0 10px;
   }
   .section-label:first-child{margin-top:0;}
+
+  /* ---------- Narrow phones (iPhone SE / Mini, split screen) ---------- */
+  @media (max-width:400px){
+    .header{padding-left:14px; padding-right:14px;}
+    .tabbar{padding:0 14px;}
+    .content{padding:16px 14px 0;}
+    .rail{padding:14px; border-radius:12px;}
+    .rail-track{gap:4px;}
+    .rail-seg{padding:8px 2px 7px;}
+    .stage-head{padding:12px 13px;}
+    .item{padding:12px 8px; gap:10px;}
+    /* stack reference rows so long values keep their own line */
+    .ref-card li{flex-direction:column; align-items:flex-start; gap:2px;}
+    .ref-card li b{text-align:left;}
+  }
+
+  /* ---------- Phone landscape: reclaim vertical space ---------- */
+  @media (max-height:460px) and (orientation:landscape){
+    .header{padding-top:calc(14px + env(safe-area-inset-top));}
+    .rail{margin-top:14px;}
+    .tabbar-wrap{padding-top:14px;}
+    .tabbar-wrap::after{top:14px;}
+  }
+
+  /* ---------- Large screens ---------- */
+  @media (min-width:1000px){
+    .header, .tabbar, .content, footer{max-width:860px;}
+    .item-text{font-size:14.5px;}
+  }
 
   footer{
     max-width:760px;

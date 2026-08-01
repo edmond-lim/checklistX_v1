@@ -32,6 +32,7 @@
 
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0; padding:0;}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}
   body{
     background:linear-gradient(135deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
     background-attachment:fixed;
@@ -68,7 +69,7 @@
   .hello{
     font-family:var(--font-display);
     font-weight:800;
-    font-size:28px;
+    font-size:clamp(23px, 7vw, 32px);
     letter-spacing:-.01em;
     line-height:1.2;
   }
@@ -149,7 +150,7 @@
 
   .body{flex:1; min-width:0;}
   .row1{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
-  .name{font-family:var(--font-display); font-weight:700; font-size:17.5px;}
+  .name{font-family:var(--font-display); font-weight:700; font-size:clamp(16px, 4.4vw, 18px); min-width:0; overflow-wrap:break-word;}
   .pill{
     font-family:var(--font-body); font-weight:800;
     font-size:10px; letter-spacing:.05em; text-transform:uppercase;
@@ -172,6 +173,31 @@
     transition:transform .18s ease, color .18s ease;
   }
   .card:hover .arrow{transform:translateX(3px); color:var(--tint);}
+
+  /* ---------- Narrow phones ---------- */
+  @media (max-width:360px){
+    body{padding-left:12px; padding-right:12px;}
+    .card{padding:14px 13px 14px 12px; gap:11px; border-radius:18px;}
+    .ring{width:50px; height:50px; margin-left:2px;}
+    .ring .face{width:40px; height:40px; font-size:20px;}
+    .desc{font-size:12px;}
+  }
+
+  /* ---------- Phone landscape: shrink the header, keep cards visible ---------- */
+  @media (max-height:460px) and (orientation:landscape){
+    body{padding-top:calc(16px + env(safe-area-inset-top));}
+    .label{margin-top:16px;}
+    .blob{display:none;}
+  }
+
+  /* ---------- Tablet & desktop ---------- */
+  @media (min-width:760px){
+    .wrap{max-width:680px;}
+    .card{padding:20px 20px 20px 19px; gap:16px;}
+    .ring{width:64px; height:64px;}
+    .ring .face{width:51px; height:51px; font-size:26px;}
+    .desc{font-size:13px;}
+  }
 
   /* ---------- Footer ---------- */
   .note{

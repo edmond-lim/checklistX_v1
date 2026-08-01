@@ -35,6 +35,7 @@
   }
 
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}
   html,body{background:var(--bg); color:var(--text); overflow-x:hidden;}
   body{
     font-family:'Inter', sans-serif;
@@ -97,7 +98,7 @@
   h1{
     font-family:'Space Grotesk', sans-serif;
     font-weight:700;
-    font-size:26px;
+    font-size:clamp(21px, 6vw, 28px);
     letter-spacing:-.01em;
     color:var(--text);
   }
@@ -259,6 +260,8 @@
     font-weight:600;
     font-size:15px;
     flex:1;
+    min-width:0;
+    overflow-wrap:break-word;
   }
   .stage-progress{
     font-family:'IBM Plex Mono', monospace;
@@ -305,6 +308,8 @@
     font-size:14px;
     line-height:1.5;
     color:var(--text);
+    min-width:0;
+    overflow-wrap:break-word;
     transition:color .15s ease, opacity .15s ease;
   }
   .item.checked .item-text{color:var(--text-faint); opacity:.75; text-decoration:line-through; text-decoration-color:var(--text-faint);}
@@ -380,6 +385,33 @@
     margin:22px 0 10px;
   }
   .section-label:first-child{margin-top:0;}
+
+  /* ---------- Narrow phones ---------- */
+  @media (max-width:400px){
+    .header{padding-left:14px; padding-right:14px;}
+    .tabbar{padding:0 14px;}
+    .content{padding:16px 14px 0;}
+    .rail{padding:12px 14px;}
+    .flow-step{font-size:10px; padding:5px 9px;}
+    .stage-head{padding:12px 13px;}
+    .item{padding:12px 8px; gap:10px;}
+    .ref-card li{flex-direction:column; align-items:flex-start; gap:2px;}
+    .ref-card li b{text-align:left;}
+  }
+
+  /* ---------- Phone landscape ---------- */
+  @media (max-height:460px) and (orientation:landscape){
+    .header{padding-top:calc(14px + env(safe-area-inset-top));}
+    .rail{margin-top:14px;}
+    .tabbar-wrap{padding-top:14px;}
+    .tabbar-wrap::after{top:14px;}
+  }
+
+  /* ---------- Large screens ---------- */
+  @media (min-width:1000px){
+    .header, .tabbar, .content, footer{max-width:860px;}
+    .item-text{font-size:14.5px;}
+  }
 
   footer{
     max-width:760px;

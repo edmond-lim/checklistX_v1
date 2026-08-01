@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>🌸 Task Report Builder</title>
 <meta name="theme-color" content="#FDF2F8">
 <link rel="manifest" href="manifest.json">
@@ -41,18 +41,24 @@
 
   * { box-sizing: border-box; }
   html, body { margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   body{
     background: linear-gradient(135deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
     background-attachment: fixed;
     color: var(--ink);
     font-family: var(--font-body);
     min-height: 100vh;
-    padding: 20px 14px 60px;
+    min-height: 100dvh;
+    padding: calc(20px + env(safe-area-inset-top)) 14px calc(60px + env(safe-area-inset-bottom));
   }
   @media (max-width: 480px){
-    body{ padding: 14px 10px 50px; }
+    body{ padding: calc(14px + env(safe-area-inset-top)) 10px calc(50px + env(safe-area-inset-bottom)); }
     .card{ padding: 14px; border-radius: 16px; }
-    h1{ font-size: 21px; }
+  }
+  @media (max-width: 360px){
+    .toolnav a{ font-size: 11.5px; padding: 5px 10px; }
+    .add-row{ flex-wrap: wrap; }
+    .add-row button{ width: 100%; }
   }
 
   .app{ max-width: 980px; margin: 0 auto; }
@@ -89,7 +95,7 @@
   }
   h1{
     font-family: var(--font-display);
-    font-size: 25px;
+    font-size: clamp(20px, 5.5vw, 26px);
     font-weight: 700;
     margin: 4px 0 0;
     letter-spacing: -0.01em;
@@ -361,6 +367,7 @@
     font-size: 13px;
     line-height: 1.6;
     white-space: pre-wrap;
+    overflow-wrap: anywhere;
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     color: #24401f;
   }
@@ -400,6 +407,11 @@
     transition: opacity 0.25s ease;
   }
   .toast.hidden{ opacity: 0; pointer-events: none; }
+
+  @media (min-width: 1200px){
+    .app{ max-width: 1100px; }
+    .card{ padding: 22px; }
+  }
 
   .hint{
     font-size: 12px;
