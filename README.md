@@ -1,0 +1,51 @@
+# Checklists
+
+Static site — three checklist tools sharing one home page, one manifest, one service worker.
+
+```
+index.html                hub — links to all three tools
+trading-checklist.html    Trading Operations (Plan V1.0)
+mms-checklist.html        MMS Strategy SOP
+task-checklist.html       Task Report → WhatsApp
+manifest.json             install config (name, icons, shortcuts)
+service-worker.js         offline cache
+icon192.png / icon512.png app icon
+```
+
+Everything sits at the top level and links by plain filename, so the site works from any
+folder depth — a repo root, a subfolder, or opened straight from disk.
+
+## Hosting on GitHub Pages
+
+1. Create a repo, upload all files at the **top level** (not inside a folder).
+2. Settings → Pages → Source: `Deploy from a branch`, branch `main`, folder `/ (root)`.
+3. Wait a minute, then open `https://<username>.github.io/<repo>/`.
+4. On your phone: open that link → Share/menu → **Add to Home Screen**.
+
+Any static host works the same way — Netlify (drag the folder onto the dashboard),
+Cloudflare Pages, Vercel. The one requirement is HTTPS, otherwise the service worker
+won't register and there's no offline mode.
+
+## After you edit a page
+
+The service worker serves the cached copy first, so phones can keep showing the old page.
+Open `service-worker.js` and bump the version:
+
+```js
+const CACHE_NAME = 'checklists-v2';  // → 'checklists-v3'
+```
+
+Old caches are deleted automatically on the next visit.
+
+## Where your data lives
+
+Checkboxes and saved reports are in the browser's `localStorage`, tied to the domain.
+Nothing syncs between devices, and clearing browser data for the site erases it.
+Moving the site to a different domain starts you with an empty slate.
+
+## Things you may want to change
+
+- `trading-checklist.html` → `STAGE1_GOAL_DATE` is set to `2028-12-24`, which sits well
+  outside the 21 Jul – 21 Oct 2026 planning window. Both countdown dates are now named
+  constants at the top of the script if that was meant to be something else.
+- `manifest.json` → `shortcuts` are the long-press menu on an installed app icon.

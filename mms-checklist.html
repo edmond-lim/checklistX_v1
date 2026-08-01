@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>MMS Strategy Checklist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0D1117">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0D1117;
+    --surface: #151B24;
+    --surface-raised: #1B222D;
+    --border: #29323F;
+    --border-soft: #212933;
+    --text: #E7EAF0;
+    --text-muted: #8A93A3;
+    --text-faint: #5D6675;
+
+    --gold: #D4A954;
+    --gold-dim: #4A3F27;
+    --steel: #6C93BE;
+    --steel-dim: #253345;
+    --teal: #52A997;
+    --teal-dim: #1D3733;
+    --rose: #C7695B;
+    --rose-dim: #3A2521;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--bg); color:var(--text); overflow-x:hidden;}
+  body{
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:calc(60px + env(safe-area-inset-bottom));
+    touch-action:manipulation;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+
+  /* ---------- Header ---------- */
+  .header{
+    padding:calc(28px + env(safe-area-inset-top)) 20px 0;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:6px;
+  }
+  /* ---------- Cross-tool nav ---------- */
+  .toolnav{
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .toolnav a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+    text-decoration:none;
+    border:1px solid var(--border);
+    background:var(--surface);
+    border-radius:100px;
+    padding:6px 11px;
+    transition:border-color .18s ease, color .18s ease;
+  }
+  .toolnav a:hover{border-color:var(--teal); color:var(--teal);}
+  .toolnav a:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+  .toolnav a.current{
+    color:var(--teal);
+    border-color:var(--teal-dim);
+    background:rgba(82,169,151,0.09);
+  }
+
+  .title-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:26px;
+    letter-spacing:-.01em;
+    color:var(--text);
+  }
+  .trader-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--gold);
+    border:1px solid var(--gold-dim);
+    background:rgba(212,169,84,0.07);
+    padding:4px 10px;
+    border-radius:100px;
+    white-space:nowrap;
+  }
+
+  /* Flow rail — the 10-step strategy sequence */
+  .rail{
+    margin-top:22px;
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:14px;
+    padding:14px 16px;
+  }
+  .rail-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:10px;
+  }
+  .flow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .flow-step{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-muted);
+    background:var(--surface-raised);
+    border:1px solid var(--border);
+    border-radius:100px;
+    padding:5px 10px;
+    white-space:nowrap;
+  }
+  .flow-step b{color:var(--gold); font-weight:600;}
+
+  /* ---------- Tabs ---------- */
+  .tabbar-wrap{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:var(--bg);
+    padding-top:22px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .tabbar{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 20px;
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    position:relative;
+  }
+  .tabbar::-webkit-scrollbar{display:none;}
+  .tabbar-wrap::after{
+    content:'';
+    position:absolute;
+    top:22px; right:0; bottom:0;
+    width:28px;
+    background:linear-gradient(to right, transparent, var(--bg));
+    pointer-events:none;
+  }
+  .tab-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    background:none;
+    border:none;
+    padding:12px 14px;
+    min-height:44px;
+    cursor:pointer;
+    white-space:nowrap;
+    border-bottom:2px solid transparent;
+    transition:color .2s ease, border-color .2s ease;
+  }
+  .tab-btn:hover{color:var(--text-muted);}
+  .tab-btn:active{opacity:.6;}
+  .tab-btn.active{color:var(--tab-accent, var(--gold)); border-bottom-color:var(--tab-accent, var(--gold));}
+
+  .content{
+    max-width:760px;
+    margin:0 auto;
+    padding:20px 20px 0;
+  }
+  .tabpanel{display:none;}
+  .tabpanel.active{display:block; animation:fadein .2s ease;}
+  @keyframes fadein{from{opacity:0; transform:translateY(3px);} to{opacity:1; transform:translateY(0);}}
+
+  .panel-note{
+    font-size:12.5px;
+    color:var(--text-faint);
+    margin-bottom:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .reset-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-muted);
+    background:var(--surface-raised);
+    border:1px solid var(--border);
+    padding:8px 12px;
+    min-height:36px;
+    border-radius:7px;
+    cursor:pointer;
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .reset-btn:hover{border-color:var(--text-muted); color:var(--text);}
+  .reset-btn:active{opacity:.7;}
+
+  /* ---------- Stage cards ---------- */
+  .stage{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:14px;
+    margin-bottom:16px;
+    overflow:hidden;
+  }
+  .stage-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom:1px solid var(--border-soft);
+    background:var(--surface-raised);
+  }
+  .stage-badge{
+    width:26px; height:26px;
+    border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    flex-shrink:0;
+    background:var(--accent-dim, var(--gold-dim));
+    color:var(--accent, var(--gold));
+    border:1px solid var(--accent, var(--gold));
+  }
+  .stage-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    flex:1;
+  }
+  .stage-progress{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--text-faint);
+  }
+  .stage-body{padding:6px 8px;}
+
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    padding:13px 10px;
+    min-height:44px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .item:hover{background:var(--surface-raised);}
+  .item:active{background:var(--surface-raised); transform:scale(.99);}
+  .checkbox{
+    width:19px; height:19px;
+    border-radius:5px;
+    border:1.5px solid var(--border);
+    flex-shrink:0;
+    margin-top:1px;
+    position:relative;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .item.checked .checkbox{
+    background:var(--accent, var(--gold));
+    border-color:var(--accent, var(--gold));
+  }
+  .item.checked .checkbox::after{
+    content:'';
+    position:absolute;
+    left:5px; top:1px;
+    width:5px; height:9px;
+    border:solid var(--bg);
+    border-width:0 2px 2px 0;
+    transform:rotate(45deg);
+  }
+  .item-text{
+    font-size:14px;
+    line-height:1.5;
+    color:var(--text);
+    transition:color .15s ease, opacity .15s ease;
+  }
+  .item.checked .item-text{color:var(--text-faint); opacity:.75; text-decoration:line-through; text-decoration-color:var(--text-faint);}
+
+  /* ---------- Reference cards ---------- */
+  .ref-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  @media (max-width:560px){ .ref-grid{grid-template-columns:1fr;} }
+  .ref-card{
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:14px;
+    padding:16px;
+  }
+  .ref-card.locked{border-color:var(--rose); background:linear-gradient(180deg, rgba(199,105,91,0.06), rgba(199,105,91,0.02));}
+  .ref-card h3{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:14px;
+    margin-bottom:3px;
+  }
+  .ref-card .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--rose);
+    margin-bottom:10px;
+    display:inline-block;
+  }
+  .ref-card ul{list-style:none;}
+  .ref-card li{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:10px;
+    font-size:13px;
+    color:var(--text-muted);
+    padding:6px 0;
+    border-bottom:1px dashed var(--border-soft);
+  }
+  .ref-card li:last-child{border-bottom:none;}
+  .ref-card li b{color:var(--text); font-family:'IBM Plex Mono', monospace; font-weight:600; text-align:right; font-size:12px;}
+
+  .warn-list{
+    background:var(--rose-dim);
+    border:1px solid rgba(199,105,91,.35);
+    border-radius:14px;
+    padding:6px 16px;
+    margin-bottom:16px;
+  }
+  .warn-item{
+    display:flex;
+    gap:9px;
+    padding:9px 0;
+    border-top:1px solid rgba(199,105,91,.18);
+    font-size:13.5px;
+    color:#E8CCC6;
+    line-height:1.5;
+  }
+  .warn-item:first-of-type{border-top:none;}
+  .warn-item .x{color:var(--rose); font-weight:700; flex-shrink:0;}
+
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin:22px 0 10px;
+  }
+  .section-label:first-child{margin-top:0;}
+
+  footer{
+    max-width:760px;
+    margin:30px auto 0;
+    padding:16px 20px 0;
+    border-top:1px solid var(--border-soft);
+    font-size:11.5px;
+    color:var(--text-faint);
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <nav class="toolnav">
+    <a href="index.html">← All tools</a>
+    <a href="trading-checklist.html">Trading Ops</a>
+    <a href="mms-checklist.html" class="current" aria-current="page">MMS Strategy</a>
+    <a href="task-checklist.html">Task Report</a>
+  </nav>
+  <div class="eyebrow">MMS 交易策略 SOP &middot; Execution Checklist</div>
+  <div class="title-row">
+    <h1>MMS Strategy</h1>
+    <span class="trader-tag mono">EDMOND LIM</span>
+  </div>
+
+  <div class="rail">
+    <div class="rail-title">执行顺序 · Strategy Flow</div>
+    <div class="flow">
+      <div class="flow-step"><b>1</b> 图表设置</div>
+      <div class="flow-step"><b>2</b> Stage 2</div>
+      <div class="flow-step"><b>3</b> 多头排列</div>
+      <div class="flow-step"><b>4</b> Contraction</div>
+      <div class="flow-step"><b>5</b> Base + Volume</div>
+      <div class="flow-step"><b>6</b> 买点 C2–C6</div>
+      <div class="flow-step"><b>7</b> Buffer / Entry / SL</div>
+      <div class="flow-step"><b>8</b> Breakout Zone</div>
+      <div class="flow-step"><b>9</b> 仓位 &amp; 挂单</div>
+      <div class="flow-step"><b>10</b> BE / TP 管理</div>
+    </div>
+  </div>
+</div>
+
+<div class="tabbar-wrap">
+  <div class="tabbar">
+    <button class="tab-btn" data-tab="entry" style="--tab-accent:var(--gold)">进场前 Pre-Entry</button>
+    <button class="tab-btn" data-tab="order" style="--tab-accent:var(--steel)">挂单 Order</button>
+    <button class="tab-btn" data-tab="manage" style="--tab-accent:var(--teal)">场内管理 Daily</button>
+    <button class="tab-btn" data-tab="exit" style="--tab-accent:var(--gold)">出场后 Post-Trade</button>
+    <button class="tab-btn" data-tab="ref" style="--tab-accent:var(--rose)">速查 Reference</button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- PRE-ENTRY -->
+  <div class="tabpanel" id="panel-entry">
+    <div class="panel-note">
+      <span>全部打勾才可挂单。每次找到新的标的重新跑一遍。</span>
+      <button class="reset-btn" data-reset="entry">Clear for next setup</button>
+    </div>
+    <div id="entryStages"></div>
+  </div>
+
+  <!-- ORDER -->
+  <div class="tabpanel" id="panel-order">
+    <div class="panel-note">
+      <span>进场前检查全部通过后,到交易所端完成以下操作。</span>
+      <button class="reset-btn" data-reset="order">Clear for next setup</button>
+    </div>
+    <div id="orderStages"></div>
+  </div>
+
+  <!-- IN-TRADE MANAGEMENT -->
+  <div class="tabpanel" id="panel-manage">
+    <div class="panel-note">
+      <span>持仓期间每日执行一次。每天午夜(大马时间)自动重置。</span>
+      <button class="reset-btn" data-reset="manage">Reset today</button>
+    </div>
+    <div id="manageStages"></div>
+  </div>
+
+  <!-- POST-TRADE -->
+  <div class="tabpanel" id="panel-exit">
+    <div class="panel-note">
+      <span>每次出场后完成,再进入下一单。</span>
+      <button class="reset-btn" data-reset="exit">Clear for next trade</button>
+    </div>
+    <div id="exitStages"></div>
+  </div>
+
+  <!-- REFERENCE -->
+  <div class="tabpanel" id="panel-ref">
+    <div class="section-label">参数速查 · Parameter Quick Reference</div>
+    <div class="ref-grid" id="refCards"></div>
+    <div class="section-label">常见无效条件 · Invalid Conditions</div>
+    <div class="warn-list" id="warnList"></div>
+  </div>
+
+</div>
+
+<footer>Personal execution tool — derived from MMS 交易策略 SOP. Checklist state is stored only on this device.</footer>
+
+<script>
+(function(){
+
+  // ---------- Data ----------
+  const ENTRY = [
+    { key:'chart-setup', accent:'gold', label:'图表设置 Chart Setup', items:[
+      'TradingView 已开启磁铁(Magnet)功能',
+      '看 Stage:时间级别切到 Daily,只保留绿色 150 均线',
+      '找 Contraction:三条均线全开(灰 50 / 青 150 / 红 200)',
+      'Volume 指标已开启,含 Volume 50 均线(橙色线)'
+    ]},
+    { key:'stage', accent:'gold', label:'Stage 判断(日线 · 只看 150 均线)', items:[
+      '150 均线趋上(用光标读数值确认,不是肉眼估计)→ Stage 2',
+      '价格在 150 均线上方,离均线有距离(有强度)',
+      '阳烛交易量放大 — 阳烛量柱超过 Volume 50 均线',
+      '确认不是 Stage 3(均线走平 + 价格跌穿 150 + 阴烛放量)'
+    ]},
+    { key:'contraction', accent:'gold', label:'Contraction 结构', items:[
+      '多头排列成立:50 在上、150 在中、200 在下',
+      'C1 成立:明显高点 + 明显低点',
+      'C1 有 ≥ 3 根连续阴烛/变盘线(中间不可夹阳烛)',
+      'C1 有动到 50 均线(回调跌超过 50 均线)',
+      'C2 及之后的 C:同样 ≥ 3 根连续阴烛/变盘线',
+      '波段越缩越小 — 每个 C 的振幅 % 小于前一个 C',
+      '底部越抬越高 — 每个 C 的低点高于前一个(Higher Low)',
+      'Base 成立:C1 高点(H 值)被突破 + Base 内 ≥ 2 个 C',
+      '已用 Rectangle 工具把 Base 框起来标记'
+    ]},
+    { key:'volume', accent:'gold', label:'Volume 条件(两个须同时满足)', items:[
+      'C 区间内阳烛量大 — 青色量柱冲破橙色线,而非阴烛放量',
+      '日交易额 > 100 万美金(Vol 50 均线数值 × 价格;1小时图再 × 24)'
+    ]},
+    { key:'buypoint', accent:'gold', label:'买点与触发 Buy Trigger', items:[
+      '买点位于 C2 – C6 之间(C1 不作买点)',
+      '该 C 的振幅 < 10%',
+      '已按市场类别选对 Buffer 算法(股票/加密 vs 其他市场)',
+      '股票/加密:日线 1% · 1小时 0.5% · 更小级别 0.25%',
+      '其他市场:Buffer% = C 振幅% × 5% ÷ 2',
+      'Entry = C 最高点 × (1 + Buffer%),已画 Horizontal Line',
+      'SL = C 最低烛低点 × (1 − Buffer%),已画 Horizontal Line',
+      '已用 Long Position 工具检查赢亏比 ≥ 1 : 2',
+      '已判断突破落在 C1 的哪个区域(Peak / Mid / Low)'
+    ]},
+    { key:'position', accent:'gold', label:'仓位 Position Size', items:[
+      '下单金额符合当前层级(6.25% → 12.5% → 25% → …)',
+      '确认上一单结果 — 只有盈利后才推进下一层'
+    ]}
+  ];
+
+  const ORDER = [
+    { key:'place-order', accent:'steel', label:'交易所挂单操作', items:[
+      '进场触发单已设好(Entry Price,烛突破自动触发)',
+      '止损单已同步设好(Stop Loss)',
+      '已决定套利方式:主动(Active)或被动(Passive)',
+      '主动套利:TP 卖单已预挂(或已在 TP 价位设 Alarm)',
+      '被动套利:不设 TP,准备用 MA50 × (1 − 1%) 移动止损',
+      'BE 触发价位已设 Alarm(目标 1:2 → BE @ 1:1.5;目标 1:1.5 → BE @ 1:1)'
+    ]}
+  ];
+
+  const MANAGE = [
+    { key:'be-check', accent:'teal', label:'BE 检查 Breakeven', items:[
+      '价格是否达到 BE 点?达到 → 止损上移到进场价',
+      'MA50 是否从下方上穿进场价?是 → 止损上移到进场价'
+    ]},
+    { key:'passive-tp', accent:'teal', label:'被动套利 Passive TP(如适用)', items:[
+      '已更新今日移动止损 = 最新 MA50 × (1 − 1%)',
+      '价格未跌破移动止损线 → 不做任何动作,继续持有'
+    ]},
+    { key:'discipline', accent:'teal', label:'纪律 Discipline', items:[
+      '未移宽止损、未提前平仓',
+      '未因情绪加仓或改变原计划',
+      '关键价位 Alarm 仍有效'
+    ]}
+  ];
+
+  const EXIT = [
+    { key:'record', accent:'gold', label:'记录 Record', items:[
+      '记录交易结果(盈/亏、赢亏比)',
+      '记录突破区域(Peak / Mid / Low)与结果的关系',
+      '记录套利方式(主动 vs 被动)及其是否恰当'
+    ]},
+    { key:'next', accent:'gold', label:'下一单准备 Next Trade', items:[
+      '盈利 → 下一单仓位推进一层(6.25% → 12.5% → 25% …)',
+      '亏损 → 仓位不推进,回到当前层级',
+      '复盘一个教训 / 观察,写下来'
+    ]}
+  ];
+
+  const REF_CARDS = [
+    { title:'结构参数 Structure', tag:'Locked · From SOP', locked:true, rows:[
+      ['Stage 判断均线','150 MA · 仅日线'],
+      ['Contraction 均线','50 / 150 / 200 · 全级别'],
+      ['多头排列','50 上 · 150 中 · 200 下'],
+      ['C 最少连续烛','3 根阴烛/变盘线'],
+      ['C1 特殊条件','必须动到 50 均线'],
+      ['波段要求','越缩越小 + Higher Low'],
+      ['Base 条件','C1 高点被突破 + ≥2 个 C'],
+      ['Stage 1 横盘','≥ 半年'],
+    ]},
+    { title:'进出场参数 Entry / Exit', tag:'Locked · From SOP', locked:true, rows:[
+      ['买点范围','C2 – C6'],
+      ['买点 C 振幅','< 10%'],
+      ['Volume 条件','阳烛量 > Vol50 + 日额 > $1M'],
+      ['Buffer 股票/加密','日 1% · 1H 0.5% · 小 0.25%'],
+      ['Buffer 其他市场','C振幅% × 5% ÷ 2'],
+      ['最低赢亏比','1 : 2'],
+      ['BE 规则','1:2 → BE@1:1.5 · 1:1.5 → BE@1:1'],
+      ['BE 附加触发','MA50 上穿进场价'],
+      ['被动移动止损','MA50 × (1 − 1%) · 每日更新'],
+      ['仓位层级','6.25% → 12.5% → 25%(盈利才推进)'],
+    ]}
+  ];
+
+  const WARN = [
+    'C 的连续烛中间夹了阳烛 — 该 C 不成立',
+    'C1 没有动到 50 均线 — C1 不成立,整个结构重找',
+    '买点 C 振幅 ≥ 10% — 不可作买点,等下一个 C',
+    '想在 C1 顶部进场 — 买点只在 C2–C6',
+    '放量的多为阴烛 — Volume 条件不合格',
+    '赢亏比不足 1:2 — 不进场',
+    '不是 Stage 2 — 本策略不做多,不进场',
+    '上一单未盈利就把仓位推进下一层 — 违反分层递进制',
+    '直接在 C 高点进场、不加 Buffer — 会吃假突破',
+    '被动套利期间价格未破 MA50−1% 就手动平仓 — 违反规则'
+  ];
+
+  // ---------- Storage ----------
+  const state = { entry:{}, order:{}, manage:{}, exit:{} };
+
+  function loadKey(name, storeKey){
+    try{
+      const raw = localStorage.getItem(storeKey);
+      if(raw){ state[name] = JSON.parse(raw); }
+    }catch(e){}
+  }
+  function saveKey(name, storeKey){
+    try{ localStorage.setItem(storeKey, JSON.stringify(state[name])); }
+    catch(e){ console.error('storage save failed', e); }
+  }
+
+  // ---------- Date helpers (Malaysia time) ----------
+  function mytNow(){
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone:'Asia/Kuala_Lumpur', year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', hour12:false, weekday:'short'
+    }).formatToParts(new Date());
+    const o = {};
+    parts.forEach(p=> o[p.type]=p.value);
+    return o;
+  }
+  function todayKey(o){ return `${o.year}-${o.month}-${o.day}`; }
+
+  let DAILY_KEY;
+
+  // ---------- Rendering ----------
+  function renderStageGroup(containerEl, groups, stateBucket, storeKeyOf){
+    containerEl.innerHTML = '';
+    groups.forEach((g, gi) => {
+      const checkedArr = stateBucket[g.key] || [];
+      const card = document.createElement('div');
+      card.className = 'stage';
+      card.innerHTML = `
+        <div class="stage-head">
+          <div class="stage-badge" style="--accent:var(--${g.accent}); --accent-dim:var(--${g.accent}-dim)">${gi+1}</div>
+          <div class="stage-title">${g.label}</div>
+          <div class="stage-progress" data-progress>0/${g.items.length}</div>
+        </div>
+        <div class="stage-body"></div>
+      `;
+      const body = card.querySelector('.stage-body');
+      g.items.forEach((text, ii)=>{
+        const row = document.createElement('div');
+        const isChecked = checkedArr.includes(ii);
+        row.className = 'item' + (isChecked ? ' checked' : '');
+        row.style.setProperty('--accent', `var(--${g.accent})`);
+        row.innerHTML = `<div class="checkbox"></div><div class="item-text">${text}</div>`;
+        row.addEventListener('click', ()=>{
+          const arr = stateBucket[g.key] || (stateBucket[g.key] = []);
+          const idx = arr.indexOf(ii);
+          if(idx === -1){ arr.push(ii); row.classList.add('checked'); }
+          else { arr.splice(idx,1); row.classList.remove('checked'); }
+          updateProgress(card, g.items.length, arr.length);
+          saveKey.apply(null, storeKeyOf());
+        });
+        body.appendChild(row);
+      });
+      updateProgress(card, g.items.length, checkedArr.length);
+      containerEl.appendChild(card);
+    });
+  }
+  function updateProgress(card, total, done){
+    card.querySelector('[data-progress]').textContent = `${done}/${total}`;
+  }
+
+  function renderRefCards(){
+    document.getElementById('refCards').innerHTML = REF_CARDS.map(c => `
+      <div class="ref-card ${c.locked ? 'locked' : ''}">
+        <span class="tag">${c.tag}</span>
+        <h3>${c.title}</h3>
+        <ul>
+          ${c.rows.map(r => `<li><span>${r[0]}</span><b>${r[1]}</b></li>`).join('')}
+        </ul>
+      </div>
+    `).join('');
+  }
+  function renderWarnList(){
+    document.getElementById('warnList').innerHTML = WARN.map(t => `<div class="warn-item"><span class="x">✕</span><span>${t}</span></div>`).join('');
+  }
+
+  function renderAll(){
+    renderStageGroup(document.getElementById('entryStages'), ENTRY, state.entry, ()=>['entry', 'mms:entry']);
+    renderStageGroup(document.getElementById('orderStages'), ORDER, state.order, ()=>['order', 'mms:order']);
+    renderStageGroup(document.getElementById('manageStages'), MANAGE, state.manage, ()=>['manage', `mms:manage:${DAILY_KEY}`]);
+    renderStageGroup(document.getElementById('exitStages'), EXIT, state.exit, ()=>['exit', 'mms:exit']);
+  }
+
+  // Daily rollover check for the in-trade tab
+  function tickRollover(){
+    const dk = todayKey(mytNow());
+    if(DAILY_KEY && dk !== DAILY_KEY){
+      DAILY_KEY = dk;
+      state.manage = {};
+      renderStageGroup(document.getElementById('manageStages'), MANAGE, state.manage, ()=>['manage', `mms:manage:${DAILY_KEY}`]);
+    }
+  }
+
+  // ---------- Tabs ----------
+  function initTabs(){
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        buttons.forEach(b=>b.classList.remove('active'));
+        document.querySelectorAll('.tabpanel').forEach(p=>p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-'+btn.dataset.tab).classList.add('active');
+      });
+    });
+    buttons[0].classList.add('active');
+    document.getElementById('panel-entry').classList.add('active');
+  }
+
+  // ---------- Reset buttons ----------
+  function initResets(){
+    document.querySelectorAll('.reset-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const which = btn.dataset.reset;
+        if(which === 'entry'){ state.entry = {}; saveKey('entry','mms:entry'); }
+        if(which === 'order'){ state.order = {}; saveKey('order','mms:order'); }
+        if(which === 'manage'){ state.manage = {}; saveKey('manage', `mms:manage:${DAILY_KEY}`); }
+        if(which === 'exit'){ state.exit = {}; saveKey('exit','mms:exit'); }
+        renderAll();
+      });
+    });
+  }
+
+  // ---------- Init ----------
+  function init(){
+    DAILY_KEY = todayKey(mytNow());
+
+    initTabs();
+    initResets();
+    renderRefCards();
+    renderWarnList();
+
+    loadKey('entry', 'mms:entry');
+    loadKey('order', 'mms:order');
+    loadKey('manage', `mms:manage:${DAILY_KEY}`);
+    loadKey('exit', 'mms:exit');
+
+    renderAll();
+    setInterval(tickRollover, 30000);
+  }
+
+  init();
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+    });
+  }
+})();
+</script>
+</body>
+</html>

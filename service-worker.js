@@ -1,15 +1,23 @@
-const CACHE_NAME = 'trade-ops-v1';
+// Bump CACHE_NAME whenever you edit any page — that's what forces phones to pick up changes.
+const CACHE_NAME = 'checklists-v2';
+
 const ASSETS = [
   './',
   './index.html',
+  './trading-checklist.html',
+  './mms-checklist.html',
+  './task-checklist.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './icon192.png',
+  './icon512.png'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) =>
+      // Cache each file on its own: one bad URL no longer fails the whole install.
+      Promise.allSettled(ASSETS.map((url) => cache.add(url)))
+    )
   );
   self.skipWaiting();
 });
@@ -24,11 +32,17 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const fetchPromise = fetch(event.request)
         .then((networkResponse) => {
-          if (event.request.method === 'GET' && networkResponse && networkResponse.status === 200) {
+          // Cache same-origin 200s, plus opaque font responses so type survives offline.
+          const cacheable =
+            networkResponse &&
+            (networkResponse.status === 200 || networkResponse.type === 'opaque');
+          if (cacheable) {
             const clone = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }

@@ -1,7 +1,7 @@
 {
-  "name": "Trading Operations Checklist",
-  "short_name": "Trade Ops",
-  "description": "Daily routine, trade gate, weekly review and quarter goal checklist for Edmond Lim's Trading Plan V1.0",
+  "name": "Edmond's Checklists",
+  "short_name": "Checklists",
+  "description": "Trading operations, MMS strategy and daily task report checklists.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -9,7 +9,27 @@
   "theme_color": "#0D1117",
   "orientation": "portrait-primary",
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "icon192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Trading Operations",
+      "short_name": "Trade Ops",
+      "url": "./trading-checklist.html",
+      "icons": [{ "src": "icon192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "MMS Strategy",
+      "short_name": "MMS",
+      "url": "./mms-checklist.html",
+      "icons": [{ "src": "icon192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "Task Report",
+      "short_name": "Tasks",
+      "url": "./task-checklist.html",
+      "icons": [{ "src": "icon192.png", "sizes": "192x192", "type": "image/png" }]
+    }
   ]
 }

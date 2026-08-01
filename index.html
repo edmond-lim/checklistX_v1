@@ -3,71 +3,260 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>🌸 My Tools</title>
+<title>Edmond's Checklists</title>
+<meta name="theme-color" content="#0D1117">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Checklists">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-a: #FDF2F8; --bg-b: #F3EFFC; --bg-c: #EAF6FB;
-    --surface: #FFFFFF; --ink: #4A3B52; --ink-soft: #A594AE;
-    --line: #F1DCEA; --accent: #C68FD9; --accent-2: #7EC8E3;
-    --font-display: 'Baloo 2', sans-serif;
-    --font-body: 'Nunito', sans-serif;
+    --bg: #0D1117;
+    --surface: #151B24;
+    --surface-raised: #1B222D;
+    --border: #29323F;
+    --border-soft: #212933;
+    --text: #E7EAF0;
+    --text-muted: #8A93A3;
+    --text-faint: #5D6675;
+
+    --gold: #D4A954;
+    --teal: #52A997;
+    --orchid: #C68FD9;
   }
-  * { box-sizing: border-box; }
-  html, body{ margin:0; padding:0; }
+
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html,body{background:var(--bg); color:var(--text); overflow-x:hidden;}
   body{
-    background: linear-gradient(135deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
-    min-height: 100vh;
-    min-height: 100dvh;
-    font-family: var(--font-body);
-    color: var(--ink);
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    min-height:100dvh;
+    padding:calc(34px + env(safe-area-inset-top)) 20px calc(40px + env(safe-area-inset-bottom));
   }
-  .wrap{ max-width: 640px; width: 100%; }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+  .wrap{max-width:640px; margin:0 auto;}
+
   .eyebrow{
-    font-family: var(--font-display); font-weight: 700; font-size: 13px;
-    letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
-    text-align: center; display:block; margin-bottom: 6px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:6px;
   }
   h1{
-    font-family: var(--font-display); font-size: 28px; font-weight: 700;
-    text-align: center; margin: 0 0 28px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:27px;
+    letter-spacing:-.01em;
   }
-  .cards{ display: grid; gap: 16px; }
-  @media (min-width: 560px){ .cards{ grid-template-columns: 1fr 1fr; } }
-  a.card{
-    display: block; text-decoration: none; color: var(--ink);
-    background: var(--surface); border: 1px solid var(--line);
-    border-radius: 20px; padding: 26px 20px;
-    box-shadow: 0 6px 20px rgba(198,143,217,0.14);
-    transition: transform 0.15s ease;
+  .clockline{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-faint);
   }
-  a.card:hover{ transform: translateY(-3px); }
-  .card .icon{ font-size: 34px; display:block; margin-bottom: 10px; }
-  .card .title{ font-family: var(--font-display); font-weight: 700; font-size: 18px; }
-  .card .desc{ font-size: 13px; color: var(--ink-soft); font-weight: 600; margin-top: 6px; line-height: 1.5; }
+  .clockline b{color:var(--gold); font-weight:600;}
+
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin:28px 0 10px;
+  }
+
+  .tool{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    background:var(--surface);
+    border:1px solid var(--border-soft);
+    border-radius:14px;
+    overflow:hidden;
+    text-decoration:none;
+    color:var(--text);
+    margin-bottom:12px;
+    transition:border-color .18s ease, background .18s ease, transform .18s ease;
+  }
+  .tool:hover{border-color:var(--accent); background:var(--surface-raised);}
+  .tool:active{transform:scale(.995);}
+  .tool:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .rail{
+    width:5px;
+    flex-shrink:0;
+    background:var(--accent);
+    opacity:.85;
+  }
+  .tool-body{padding:16px 16px 16px 15px; flex:1; min-width:0;}
+  .tool-top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .tool-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:16px;
+  }
+  .tool-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+    white-space:nowrap;
+  }
+  .tool-desc{
+    font-size:13px;
+    line-height:1.55;
+    color:var(--text-muted);
+    margin-top:6px;
+  }
+  .tool-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-faint);
+    margin-top:10px;
+  }
+
+  .hint{
+    margin-top:26px;
+    border-top:1px solid var(--border-soft);
+    padding-top:14px;
+    font-size:12px;
+    line-height:1.6;
+    color:var(--text-faint);
+  }
+  .hint b{color:var(--text-muted); font-weight:600;}
+  #installBtn{
+    display:none;
+    margin-top:12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--gold);
+    background:var(--surface-raised);
+    border:1px solid var(--border);
+    border-radius:7px;
+    padding:10px 14px;
+    min-height:40px;
+    cursor:pointer;
+  }
+  #installBtn:hover{border-color:var(--gold);}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <span class="eyebrow">🌸 My Tools</span>
-    <h1>Pick a checklist</h1>
-    <div class="cards">
-      <a class="card" href="task-checklist.html">
-        <span class="icon">📝</span>
-        <span class="title">Task Report</span>
-        <span class="desc">Daily task tracker → WhatsApp-ready message with cute status tags.</span>
-      </a>
-      <a class="card" href="trading/">
-        <span class="icon">📈</span>
-        <span class="title">Trading Operations</span>
-        <span class="desc">Daily routine, trade gate, weekly review, quarter goal &amp; guardrails.</span>
-      </a>
-    </div>
+<div class="wrap">
+
+  <div class="eyebrow">Personal execution tools</div>
+  <h1>Checklists</h1>
+  <div class="clockline">
+    <span>Malaysia time <b id="clockNow">--:--</b></span>
+    <span id="clockDate">--</span>
   </div>
+
+  <div class="section-label">Trading</div>
+
+  <a class="tool" href="trading-checklist.html" style="--accent:var(--gold)">
+    <span class="rail"></span>
+    <span class="tool-body">
+      <span class="tool-top">
+        <span class="tool-name">Trading Operations</span>
+        <span class="tool-tag">Plan V1.0</span>
+      </span>
+      <span class="tool-desc">Daily routine, pre-entry trade gate, weekly review, quarter goal and risk guardrails.</span>
+      <span class="tool-meta">Resets daily &amp; weekly · Malaysia time</span>
+    </span>
+  </a>
+
+  <a class="tool" href="mms-checklist.html" style="--accent:var(--teal)">
+    <span class="rail"></span>
+    <span class="tool-body">
+      <span class="tool-top">
+        <span class="tool-name">MMS Strategy</span>
+        <span class="tool-tag">SOP</span>
+      </span>
+      <span class="tool-desc">进场前检查、挂单、场内管理、出场后复盘,加参数速查表。</span>
+      <span class="tool-meta">Run once per setup</span>
+    </span>
+  </a>
+
+  <div class="section-label">Work</div>
+
+  <a class="tool" href="task-checklist.html" style="--accent:var(--orchid)">
+    <span class="rail"></span>
+    <span class="tool-body">
+      <span class="tool-top">
+        <span class="tool-name">Task Report</span>
+        <span class="tool-tag">WhatsApp</span>
+      </span>
+      <span class="tool-desc">Track the day's tasks by status, then copy a formatted message straight into a chat.</span>
+      <span class="tool-meta">Saves one report per date</span>
+    </span>
+  </a>
+
+  <div class="hint">
+    Everything is saved <b>on this device only</b> — clearing browser data clears your checklists.
+    Add this page to your home screen to open it like an app, offline included.
+    <br><button id="installBtn">Install to home screen</button>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  function mytNow(){
+    const parts = new Intl.DateTimeFormat('en-US', {
+      timeZone:'Asia/Kuala_Lumpur', year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', hour12:false, weekday:'short'
+    }).formatToParts(new Date());
+    const o = {}; parts.forEach(p=> o[p.type]=p.value); return o;
+  }
+  function tick(){
+    const o = mytNow();
+    document.getElementById('clockNow').textContent = `${o.hour}:${o.minute}`;
+    document.getElementById('clockDate').textContent =
+      `${o.weekday}, ${o.day} ${['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][+o.month]} ${o.year}`;
+  }
+  tick();
+  setInterval(tick, 30000);
+
+  // Install prompt (Android / desktop Chrome). iOS uses Share → Add to Home Screen.
+  let deferred = null;
+  const btn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', (e)=>{
+    e.preventDefault();
+    deferred = e;
+    btn.style.display = 'inline-block';
+  });
+  btn.addEventListener('click', async ()=>{
+    if(!deferred) return;
+    deferred.prompt();
+    await deferred.userChoice;
+    deferred = null;
+    btn.style.display = 'none';
+  });
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+    });
+  }
+})();
+</script>
 </body>
 </html>
