@@ -719,7 +719,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 
 <footer class="foot">
   <span>Avera Energy Holdings Sdn Bhd</span>
-  <span>Site survey field checklist &middot; build v10</span>
+  <span>Site survey field checklist &middot; build v11</span>
 </footer>
 <script>
 (function(){
@@ -768,7 +768,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   if(v('n_project_4')) line2.push('Surveyed by: '+esc(v('n_project_4')));
   if(v('n_project_5')) line2.push('Checked by: '+esc(v('n_project_5')));
   line2.push(done+' of '+TOTAL+' items recorded');
-  line2.push('Printed '+new Date().toLocaleDateString()+' (v10)');
+  line2.push('Printed '+new Date().toLocaleDateString()+' (v11)');
   el.innerHTML=(bits.length?bits.join(' &middot; ')+'<br>':'')+line2.join(' &middot; ');
  }
 
@@ -1465,21 +1465,87 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
   });
  }
 
- /* iPhone photos arrive as JPEG; anything jsPDF cannot parse is redrawn once via canvas */
+ /* read the EXIF orientation tag (1-8) straight from the JPEG bytes; 1 (or no
+    tag at all) means the pixel data is already upright and needs no touching */
+ function exifOrientation(buf){
+  try{
+   var v=new DataView(buf);
+   if(v.getUint16(0,false)!==0xFFD8) return 1;
+   var len=v.byteLength, off=2;
+   while(off<len-1){
+    var marker=v.getUint16(off,false);
+    if((marker&0xFF00)!==0xFF00) break;
+    if(marker===0xFFE1){
+     if(v.getUint32(off+4,false)!==0x45786966) return 1;
+     var tiff=off+10, little=v.getUint16(tiff,false)===0x4949;
+     var ifd=tiff+v.getUint32(tiff+4,little);
+     var n=v.getUint16(ifd,little);
+     for(var i=0;i<n;i++){
+      var p=ifd+2+i*12;
+      if(v.getUint16(p,little)===0x0112) return v.getUint16(p+8,little);
+     }
+     return 1;
+    }
+    if(marker===0xFFD8||marker===0xFFD9) { off+=2; continue; }
+    off+=2+v.getUint16(off+2,false);
+   }
+  }catch(e){}
+  return 1;
+ }
+
+ /* Current Safari/Chrome already auto-rotate a JPEG's pixels to match its EXIF
+    tag whenever it passes through drawImage() (naturalWidth/Height reflect the
+    corrected size too) - so once routed through a canvas, no manual rotation
+    is needed. This is only used for the photos that actually need it. */
+ function redrawUpright(im){
+  var cap=2600, w=im.naturalWidth||1, h=im.naturalHeight||1;
+  var sc=Math.min(1, cap/Math.max(w,h));
+  var cv=document.createElement('canvas');
+  cv.width=Math.max(1,Math.round(w*sc));
+  cv.height=Math.max(1,Math.round(h*sc));
+  cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+  return {data:cv.toDataURL('image/jpeg',0.95), fmt:'JPEG', w:cv.width, h:cv.height};
+ }
+
  function imageFor(rec){
   var t=(rec.file.type||'').toLowerCase();
-  var fmt = t.indexOf('png')>-1 ? 'PNG' : (t.indexOf('jpeg')>-1||t.indexOf('jpg')>-1) ? 'JPEG' : '';
-  if(fmt) return bytesOf(rec.file).then(function(buf){ return {data:new Uint8Array(buf), fmt:fmt}; });
+  var isJpeg = t.indexOf('jpeg')>-1 || t.indexOf('jpg')>-1;
+  var isPng = t.indexOf('png')>-1;
+
+  if(isJpeg){
+   return bytesOf(rec.file).then(function(buf){
+    var o=exifOrientation(buf);
+    if(o<=1){
+     /* already upright: embed the untouched original bytes, zero recompression */
+     return {data:new Uint8Array(buf), fmt:'JPEG'};
+    }
+    /* tagged as rotated: decode and redraw so the PDF gets the same upright
+       pixels the photo already shows on screen */
+    return new Promise(function(res){
+     var im=new Image();
+     im.onload=function(){
+      try{ res(redrawUpright(im)); }
+      catch(e){ res({data:new Uint8Array(buf), fmt:'JPEG'}); }
+     };
+     im.onerror=function(){ res({data:new Uint8Array(buf), fmt:'JPEG'}); };
+     im.src=rec.url;
+    });
+   });
+  }
+  if(isPng) return bytesOf(rec.file).then(function(buf){ return {data:new Uint8Array(buf), fmt:'PNG'}; });
+
+  /* any other format jsPDF cannot embed directly: redraw once via canvas,
+     at high quality rather than the aggressive downscale used previously */
   return new Promise(function(res){
    var im=new Image();
    im.onload=function(){
     try{
      var cv=document.createElement('canvas');
-     var sc=Math.min(1,2000/Math.max(im.naturalWidth||1,im.naturalHeight||1));
+     var sc=Math.min(1,2600/Math.max(im.naturalWidth||1,im.naturalHeight||1));
      cv.width=Math.max(1,Math.round((im.naturalWidth||800)*sc));
      cv.height=Math.max(1,Math.round((im.naturalHeight||600)*sc));
      cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
-     res({data:cv.toDataURL('image/jpeg',0.9), fmt:'JPEG'});
+     res({data:cv.toDataURL('image/jpeg',0.95), fmt:'JPEG'});
     }catch(e){ res(null); }
    };
    im.onerror=function(){ res(null); };
