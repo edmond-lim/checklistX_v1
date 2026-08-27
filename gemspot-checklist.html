@@ -3,9 +3,6 @@
 <meta name="theme-color" content="#E3E7EA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>GemSpot 盤前關卡</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon192.png">
-<link rel="icon" href="icon192.png">
 <style>
   :root{
     --ink:#16191D;
@@ -36,18 +33,6 @@
     max-width:640px;margin:0 auto;padding:0 10px;
     padding-bottom:calc(var(--dock-h) + 28px + env(safe-area-inset-bottom));
   }
-
-  /* ---------- cross-tool nav ---------- */
-  .toolnav{display:flex;gap:6px;flex-wrap:wrap;padding:12px 4px 0}
-  .toolnav a{
-    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--mute);text-decoration:none;
-    border:1px solid var(--line);background:var(--card);
-    padding:6px 10px;line-height:1;
-  }
-  .toolnav a:hover{border-color:var(--blue);color:var(--blue)}
-  .toolnav a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-  .toolnav a.current{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
 
   /* ---------- masthead ---------- */
   .masthead{
@@ -231,20 +216,14 @@
 </style>
 
 <div class="wrap">
-  <nav class="toolnav">
-    <a href="index.html">&larr; All tools</a>
-    <a href="trading-checklist.html">Trade Ops</a>
-    <a href="mms-checklist.html">MMS</a>
-    <a href="gemspot-checklist.html" class="current" aria-current="page">GemSpot</a>
-  </nav>
   <div class="masthead">
     <div class="mark">GEMSPOT <span>／ GATE</span></div>
     <div class="stamp" id="stamp">—</div>
   </div>
 
   <div class="lines" role="tablist" id="lines">
-    <button role="tab" data-line="A" aria-selected="true"><span class="code">LINE A</span>黃金</button>
-    <button role="tab" data-line="B" aria-selected="false"><span class="code">LINE B</span>指數</button>
+    <button role="tab" data-line="A" aria-selected="true"><span class="code">XAUUSD</span>金線</button>
+    <button role="tab" data-line="B" aria-selected="false"><span class="code">MNQ · MYM</span>指線</button>
     <button role="tab" data-line="W" aria-selected="false"><span class="code">WEEKLY</span>週日規劃</button>
   </div>
 
@@ -279,7 +258,7 @@
   "use strict";
 
   var LINES = {
-    A: { label:"A 線 · 黃金", groups:[
+    A: { label:"金線", groups:[
       { no:"01", title:"盤前", items:[
         {id:"a1", t:"已查今天的大數據與封鎖窗口", w:"NFP／CPI 台北 20:30（冬令 21:30）｜FOMC 02:00、記者會 02:30"},
         {id:"a2", t:"已看 H1 階梯與均線顏色，記住大方向", w:"就算等下用小週期做，這個大方向仍然是指引"},
@@ -308,7 +287,7 @@
       ]}
     ]},
 
-    B: { label:"B 線 · 指數", groups:[
+    B: { label:"指線", groups:[
       { no:"01", title:"盤前", items:[
         {id:"b1", t:"已查今天的大事件", w:"FOMC／CPI／NFP／PCE。20:30 那批數據不提前卡位"},
         {id:"b2", t:"MNQ 與 MYM 至少一個 TP 區「漂亮」", w:"有 Match ＝ TP 區確實壓制或撐住了行情"},
@@ -328,7 +307,7 @@
       ]},
       { no:"04", title:"下單", items:[
         {id:"b12", t:"已算：止損點數 → 風險 → 手數", w:"下面有計算器"},
-        {id:"b13", t:"止損放在做空前高點／時段阻力位之外", w:"止損小，錯了也只虧一點 —— 那是這條線的容錯空間"},
+        {id:"b13", t:"止損放在做空前高點／時段阻力位之外", w:"止損小，錯了也只虧一點 —— 那是指線的容錯空間"},
         {id:"b14", t:"進場、硬止損、止盈在同一張票", w:"不掛止損不進場"}
       ]}
     ]},
@@ -337,13 +316,13 @@
       { no:"計畫", title:"本週規劃", items:[
         {id:"w1", t:"已查本週大事件並寫下封鎖窗口", w:"FOMC／CPI／NFP／PCE／PPI／零售／Jackson Hole／主席發言"},
         {id:"w2", t:"已看 H1 階梯與均線，記下本週大方向", w:""},
-        {id:"w3", t:"已排定本週哪幾天跑 B 線", w:"B 線要 21:30 之後一整段螢幕時間。沒排到的日子預設 A 線"},
+        {id:"w3", t:"已排定本週哪幾天跑指線", w:"指線要 21:30 之後一整段螢幕時間。沒排到的日子預設金線"},
         {id:"w4", t:"TradingView 警報已設好", w:"條件選「任何警報的函數調用」；5M／15M／30M／H1 各一個"},
         {id:"w5", t:"已在日誌寫下本週計畫", w:"跑哪條線、方向、關鍵價位、最大風險、我在每個位置具體在等什麼"},
         {id:"w6", t:"已確認風險階梯位置與距權益高點的回撤", w:""}
       ]},
       { no:"檢討", title:"上週檢討", items:[
-        {id:"w7", t:"Valid trade 統計已算（A、B 線分開）", w:"筆數、勝率、平均 R、期望值"},
+        {id:"w7", t:"Valid trade 統計已算（金線、指線分開）", w:"筆數、勝率、平均 R、期望值"},
         {id:"w8", t:"Invalid trade 已列出並歸因", w:"破的是哪一條，是知識缺口還是紀律缺口"},
         {id:"w9", t:"已算「未優化就進場」的比例", w:"連虧之後上升 ＝ 紀律正在退化"},
         {id:"w10", t:"虧損中 Behavior Loss 的佔比已算", w:"System Loss 不用改，只有 Behavior Loss 要修"},
@@ -375,15 +354,12 @@
   async function save(){
     var s=JSON.stringify({line:line,checks:checks,emo:emo,calc:calc,coolEnd:coolEnd,openState:openState});
     mem[KEY()]=s;
-    var ok=false;
-    try{ if(window.storage&&window.storage.set){ await window.storage.set(KEY(),s); ok=true; } }catch(e){}
-    if(!ok){ try{ localStorage.setItem(KEY(),s); ok=true; }catch(e){} }
-    note(ok?"已儲存":"本機暫存");
+    try{ if(window.storage&&window.storage.set){ await window.storage.set(KEY(),s); note("已儲存"); } }
+    catch(e){ note("本機暫存"); }
   }
   async function load(){
     var raw=null;
     try{ if(window.storage&&window.storage.get){var r=await window.storage.get(KEY()); if(r&&r.value) raw=r.value;} }catch(e){}
-    if(!raw){ try{ raw=localStorage.getItem(KEY()); }catch(e){} }
     if(!raw) raw=mem[KEY()]||null;
     if(!raw) return;
     try{var d=JSON.parse(raw);
@@ -711,12 +687,4 @@
     renderGates(); renderExtras(); compute();
   })();
 })();
-</script>
-
-<script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('service-worker.js').catch(function(){});
-  });
-}
 </script>
