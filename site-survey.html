@@ -345,7 +345,7 @@ ol.howto li{margin-bottom:5px;}
 
 <footer class="foot">
   <span>Avera Energy Holdings Sdn Bhd</span>
-  <span>Site survey field checklist &middot; build v8</span>
+  <span>Site survey field checklist &middot; build v9</span>
 </footer>
 <script>
 (function(){
@@ -394,7 +394,7 @@ ol.howto li{margin-bottom:5px;}
   if(v('n_project_4')) line2.push('Surveyed by: '+esc(v('n_project_4')));
   if(v('n_project_5')) line2.push('Checked by: '+esc(v('n_project_5')));
   line2.push(done+' of '+TOTAL+' items recorded');
-  line2.push('Printed '+new Date().toLocaleDateString()+' (v8)');
+  line2.push('Printed '+new Date().toLocaleDateString()+' (v9)');
   el.innerHTML=(bits.length?bits.join(' &middot; ')+'<br>':'')+line2.join(' &middot; ');
  }
 
@@ -512,9 +512,10 @@ ol.howto li{margin-bottom:5px;}
     window.removeEventListener('afterprint',restore);
     window.removeEventListener('focus',restore);
    };
-   /* afterprint is unreliable on iOS, so also restore when the tab regains focus */
+   /* afterprint is unreliable on iOS, so also restore when the tab regains focus -
+      but only after the dialog has had time to read the title, or the name reverts first */
    window.addEventListener('afterprint',restore);
-   window.addEventListener('focus',restore);
+   setTimeout(function(){ window.addEventListener('focus',restore); },2500);
    setTimeout(restore,30000);
    window.print();
   });
@@ -1034,6 +1035,13 @@ ol.howto li{margin-bottom:5px;}
   return new Blob([L.join('\r\n')],{type:'text/plain'});
  }
 
+ function saveViaLink(blob,fname){
+  var url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=fname; a.rel='noopener';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){URL.revokeObjectURL(url);},60000);
+ }
+
  function stamp(){
   var d=new Date(), p=function(n){return (n<10?'0':'')+n;};
   return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+p(d.getHours())+p(d.getMinutes());
@@ -1106,12 +1114,21 @@ ol.howto li{margin-bottom:5px;}
   zipBtn.disabled=true;
   buildZip(entries,function(n,t){ zipBtn.textContent='Packing '+n+' / '+t+'...'; })
    .then(function(blob){
-    var url=URL.createObjectURL(blob), a=document.createElement('a');
-    a.href=url; a.download=baseName()+'.zip';
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(function(){URL.revokeObjectURL(url);},60000);
-    exported=true;
-    zipBtn.textContent=label; zipBtn.disabled=false;
+    var fname=baseName()+'.zip', done=function(){
+     exported=true; zipBtn.textContent=label; zipBtn.disabled=false;
+    };
+    var file=null;
+    try{ file=new File([blob],fname,{type:'application/zip'}); }catch(e){}
+    if(file && navigator.canShare && navigator.canShare({files:[file]})){
+     navigator.share({files:[file],title:fname})
+      .then(done)
+      .catch(function(err){
+       if(err && err.name==='AbortError'){ zipBtn.textContent=label; zipBtn.disabled=false; return; }
+       saveViaLink(blob,fname); done();
+      });
+     return;
+    }
+    saveViaLink(blob,fname); done();
    })
    .catch(function(err){
     console.error(err); alert('Could not build the zip file. Try exporting fewer photos at a time.');
