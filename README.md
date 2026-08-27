@@ -3,14 +3,19 @@
 Static site — three checklist tools sharing one home page, one manifest, one service worker.
 
 ```
-index.html                hub — links to all three tools
+index.html                hub — links to all five tools
 trading-checklist.html    Trading Operations (Plan V1.0)
 mms-checklist.html        MMS Strategy SOP
+gemspot-checklist.html    GemSpot 盤前關卡 (pre-market gate)
 task-checklist.html       Task Report → WhatsApp
+site-survey.html          Avera Energy site survey (print-friendly)
 manifest.json             install config (name, icons, shortcuts)
 service-worker.js         offline cache
 icon192.png / icon512.png app icon
 ```
+
+Each page's nav links to its siblings — Trading Ops / MMS / GemSpot in one group,
+Task Report / Site Survey in the other — plus "All tools" back to the hub.
 
 Everything sits at the top level and links by plain filename, so the site works from any
 folder depth — a repo root, a subfolder, or opened straight from disk.
@@ -32,7 +37,7 @@ The service worker serves the cached copy first, so phones can keep showing the 
 Open `service-worker.js` and bump the version:
 
 ```js
-const CACHE_NAME = 'checklists-v2';  // → 'checklists-v3'
+const CACHE_NAME = 'checklists-v7';  // → 'checklists-v8'
 ```
 
 Old caches are deleted automatically on the next visit.
@@ -49,3 +54,9 @@ Moving the site to a different domain starts you with an empty slate.
   outside the 21 Jul – 21 Oct 2026 planning window. Both countdown dates are now named
   constants at the top of the script if that was meant to be something else.
 - `manifest.json` → `shortcuts` are the long-press menu on an installed app icon.
+- `site-survey.html` deliberately saves nothing — each survey starts blank, and you
+  print or screenshot the result before leaving the page. Closing the tab loses the
+  entries (the page warns you first). If you'd rather it autosave, that's a change
+  worth making before you take it into the field.
+- The hub's progress rings use fixed item totals (26 trading, 30 MMS, 12 GemSpot).
+  If you add or remove checklist items, update those numbers in `index.html`.

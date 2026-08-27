@@ -25,6 +25,8 @@
     --orchid:#C68FD9;
     --honey:#E8B24E;
     --mint:#5FC5A6;
+    --slate:#7FA8D4;
+    --coral:#EE8672;
 
     --font-display:'Baloo 2', sans-serif;
     --font-body:'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -265,6 +267,20 @@
     <span class="arrow">›</span>
   </a>
 
+  <a class="card" href="gemspot-checklist.html"
+     style="--tint:var(--slate); --tint-soft:#E4EDF7">
+    <span class="ring" id="ringGem"><span class="face">💎</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">GemSpot 盤前關卡</span>
+        <span class="pill">Gate</span>
+      </span>
+      <span class="desc">黃金 · 指數 · 週日規劃 —— 全部通過才可以下單。</span>
+      <span class="stat" id="statGem">✨ ready when you are</span>
+    </span>
+    <span class="arrow">›</span>
+  </a>
+
   <div class="label">🌷 Work</div>
 
   <a class="card" href="task-checklist.html"
@@ -277,6 +293,20 @@
       </span>
       <span class="desc">Track today's tasks by status, then copy a pretty message into chat.</span>
       <span class="stat" id="statTask">✨ ready when you are</span>
+    </span>
+    <span class="arrow">›</span>
+  </a>
+
+  <a class="card" href="site-survey.html"
+     style="--tint:var(--coral); --tint-soft:#FBE6E1">
+    <span class="ring" id="ringSurvey"><span class="face">🔆</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">Site Survey</span>
+        <span class="pill">Avera</span>
+      </span>
+      <span class="desc">Solar site survey — project info, roof &amp; electrical data, photos, LMRA.</span>
+      <span class="stat" id="statSurvey">📋 44 checks · print when done</span>
     </span>
     <span class="arrow">›</span>
   </a>
@@ -330,6 +360,10 @@
       ? `🎉 ${doneMsg}`
       : `${done}/${total} · ${pct}% done`;
   }
+  function local(){
+    const d = new Date();
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }
   function countChecked(bucket){
     if(!bucket) return 0;
     return Object.values(bucket).reduce((n,a)=> n + (Array.isArray(a) ? a.length : 0), 0);
@@ -345,10 +379,22 @@
     setRing('ringMms','statMms', countChecked(read('mms:entry')), 30,
             'setup fully checked', '✨ no setup in progress');
 
+    // GemSpot — today's gate (checks object keyed by item id)
+    const gem = read('gemspot:gate:' + local());
+    if(gem && gem.checks){
+      const done = Object.values(gem.checks).filter(Boolean).length;
+      // Line A/B/W have different item counts; use a nominal 12-item gate for the ring.
+      setRing('ringGem','statGem', done, 12, 'gate passed', '✨ no gate run today');
+    } else {
+      $('ringGem').style.setProperty('--p', 0);
+      $('statGem').textContent = '✨ no gate run today';
+    }
+
+    // Site survey keeps no saved state — it's a fresh form each visit.
+    $('ringSurvey').style.setProperty('--p', 0);
+
     // Task report — today's tasks (device date, matches the task page)
-    const d = new Date();
-    const local = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-    const rep = read('report:'+local);
+    const rep = read('report:'+local());
     const items = (rep && Array.isArray(rep.items)) ? rep.items : [];
     const doneN = items.filter(i => (i.status || (i.done ? 'done' : 'pending')) === 'done').length;
     if(!items.length){

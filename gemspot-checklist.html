@@ -1,0 +1,722 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E3E7EA">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>GemSpot 盤前關卡</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<style>
+  :root{
+    --ink:#16191D;
+    --ink2:#3D4450;
+    --mute:#79838D;
+    --paper:#E3E7EA;
+    --card:#FAFBFB;
+    --line:#C7CFD6;
+    --line2:#E2E7EB;
+    --blue:#1B4B8F;
+    --blue-soft:#E6EEF8;
+    --red:#A8221C;
+    --red-soft:#F8EAE9;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --cjk: "PingFang TC","Noto Sans TC","Microsoft JhengHei","Hiragino Sans TC",-apple-system,BlinkMacSystemFont,sans-serif;
+    --tabs-h: 58px;
+    --dock-h: 64px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--cjk);font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overscroll-behavior-y:contain;
+  }
+  .wrap{
+    max-width:640px;margin:0 auto;padding:0 10px;
+    padding-bottom:calc(var(--dock-h) + 28px + env(safe-area-inset-bottom));
+  }
+
+  /* ---------- cross-tool nav ---------- */
+  .toolnav{display:flex;gap:6px;flex-wrap:wrap;padding:12px 4px 0}
+  .toolnav a{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--mute);text-decoration:none;
+    border:1px solid var(--line);background:var(--card);
+    padding:6px 10px;line-height:1;
+  }
+  .toolnav a:hover{border-color:var(--blue);color:var(--blue)}
+  .toolnav a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .toolnav a.current{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+
+  /* ---------- masthead ---------- */
+  .masthead{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    padding:14px 4px 9px;border-bottom:1.5px solid var(--ink);
+  }
+  .mark{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.2em}
+  .mark span{color:var(--mute)}
+  .stamp{font-family:var(--mono);font-size:11px;color:var(--mute)}
+
+  /* ---------- sticky tabs ---------- */
+  .lines{
+    position:sticky;top:0;z-index:30;
+    display:flex;background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:8px 0 8px;margin-bottom:12px;
+  }
+  .lines button{
+    flex:1;appearance:none;border:1px solid var(--line);border-right:0;
+    background:var(--card);cursor:pointer;
+    min-height:46px;padding:6px 4px;
+    font-family:var(--cjk);font-size:13px;color:var(--ink2);line-height:1.3;
+  }
+  .lines button:last-child{border-right:1px solid var(--line)}
+  .lines button .code{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--mute);margin-bottom:1px}
+  .lines button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .lines button[aria-selected="true"] .code{color:rgba(255,255,255,.6)}
+  .lines button:active{transform:scale(.985)}
+
+  /* ---------- sections ---------- */
+  .sec{background:var(--card);border:1px solid var(--line);margin-bottom:10px;scroll-margin-top:calc(var(--tabs-h) + 8px)}
+  .sec-head{
+    display:flex;align-items:center;gap:9px;width:100%;
+    appearance:none;border:0;background:transparent;cursor:pointer;text-align:left;
+    padding:12px 13px;min-height:50px;font-family:var(--cjk);color:var(--ink);
+    border-bottom:1px solid var(--line2);
+  }
+  .sec[data-open="0"] .sec-head{border-bottom-color:transparent}
+  .gate-no{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--mute);flex:0 0 auto}
+  .sec-title{font-size:14.5px;font-weight:600;flex:1 1 auto;min-width:0}
+  .cnt{font-family:var(--mono);font-size:11.5px;color:var(--mute);flex:0 0 auto;font-variant-numeric:tabular-nums}
+  .cnt.full{color:var(--blue);font-weight:600}
+  .chev{flex:0 0 auto;width:11px;height:11px;border-right:1.5px solid var(--mute);border-bottom:1.5px solid var(--mute);
+        transform:rotate(45deg);margin-left:2px;margin-top:-4px;transition:transform .18s ease}
+  .sec[data-open="0"] .chev{transform:rotate(-45deg);margin-top:2px}
+  .sec-body{overflow:hidden}
+  .sec[data-open="0"] .sec-body{display:none}
+
+  .sec.danger{border-color:var(--red)}
+  .sec.danger .sec-head{background:var(--red-soft)}
+  .sec.danger .sec-title,.sec.danger .gate-no{color:var(--red)}
+  .sec.danger .cnt.hit{color:var(--red);font-weight:700}
+
+  /* ---------- items ---------- */
+  .item{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:13px 13px;min-height:52px;
+    border-bottom:1px solid var(--line2);cursor:pointer;
+    scroll-margin-top:calc(var(--tabs-h) + 8px);
+  }
+  .item:last-child{border-bottom:0}
+  .item:active{background:rgba(27,75,143,.06)}
+  .sec.danger .item:active{background:rgba(168,34,28,.07)}
+  .item.flash{animation:flash 1.1s ease}
+  @keyframes flash{0%,100%{background:transparent}25%{background:rgba(27,75,143,.14)}}
+  .box{flex:0 0 auto;width:22px;height:22px;margin-top:1px;border:1.5px solid var(--ink2);background:#fff;position:relative;border-radius:2px}
+  .item input{position:absolute;opacity:0;width:0;height:0}
+  .item input:focus-visible + .box{outline:2px solid var(--blue);outline-offset:2px}
+  .item input:checked + .box{background:var(--blue);border-color:var(--blue)}
+  .item input:checked + .box::after{content:"";position:absolute;left:7px;top:2px;width:5px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(43deg)}
+  .sec.danger .item input:checked + .box{background:var(--red);border-color:var(--red)}
+  .txt{flex:1;min-width:0}
+  .lbl{font-size:15px;line-height:1.5;display:block}
+  .why{display:block;font-size:12.5px;color:var(--mute);margin-top:3px;line-height:1.5}
+  .item input:checked ~ .txt .lbl{color:var(--mute)}
+
+  /* ---------- emotion ---------- */
+  .pad{padding:13px}
+  .hint{font-size:13px;color:var(--mute)}
+  .emo-scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+  .emo-scale button{
+    appearance:none;cursor:pointer;min-height:46px;
+    border:1px solid var(--line);background:#fff;color:var(--ink2);
+    font-family:var(--mono);font-size:15px;border-radius:2px;
+  }
+  .emo-scale button:active{transform:scale(.96)}
+  .emo-scale button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+  .emo-scale button[aria-pressed="true"].hot{background:var(--red);border-color:var(--red)}
+  .emo-read{margin-top:11px;font-size:13.5px;color:var(--mute);line-height:1.55}
+  .emo-read.hot{color:var(--red);font-weight:600}
+
+  /* ---------- sizer ---------- */
+  .fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .fld.wide{grid-column:1 / -1}
+  .fld label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;color:var(--mute);margin-bottom:4px}
+  .fld input{
+    width:100%;min-height:46px;padding:8px 10px;
+    border:1px solid var(--line);background:#fff;border-radius:2px;
+    font-family:var(--mono);font-size:16px;color:var(--ink);
+  }
+  .fld input:focus{outline:2px solid var(--blue);outline-offset:-1px}
+  .result{margin-top:13px;border-top:1px solid var(--line2);padding-top:11px}
+  .rrow{display:flex;justify-content:space-between;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--ink2);padding:4px 0}
+  .rrow .v{font-variant-numeric:tabular-nums;text-align:right}
+  .rrow.pick{font-size:17px;font-weight:700;color:var(--ink);border-top:1px solid var(--line2);margin-top:7px;padding-top:10px}
+  .rrow.warn{color:var(--red);font-weight:600}
+
+  /* ---------- cooldown ---------- */
+  .clock{font-family:var(--mono);font-size:38px;font-weight:600;font-variant-numeric:tabular-nums;text-align:center;padding:6px 0 12px}
+  .clock.run{color:var(--red)}
+  .clock.done{color:var(--blue);font-size:20px;padding:18px 0 24px}
+  .btns{display:grid;grid-template-columns:2fr 1fr;gap:8px}
+  .btns button{appearance:none;cursor:pointer;min-height:48px;border:1.5px solid var(--ink);background:var(--ink);color:#fff;font-family:var(--cjk);font-size:14px;border-radius:2px}
+  .btns button.ghost{background:transparent;color:var(--ink)}
+  .btns button:active{transform:scale(.98)}
+
+  /* ---------- ask + tools ---------- */
+  .ask{margin:18px 0 0;padding:15px;border:1.5px solid var(--ink)}
+  .ask p{margin:0;font-size:16px;font-weight:600;line-height:1.5}
+  .ask small{display:block;margin-top:6px;font-size:13px;font-weight:400;color:var(--ink2)}
+  .tools{display:flex;gap:8px;margin-top:14px;align-items:center;flex-wrap:wrap}
+  .tools button{appearance:none;cursor:pointer;background:transparent;border:1px solid var(--line);color:var(--ink2);min-height:42px;padding:0 15px;font-family:var(--mono);font-size:11px;letter-spacing:.07em;border-radius:2px}
+  .saved{font-family:var(--mono);font-size:10.5px;color:var(--mute)}
+
+  /* ---------- bottom dock (signature) ---------- */
+  .dock{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;
+    background:var(--red-soft);
+    border-top:1.5px solid var(--red);
+    padding-bottom:env(safe-area-inset-bottom);
+    transition:background .2s ease,border-color .2s ease;
+  }
+  .dock::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(45deg,transparent 0 9px,rgba(168,34,28,.11) 9px 18px);
+    transition:opacity .2s ease;
+  }
+  .dock.open{background:var(--blue-soft);border-top-color:var(--blue)}
+  .dock.open::before{opacity:0}
+  .dock-inner{position:relative;max-width:640px;margin:0 auto}
+  .dock-head{
+    display:flex;align-items:center;gap:11px;width:100%;
+    appearance:none;border:0;background:transparent;cursor:pointer;text-align:left;
+    min-height:var(--dock-h);padding:0 14px;font-family:var(--cjk);
+  }
+  .verdict{font-size:19px;font-weight:700;letter-spacing:.03em;color:var(--red);flex:1 1 auto;line-height:1.25}
+  .dock.open .verdict{color:var(--blue)}
+  .tally{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--red);font-variant-numeric:tabular-nums;flex:0 0 auto}
+  .dock.open .tally{color:var(--blue)}
+  .dchev{flex:0 0 auto;width:11px;height:11px;border-left:1.6px solid var(--red);border-top:1.6px solid var(--red);transform:rotate(45deg);margin-top:4px;transition:transform .18s ease}
+  .dock.open .dchev{border-color:var(--blue)}
+  .dock[data-expanded="1"] .dchev{transform:rotate(225deg);margin-top:-3px}
+  .meter{position:absolute;top:0;left:0;right:0;height:3px;background:rgba(22,25,29,.09)}
+  .meter i{display:block;height:100%;width:0;background:var(--red);transition:width .25s ease,background .2s ease}
+  .dock.open .meter i{background:var(--blue)}
+  .dock-body{
+    position:relative;display:none;
+    max-height:min(48vh,380px);overflow-y:auto;-webkit-overflow-scrolling:touch;
+    border-top:1px solid rgba(22,25,29,.12);
+    padding:4px 0 10px;
+  }
+  .dock[data-expanded="1"] .dock-body{display:block}
+  .bk{
+    display:flex;gap:10px;align-items:flex-start;width:100%;
+    appearance:none;border:0;background:transparent;cursor:pointer;text-align:left;
+    padding:11px 14px;min-height:46px;font-family:var(--cjk);font-size:14px;color:var(--ink);
+    border-bottom:1px solid rgba(22,25,29,.07);line-height:1.45;
+  }
+  .bk:last-child{border-bottom:0}
+  .bk:active{background:rgba(22,25,29,.05)}
+  .bk .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--red);flex:0 0 auto;margin-top:4px;min-width:38px}
+  .bk .tag.miss{color:var(--ink2)}
+  .bk .go{margin-left:auto;flex:0 0 auto;color:var(--mute);font-family:var(--mono);font-size:11px;margin-top:2px}
+  .dock-note{position:relative;padding:12px 14px;font-size:13.5px;color:var(--ink2);line-height:1.55}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  @media (min-width:560px){
+    .fields{grid-template-columns:1fr 1fr 1fr}
+    .fld.wide{grid-column:auto}
+  }
+</style>
+
+<div class="wrap">
+  <nav class="toolnav">
+    <a href="index.html">&larr; All tools</a>
+    <a href="trading-checklist.html">Trade Ops</a>
+    <a href="mms-checklist.html">MMS</a>
+    <a href="gemspot-checklist.html" class="current" aria-current="page">GemSpot</a>
+  </nav>
+  <div class="masthead">
+    <div class="mark">GEMSPOT <span>／ GATE</span></div>
+    <div class="stamp" id="stamp">—</div>
+  </div>
+
+  <div class="lines" role="tablist" id="lines">
+    <button role="tab" data-line="A" aria-selected="true"><span class="code">LINE A</span>黃金</button>
+    <button role="tab" data-line="B" aria-selected="false"><span class="code">LINE B</span>指數</button>
+    <button role="tab" data-line="W" aria-selected="false"><span class="code">WEEKLY</span>週日規劃</button>
+  </div>
+
+  <div id="gates"></div>
+  <div id="extras"></div>
+
+  <div class="ask">
+    <p>「我現在想做的，是規則裡的哪一條？」</p>
+    <small>答不出來 ＝ 那是情緒，不是交易。</small>
+  </div>
+
+  <div class="tools">
+    <button id="reset">清空今日</button>
+    <span class="saved" id="saved"></span>
+  </div>
+</div>
+
+<div class="dock" id="dock" data-expanded="0">
+  <div class="meter"><i id="meter"></i></div>
+  <div class="dock-inner">
+    <button class="dock-head" id="dockHead" aria-expanded="false">
+      <span class="verdict" id="verdict">尚未通過</span>
+      <span class="tally" id="tally">0/0</span>
+      <span class="dchev"></span>
+    </button>
+    <div class="dock-body" id="dockBody"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var LINES = {
+    A: { label:"A 線 · 黃金", groups:[
+      { no:"01", title:"盤前", items:[
+        {id:"a1", t:"已查今天的大數據與封鎖窗口", w:"NFP／CPI 台北 20:30（冬令 21:30）｜FOMC 02:00、記者會 02:30"},
+        {id:"a2", t:"已看 H1 階梯與均線顏色，記住大方向", w:"就算等下用小週期做，這個大方向仍然是指引"},
+        {id:"a3", t:"已依序掃甜蜜點，找到有甜蜜點的週期", w:"H1 → 30M → 20M → 15M → 10M → 5M。全都沒有就收工"},
+        {id:"a4", t:"現在落在第 1–4 時段", w:"甜蜜點出現那段＝第 1 段。5M／10M 不做第 1、2 段"},
+        {id:"a5", t:"第 1、2 時段有碰過 TP", w:"現在若還在第 1、2 段，直接通過。沒碰過 TP，第 3、4 段就不做"},
+        {id:"a6", t:"現在不是早上 06:00–09:00", w:"早盤即使有訊號也走得不好"}
+      ]},
+      { no:"02", title:"方向與訊號", items:[
+        {id:"a7", t:"均線與階梯同色", w:"不同色時系統不會出訊號，那就是「等」"},
+        {id:"a8", t:"訊號數量達標：H1 一個／其餘兩個同方向", w:"例外：收盤價突破支撐阻力的同時出訊號 → 一個就夠"},
+        {id:"a9", t:"不是連續 K 線上的同一波訊號", w:"連續三個 Buy 算一個。要「Buy → 隔開 → 又 Buy」才算兩個"},
+        {id:"a10", t:"同一時段沒出現過反向訊號，或已等到第三個", w:"止損吃一次就好，第二次不要吃"},
+        {id:"a11", t:"所有判斷都做在已收盤的 K 線上", w:"未收線的 K 不算數，不論多有把握"}
+      ]},
+      { no:"03", title:"空間與盈虧比", items:[
+        {id:"a12", t:"今日尚未觸及 Daily High／Low", w:"TP 超過 Daily H/L → 目標改設 Daily H/L，留 2 美金"},
+        {id:"a13", t:"已量過「直接進場」的盈虧比", w:"用 Long／Short Position 工具量，不目測"},
+        {id:"a14", t:"已去找過更好的進場位", w:"黑階梯測試不破／叉叉／猶豫 K／均線／紫慢線／小週期 TP／葛蘭碧突破 K"},
+        {id:"a15", t:"實際盈虧比達門檻：順勢 ≥1.3，逆勢 ≥2.0", w:"逆勢單勝率一定比順勢低，要更大的盈虧比補回來"}
+      ]},
+      { no:"04", title:"下單", items:[
+        {id:"a16", t:"手數已算：min(1% 風險, 20 倍槓桿)", w:"下面有計算器，兩條路取小"},
+        {id:"a17", t:"止損在階梯後方，而且留了空間", w:"階梯太遠就改用黑階梯。不要放到剛好在階梯上"},
+        {id:"a18", t:"進場、硬止損、止盈在同一張票", w:"任何部位都不可以有一分鐘沒有券商端止損"}
+      ]}
+    ]},
+
+    B: { label:"B 線 · 指數", groups:[
+      { no:"01", title:"盤前", items:[
+        {id:"b1", t:"已查今天的大事件", w:"FOMC／CPI／NFP／PCE。20:30 那批數據不提前卡位"},
+        {id:"b2", t:"MNQ 與 MYM 至少一個 TP 區「漂亮」", w:"有 Match ＝ TP 區確實壓制或撐住了行情"},
+        {id:"b3", t:"只挑了一個當主戰場", w:"兩個都漂亮也只做一個"},
+        {id:"b4", t:"已在 H1 標出叉叉線", w:"Horizontal ray：Alt+J ／ ⌥+J。當天、昨天、前天的上下叉叉"}
+      ]},
+      { no:"02", title:"位置：缺一不可", items:[
+        {id:"b5", t:"漲跌已【超過】M1 TP 區 —— 滿足了", w:"滿足只是「開始觀察」，不是「可以進場」"},
+        {id:"b6", t:"已碰到前期的 H1 叉叉線", w:"做多＝藍 TP 下方的叉叉；做空＝紅 TP 上方的叉叉"},
+        {id:"b7", t:"我不是拿 TP 區本身當反轉進場點", w:"TP 只是算出來的滿足位置，那裡沒有實際支撐壓力"}
+      ]},
+      { no:"03", title:"M1 訊號", items:[
+        {id:"b8", t:"M1 出現四個訊號之一", w:"階梯突破／K 線轉色／CHoCH／Buy‧Sell。①＋② 同時出現最好"},
+        {id:"b9", t:"判斷用的是收盤價", w:"未收線的 K 不算數"},
+        {id:"b10", t:"開盤第一根沒追，已等 10–30 分鐘", w:"21:30 開盤後讓行情先消化"},
+        {id:"b11", t:"還沒到 00:30，或已過但我只管理不開新倉", w:"00:30 之後量能與期望值明顯衰退"}
+      ]},
+      { no:"04", title:"下單", items:[
+        {id:"b12", t:"已算：止損點數 → 風險 → 手數", w:"下面有計算器"},
+        {id:"b13", t:"止損放在做空前高點／時段阻力位之外", w:"止損小，錯了也只虧一點 —— 那是這條線的容錯空間"},
+        {id:"b14", t:"進場、硬止損、止盈在同一張票", w:"不掛止損不進場"}
+      ]}
+    ]},
+
+    W: { label:"週日規劃", weekly:true, groups:[
+      { no:"計畫", title:"本週規劃", items:[
+        {id:"w1", t:"已查本週大事件並寫下封鎖窗口", w:"FOMC／CPI／NFP／PCE／PPI／零售／Jackson Hole／主席發言"},
+        {id:"w2", t:"已看 H1 階梯與均線，記下本週大方向", w:""},
+        {id:"w3", t:"已排定本週哪幾天跑 B 線", w:"B 線要 21:30 之後一整段螢幕時間。沒排到的日子預設 A 線"},
+        {id:"w4", t:"TradingView 警報已設好", w:"條件選「任何警報的函數調用」；5M／15M／30M／H1 各一個"},
+        {id:"w5", t:"已在日誌寫下本週計畫", w:"跑哪條線、方向、關鍵價位、最大風險、我在每個位置具體在等什麼"},
+        {id:"w6", t:"已確認風險階梯位置與距權益高點的回撤", w:""}
+      ]},
+      { no:"檢討", title:"上週檢討", items:[
+        {id:"w7", t:"Valid trade 統計已算（A、B 線分開）", w:"筆數、勝率、平均 R、期望值"},
+        {id:"w8", t:"Invalid trade 已列出並歸因", w:"破的是哪一條，是知識缺口還是紀律缺口"},
+        {id:"w9", t:"已算「未優化就進場」的比例", w:"連虧之後上升 ＝ 紀律正在退化"},
+        {id:"w10", t:"虧損中 Behavior Loss 的佔比已算", w:"System Loss 不用改，只有 Behavior Loss 要修"},
+        {id:"w11", t:"已寫下一項流程改善", w:"每月最多改一條規則，絕不在週中改"}
+      ]}
+    ]}
+  };
+
+  var STOPS = [
+    {id:"s1", t:"累計單日虧損已達 3%", w:"當日停止交易，沒有例外"},
+    {id:"s2", t:"已連虧 2 筆，還沒砍半或關機", w:"連虧該讓風險變小，不是變大"},
+    {id:"s3", t:"這會是我的第 2 筆同時持倉", w:"前測期間上限 1 筆"},
+    {id:"s4", t:"週預算用完／kill switch 中／月度上限已破", w:"週 4%／回撤 5% 停 5 天／月 11% 收工"},
+    {id:"s5", t:"在數據封鎖窗口內，或掛單會落在窗口內", w:"既有部位帶硬止損撐過去；新部位不行"},
+    {id:"s6", t:"身體不適，或無法保證看盤頻率", w:"用哪個週期進場就多久看一次"},
+    {id:"s7", t:"我正想證明什麼", w:"證明剛才那筆是意外、證明我看得準、證明今天不算白費"}
+  ];
+
+  var line="A", checks={}, emo=null, calc={bal:"",sl:"",px:"3600"}, coolEnd=0;
+  var openState={}, mem={}, dayKey="", lastPass=false, expanded=false;
+
+  function pad(n){return (n<10?"0":"")+n;}
+  function todayKey(){var d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+  function stampText(){var d=new Date();var wd="日一二三四五六"[d.getDay()];
+    return pad(d.getMonth()+1)+"."+pad(d.getDate())+" 週"+wd;}
+  function KEY(){return "gemspot:gate:"+dayKey;}
+  function buzz(p){ try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
+
+  async function save(){
+    var s=JSON.stringify({line:line,checks:checks,emo:emo,calc:calc,coolEnd:coolEnd,openState:openState});
+    mem[KEY()]=s;
+    var ok=false;
+    try{ if(window.storage&&window.storage.set){ await window.storage.set(KEY(),s); ok=true; } }catch(e){}
+    if(!ok){ try{ localStorage.setItem(KEY(),s); ok=true; }catch(e){} }
+    note(ok?"已儲存":"本機暫存");
+  }
+  async function load(){
+    var raw=null;
+    try{ if(window.storage&&window.storage.get){var r=await window.storage.get(KEY()); if(r&&r.value) raw=r.value;} }catch(e){}
+    if(!raw){ try{ raw=localStorage.getItem(KEY()); }catch(e){} }
+    if(!raw) raw=mem[KEY()]||null;
+    if(!raw) return;
+    try{var d=JSON.parse(raw);
+      if(d.line) line=d.line;
+      checks=d.checks||{}; emo=(typeof d.emo==="number")?d.emo:null;
+      calc=d.calc||calc; coolEnd=d.coolEnd||0; openState=d.openState||{};
+    }catch(e){}
+  }
+  var nt=null;
+  function note(s){var el=document.getElementById("saved"); el.textContent=s; clearTimeout(nt); nt=setTimeout(function(){el.textContent="";},2200);}
+
+  function el(tag,cls,html){var n=document.createElement(tag); if(cls)n.className=cls; if(html!=null)n.innerHTML=html; return n;}
+  function esc(s){return String(s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+
+  function itemNode(it){
+    var lab=el("label","item"); lab.id="i-"+it.id;
+    var inp=document.createElement("input"); inp.type="checkbox"; inp.checked=!!checks[it.id];
+    inp.addEventListener("change",function(){
+      checks[it.id]=inp.checked;
+      buzz(inp.checked?10:0);
+      compute(); autoFold(); save();
+    });
+    lab.appendChild(inp); lab.appendChild(el("span","box"));
+    var t=el("span","txt");
+    t.appendChild(el("span","lbl",esc(it.t)));
+    if(it.w) t.appendChild(el("span","why",esc(it.w)));
+    lab.appendChild(t);
+    return lab;
+  }
+
+  function secNode(key,no,title,items,danger){
+    var s=el("div","sec"+(danger?" danger":"")); s.id="s-"+key;
+    var done=items.filter(function(i){return checks[i.id];}).length;
+    var open = openState[key];
+    if(open===undefined) open = danger ? true : (done<items.length);
+    s.dataset.open = open ? "1":"0";
+
+    var h=document.createElement("button"); h.className="sec-head"; h.type="button";
+    h.setAttribute("aria-expanded", open?"true":"false");
+    h.appendChild(el("span","gate-no",esc(no)));
+    h.appendChild(el("span","sec-title",esc(title)));
+    var c=el("span","cnt",done+"/"+items.length);
+    if(danger && done>0) c.className="cnt hit";
+    else if(done===items.length) c.className="cnt full";
+    h.appendChild(c);
+    h.appendChild(el("span","chev"));
+    h.addEventListener("click",function(){
+      var now = s.dataset.open==="1";
+      s.dataset.open = now?"0":"1";
+      h.setAttribute("aria-expanded", now?"false":"true");
+      openState[key]=!now; save();
+    });
+    s.appendChild(h);
+    var body=el("div","sec-body");
+    items.forEach(function(it){ body.appendChild(itemNode(it)); });
+    s.appendChild(body);
+    return s;
+  }
+
+  function autoFold(){
+    LINES[line].groups.forEach(function(g){
+      var key=line+"-"+g.no;
+      var s=document.getElementById("s-"+key);
+      if(!s) return;
+      var items=g.items;
+      var done=items.filter(function(i){return checks[i.id];}).length;
+      var cnt=s.querySelector(".cnt");
+      cnt.textContent=done+"/"+items.length;
+      cnt.className="cnt"+(done===items.length?" full":"");
+      if(done===items.length && s.dataset.open==="1" && openState[key]!==true){
+        s.dataset.open="0"; s.querySelector(".sec-head").setAttribute("aria-expanded","false");
+      }
+      if(done<items.length && openState[key]===undefined && s.dataset.open==="0"){
+        s.dataset.open="1"; s.querySelector(".sec-head").setAttribute("aria-expanded","true");
+      }
+    });
+    var sd=document.getElementById("s-STOP");
+    if(sd){
+      var hit=STOPS.filter(function(i){return checks[i.id];}).length;
+      var c=sd.querySelector(".cnt");
+      c.textContent=hit+"/"+STOPS.length;
+      c.className="cnt"+(hit>0?" hit":"");
+    }
+  }
+
+  function renderGates(){
+    var host=document.getElementById("gates"); host.innerHTML="";
+    LINES[line].groups.forEach(function(g){
+      host.appendChild(secNode(line+"-"+g.no, g.no, g.title, g.items, false));
+    });
+  }
+
+  function renderExtras(){
+    var host=document.getElementById("extras"); host.innerHTML="";
+    if(LINES[line].weekly) return;
+
+    /* emotion */
+    var e=el("div","sec"); e.id="s-EMO"; e.dataset.open="1";
+    var eh=document.createElement("button"); eh.className="sec-head"; eh.type="button";
+    eh.appendChild(el("span","gate-no","分數"));
+    eh.appendChild(el("span","sec-title","情緒分數"));
+    eh.appendChild(el("span","cnt"+(emo!==null?" full":""), emo!==null?String(emo):"—"));
+    eh.appendChild(el("span","chev"));
+    eh.addEventListener("click",function(){
+      var now=e.dataset.open==="1"; e.dataset.open=now?"0":"1";
+      eh.setAttribute("aria-expanded",now?"false":"true");
+    });
+    e.appendChild(eh);
+    var eb=el("div","sec-body"); var p=el("div","pad");
+    p.appendChild(el("div","hint","現在的情緒強度是幾分？切點 5。"));
+    var scale=el("div","emo-scale");
+    for(var i=1;i<=10;i++){(function(n){
+      var b=document.createElement("button"); b.type="button"; b.textContent=n;
+      b.setAttribute("aria-pressed", emo===n?"true":"false");
+      if(n>5) b.classList.add("hot");
+      b.addEventListener("click",function(){
+        emo=(emo===n)?null:n;
+        if(emo!==null&&emo>5) buzz(50);
+        renderExtras(); compute(); save();
+      });
+      scale.appendChild(b);
+    })(i);}
+    p.appendChild(scale);
+    var read=el("div","emo-read");
+    if(emo===null) read.textContent="還沒打分。打了才算完成盤前。";
+    else if(emo<=5) read.textContent=emo+" 分 — 冷靜，照計畫執行。";
+    else{ read.className="emo-read hot"; read.textContent=emo+" 分 — 今天不下新單。既有部位嚴格照計畫管理，不做裁量性出場。這個決定本身就是一次成功的交易決策。"; }
+    p.appendChild(read); eb.appendChild(p); e.appendChild(eb);
+    host.appendChild(e);
+
+    /* stops */
+    var sd=secNode("STOP","禁區","勾到任何一項就不下單",STOPS,true);
+    host.appendChild(sd);
+
+    /* sizer */
+    var c=el("div","sec"); c.id="s-SIZE"; c.dataset.open = (calc.bal? "1":"0");
+    var chh=document.createElement("button"); chh.className="sec-head"; chh.type="button";
+    chh.appendChild(el("span","gate-no","手數"));
+    chh.appendChild(el("span","sec-title","兩條路取小"));
+    chh.appendChild(el("span","cnt", line==="A"?"XAU":"IDX"));
+    chh.appendChild(el("span","chev"));
+    chh.addEventListener("click",function(){
+      var now=c.dataset.open==="1"; c.dataset.open=now?"0":"1";
+      chh.setAttribute("aria-expanded",now?"false":"true");
+    });
+    c.appendChild(chh);
+    var cb=el("div","sec-body"); var cp=el("div","pad");
+    var f=el("div","fields");
+    [{k:"bal",l:"帳戶餘額 USD",ph:"6000",wide:true},{k:"sl",l:"止損（小點）",ph:"800"},{k:"px",l:"金價",ph:"3600"}]
+    .forEach(function(d){
+      var w=el("div","fld"+(d.wide?" wide":""));
+      w.appendChild(el("label",null,esc(d.l)));
+      var inp=document.createElement("input");
+      inp.type="number"; inp.inputMode="decimal"; inp.placeholder=d.ph; inp.value=calc[d.k]||"";
+      inp.addEventListener("input",function(){ calc[d.k]=inp.value; sizeOut(); save(); });
+      w.appendChild(inp); f.appendChild(w);
+    });
+    cp.appendChild(f);
+    var out=el("div","result"); out.id="sizeout"; cp.appendChild(out);
+    cb.appendChild(cp); c.appendChild(cb); host.appendChild(c);
+
+    /* cooldown */
+    var d2=el("div","sec"); d2.id="s-COOL"; d2.dataset.open = (coolEnd>Date.now()?"1":"0");
+    var dh=document.createElement("button"); dh.className="sec-head"; dh.type="button";
+    dh.appendChild(el("span","gate-no","冷卻"));
+    dh.appendChild(el("span","sec-title","平倉後 15 分鐘"));
+    dh.appendChild(el("span","cnt","15:00"));
+    dh.appendChild(el("span","chev"));
+    dh.addEventListener("click",function(){
+      var now=d2.dataset.open==="1"; d2.dataset.open=now?"0":"1";
+      dh.setAttribute("aria-expanded",now?"false":"true");
+    });
+    d2.appendChild(dh);
+    var db=el("div","sec-body"); var dp=el("div","pad");
+    var clock=el("div","clock"); clock.id="clock"; clock.textContent="15:00";
+    dp.appendChild(clock);
+    var bs=el("div","btns");
+    var st=document.createElement("button"); st.type="button"; st.textContent="剛平倉，開始計時";
+    st.addEventListener("click",function(){ coolEnd=Date.now()+15*60*1000; buzz(20); save(); tickClock(); compute(); });
+    var cl=document.createElement("button"); cl.type="button"; cl.className="ghost"; cl.textContent="重置";
+    cl.addEventListener("click",function(){ coolEnd=0; save(); tickClock(); compute(); });
+    bs.appendChild(st); bs.appendChild(cl); dp.appendChild(bs);
+    dp.appendChild(el("div","hint",'<div style="margin-top:10px">計時器設下去，不靠意志力。</div>'));
+    db.appendChild(dp); d2.appendChild(db); host.appendChild(d2);
+
+    sizeOut(); tickClock();
+  }
+
+  function sizeOut(){
+    var host=document.getElementById("sizeout"); if(!host) return;
+    var bal=parseFloat(calc.bal), sl=parseFloat(calc.sl), px=parseFloat(calc.px);
+    host.innerHTML="";
+    function row(l,v,cls){ host.appendChild(el("div","rrow"+(cls?" "+cls:""),'<span>'+l+'</span><span class="v">'+v+'</span>')); }
+    if(!(bal>0)||!(sl>0)||!(px>0)){ row("填完三格才算得出來","—"); return; }
+    var riskUsd=bal*0.01;
+    var lotRisk=riskUsd/sl;
+    var lotLev=(bal*20)/(px*100);
+    var pick=Math.floor(Math.min(lotRisk,lotLev)*100)/100;
+    row("1% 風險金額","$"+riskUsd.toFixed(2));
+    row("A ／ 風險 ÷ 止損",lotRisk.toFixed(3)+" 手");
+    row("B ／ 20 倍槓桿",lotLev.toFixed(3)+" 手");
+    row("下單手數",pick.toFixed(2)+" 手","pick");
+    if(pick<0.01){ row("低於最小手數 0.01","止損太寬或本金太小","warn"); return; }
+    var lev=(px*100*pick)/bal, rk=(pick*sl)/bal*100;
+    row("實際槓桿",lev.toFixed(1)+" 倍 "+(lev>20?"✕":"✓"),lev>20?"warn":"");
+    row("實際風險",rk.toFixed(2)+"% "+(rk>1.05?"✕":"✓"),rk>1.05?"warn":"");
+  }
+
+  var ct=null;
+  function tickClock(){
+    var c=document.getElementById("clock"); if(!c) return;
+    clearInterval(ct);
+    function paint(){
+      if(coolEnd===0){ c.textContent="15:00"; c.className="clock"; return; }
+      var left=coolEnd-Date.now();
+      if(left<=0){ c.textContent="可以再看機會了"; c.className="clock done"; clearInterval(ct); compute(); return; }
+      var s=Math.ceil(left/1000), m=Math.floor(s/60); s=s%60;
+      c.textContent=m+":"+pad(s); c.className="clock run";
+    }
+    paint();
+    if(coolEnd>Date.now()) ct=setInterval(function(){ paint(); compute(); },1000);
+  }
+
+  function compute(){
+    var L=LINES[line], total=0, done=0, blockers=[];
+
+    L.groups.forEach(function(g){
+      var firstMiss=null, miss=0;
+      g.items.forEach(function(it){
+        total++;
+        if(checks[it.id]) done++; else { miss++; if(!firstMiss) firstMiss=it.id; }
+      });
+      if(miss) blockers.push({tag:"缺 "+miss, kind:"miss", label:g.title, target:"i-"+firstMiss, sec:"s-"+line+"-"+g.no});
+    });
+
+    if(!L.weekly){
+      STOPS.forEach(function(it){
+        if(checks[it.id]) blockers.unshift({tag:"禁區", kind:"stop", label:it.t, target:"i-"+it.id, sec:"s-STOP"});
+      });
+      if(emo===null) blockers.push({tag:"未填", kind:"miss", label:"情緒分數", target:"s-EMO", sec:"s-EMO"});
+      else if(emo>5) blockers.unshift({tag:"禁區", kind:"stop", label:"情緒 "+emo+" 分 — 今天不下新單", target:"s-EMO", sec:"s-EMO"});
+      if(coolEnd>Date.now()){
+        var m=Math.ceil((coolEnd-Date.now())/60000);
+        blockers.unshift({tag:"冷卻", kind:"stop", label:"還有 "+m+" 分鐘", target:"s-COOL", sec:"s-COOL"});
+      }
+    }
+
+    var dock=document.getElementById("dock");
+    var hasStop=blockers.some(function(b){return b.kind==="stop";});
+    var pass=(done===total)&&!hasStop;
+
+    document.getElementById("tally").textContent=done+"/"+total;
+    document.getElementById("meter").style.width=total?Math.round(done/total*100)+"%":"0%";
+    document.getElementById("verdict").textContent =
+      pass ? (L.weekly?"本週計畫完成":"可以下單") : (hasStop?"今天不下單":"尚未通過");
+    dock.classList.toggle("open",pass);
+
+    var body=document.getElementById("dockBody");
+    body.innerHTML="";
+    if(pass){
+      body.appendChild(el("div","dock-note", L.weekly
+        ? "警報設好了，計畫寫下來了。剩下的交給下週的自己。"
+        : "位置到了，訊號到了，票是完整的。<br>進場後只往獲利方向收止損 —— 絕不往虧損方向移。"));
+    } else {
+      blockers.forEach(function(b){
+        var btn=document.createElement("button"); btn.className="bk"; btn.type="button";
+        btn.appendChild(el("span","tag"+(b.kind==="miss"?" miss":""),esc(b.tag)));
+        btn.appendChild(el("span",null,esc(b.label)));
+        btn.appendChild(el("span","go","→"));
+        btn.addEventListener("click",function(){
+          setExpanded(false);
+          var sec=document.getElementById(b.sec);
+          if(sec && sec.dataset.open==="0"){
+            sec.dataset.open="1";
+            var hh=sec.querySelector(".sec-head"); if(hh) hh.setAttribute("aria-expanded","true");
+            var k=b.sec.replace(/^s-/,""); openState[k]=true;
+          }
+          var t=document.getElementById(b.target)||sec;
+          if(t){
+            t.scrollIntoView({behavior:"smooth",block:"center"});
+            t.classList.add("flash");
+            setTimeout(function(){t.classList.remove("flash");},1200);
+          }
+        });
+        body.appendChild(btn);
+      });
+    }
+
+    if(pass && !lastPass) buzz([18,50,18]);
+    lastPass=pass;
+  }
+
+  function setExpanded(v){
+    expanded=v;
+    var d=document.getElementById("dock");
+    d.dataset.expanded=v?"1":"0";
+    document.getElementById("dockHead").setAttribute("aria-expanded",v?"true":"false");
+  }
+
+  document.getElementById("dockHead").addEventListener("click",function(){ setExpanded(!expanded); });
+
+  document.getElementById("lines").addEventListener("click",function(ev){
+    var b=ev.target.closest("button[data-line]"); if(!b) return;
+    line=b.dataset.line;
+    Array.prototype.forEach.call(this.querySelectorAll("button"),function(x){
+      x.setAttribute("aria-selected", x.dataset.line===line?"true":"false");
+    });
+    setExpanded(false);
+    renderGates(); renderExtras(); compute(); save();
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+
+  document.getElementById("reset").addEventListener("click",function(){
+    checks={}; emo=null; coolEnd=0; openState={};
+    renderGates(); renderExtras(); compute(); save(); note("已清空");
+  });
+
+  (async function boot(){
+    dayKey=todayKey();
+    document.getElementById("stamp").textContent=stampText();
+    await load();
+    Array.prototype.forEach.call(document.querySelectorAll("#lines button"),function(x){
+      x.setAttribute("aria-selected", x.dataset.line===line?"true":"false");
+    });
+    renderGates(); renderExtras(); compute();
+  })();
+})();
+</script>
+
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('service-worker.js').catch(function(){});
+  });
+}
+</script>

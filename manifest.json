@@ -1,7 +1,7 @@
 {
   "name": "Edmond's Checklists",
   "short_name": "Checklists",
-  "description": "Trading operations, MMS strategy and daily task report checklists.",
+  "description": "Trading operations, MMS strategy, GemSpot gate, task report and site survey checklists.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -9,27 +9,79 @@
   "theme_color": "#0D1117",
   "orientation": "portrait-primary",
   "icons": [
-    { "src": "icon192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icon512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+    {
+      "src": "icon192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ],
   "shortcuts": [
     {
       "name": "Trading Operations",
       "short_name": "Trade Ops",
       "url": "./trading-checklist.html",
-      "icons": [{ "src": "icon192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "MMS Strategy",
       "short_name": "MMS",
       "url": "./mms-checklist.html",
-      "icons": [{ "src": "icon192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "GemSpot Gate",
+      "short_name": "GemSpot",
+      "url": "./gemspot-checklist.html",
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Task Report",
       "short_name": "Tasks",
       "url": "./task-checklist.html",
-      "icons": [{ "src": "icon192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Site Survey",
+      "short_name": "Survey",
+      "url": "./site-survey.html",
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
