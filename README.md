@@ -1,9 +1,11 @@
 # Checklists
 
-Static site — three checklist tools sharing one home page, one manifest, one service worker.
+Static site — checklist tools sharing one home page, one manifest, one service worker.
 
 ```
-index.html                hub — links to all five tools
+index.html                hub — links to every tool below
+trade_entry_form.html     Trade Entry Desk — log a trade, grade it, copy the spreadsheet row
+trade_entry_guide.html    Trade Entry Desk companion guide (opened via the small 📖 tab on its card)
 trading-checklist.html    Trading Operations (Plan V1.0)
 mms-checklist.html        MMS Strategy SOP
 gemspot-checklist.html    GemSpot 盤前關卡 (pre-market gate)
@@ -14,8 +16,10 @@ service-worker.js         offline cache
 icon192.png / icon512.png app icon
 ```
 
-Each page's nav links to its siblings — Trading Ops / MMS / GemSpot in one group,
-Task Report / Site Survey in the other — plus "All tools" back to the hub.
+Every page links back to the hub with a small "← All tools" nav, plus its own siblings:
+Trading Ops / MMS / GemSpot are one group, Task Report / Site Survey are another, and
+Trade Entry Desk / Guide are a third. The Site Survey nav is marked `no-print` so it
+doesn't show up in the printed or exported PDF version of a survey.
 
 Everything sits at the top level and links by plain filename, so the site works from any
 folder depth — a repo root, a subfolder, or opened straight from disk.
@@ -37,10 +41,11 @@ The service worker serves the cached copy first, so phones can keep showing the 
 Open `service-worker.js` and bump the version:
 
 ```js
-const CACHE_NAME = 'checklists-v7';  // → 'checklists-v8'
+const CACHE_NAME = 'checklists-v9';  // → 'checklists-v10'
 ```
 
-Old caches are deleted automatically on the next visit.
+Old caches are deleted automatically on the next visit. If you add a new top-level page,
+also add it to the `ASSETS` list in `service-worker.js` or it won't be available offline.
 
 ## Where your data lives
 
@@ -53,7 +58,10 @@ Moving the site to a different domain starts you with an empty slate.
 - `trading-checklist.html` → `STAGE1_GOAL_DATE` is set to `2028-12-24`, which sits well
   outside the 21 Jul – 21 Oct 2026 planning window. Both countdown dates are now named
   constants at the top of the script if that was meant to be something else.
-- `manifest.json` → `shortcuts` are the long-press menu on an installed app icon.
+- `manifest.json` → `shortcuts` are the long-press menu on an installed app icon. Most
+  platforms only show the first four, so Trade Entry Desk, Trading Operations, MMS and
+  GemSpot are the ones that'll actually appear there; reorder the list if you'd rather
+  surface different tools.
 - `site-survey.html` deliberately saves nothing — each survey starts blank, and you
   print or screenshot the result before leaving the page. Closing the tab loses the
   entries (the page warns you first). If you'd rather it autosave, that's a change

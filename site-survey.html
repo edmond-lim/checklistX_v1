@@ -35,6 +35,15 @@ button,input,textarea{font-family:inherit;}
 button,label,a,summary{touch-action:manipulation;}
 .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
 
+/* ---- cross-tool nav ---- */
+.toolnav{display:flex;gap:6px;flex-wrap:wrap;max-width:1080px;margin:0 auto;padding:10px var(--pad) 0;}
+.toolnav a{font-family:var(--font);font-size:calc(12px * var(--s));font-weight:700;color:var(--muted);
+ text-decoration:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;
+ transition:border-color .15s ease,color .15s ease;}
+.toolnav a:hover{border-color:var(--navy);color:var(--navy-deep);}
+.toolnav a:focus-visible{outline:2px solid var(--navy);outline-offset:2px;}
+.toolnav a.current{color:#fff;background:var(--navy);border-color:var(--navy);}
+
 /* ---- sticky head ---- */
 .stickyhead{position:sticky;top:0;z-index:50;background:var(--card);border-bottom:1px solid var(--line);
  padding-top:env(safe-area-inset-top);}
@@ -661,6 +670,12 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var n,r,i,a,
 </script>
 </head>
 <body>
+
+<nav class="toolnav no-print">
+  <a href="index.html">← All tools</a>
+  <a href="task-checklist.html">Task Report</a>
+  <a href="site-survey.html" class="current" aria-current="page">Site Survey</a>
+</nav>
 
 <div class="stickyhead">
   <div class="topbar-inner">

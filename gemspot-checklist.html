@@ -43,6 +43,22 @@
   .mark span{color:var(--mute)}
   .stamp{font-family:var(--mono);font-size:11px;color:var(--mute)}
 
+  /* ---------- cross-tool nav ---------- */
+  .toolnav{
+    display:flex;gap:6px;flex-wrap:wrap;
+    padding:10px 4px 0;
+  }
+  .toolnav a{
+    font-family:var(--mono);font-size:11px;letter-spacing:.05em;
+    color:var(--mute);text-decoration:none;
+    border:1px solid var(--line);background:var(--card);
+    border-radius:2px;padding:6px 10px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .toolnav a:hover{border-color:var(--blue);color:var(--blue)}
+  .toolnav a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .toolnav a.current{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+
   /* ---------- sticky tabs ---------- */
   .lines{
     position:sticky;top:0;z-index:30;
@@ -220,6 +236,13 @@
     <div class="mark">GEMSPOT <span>／ GATE</span></div>
     <div class="stamp" id="stamp">—</div>
   </div>
+
+  <nav class="toolnav">
+    <a href="index.html">← All tools</a>
+    <a href="trading-checklist.html">Trade Ops</a>
+    <a href="mms-checklist.html">MMS</a>
+    <a href="gemspot-checklist.html" class="current" aria-current="page">GemSpot</a>
+  </nav>
 
   <div class="lines" role="tablist" id="lines">
     <button role="tab" data-line="A" aria-selected="true"><span class="code">XAUUSD</span>金線</button>

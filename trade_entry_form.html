@@ -1,0 +1,1262 @@
+<title>Trade Entry Desk</title>
+<style>
+  :root {
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+    --bg: #F5F5F7;
+    --surface: #FFFFFF;
+    --surface-2: #F2F2F4;
+    --border: #E5E5EA;
+    --text: #1D1D1F;
+    --text-muted: #6E6E73;
+    --accent: #0071E3;
+    --accent-strong: #0059B3;
+    --accent-soft: #E8F1FC;
+    --win: #248A3D;
+    --win-soft: #E3F7E9;
+    --loss: #D70015;
+    --loss-soft: #FFE8E6;
+    --warn: #C46200;
+    --warn-soft: #FFF1DC;
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 28px rgba(0,0,0,0.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000;
+      --surface: #1C1C1E;
+      --surface-2: #2C2C2E;
+      --border: #38383A;
+      --text: #F5F5F7;
+      --text-muted: #98989D;
+      --accent: #0A84FF;
+      --accent-strong: #409CFF;
+      --accent-soft: #122840;
+      --win: #30D158;
+      --win-soft: #0F2A18;
+      --loss: #FF453A;
+      --loss-soft: #3A1512;
+      --warn: #FF9F0A;
+      --warn-soft: #3A2A0C;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000;
+    --surface: #1C1C1E;
+    --surface-2: #2C2C2E;
+    --border: #38383A;
+    --text: #F5F5F7;
+    --text-muted: #98989D;
+    --accent: #0A84FF;
+    --accent-strong: #409CFF;
+    --accent-soft: #122840;
+    --win: #30D158;
+    --win-soft: #0F2A18;
+    --loss: #FF453A;
+    --loss-soft: #3A1512;
+    --warn: #FF9F0A;
+    --warn-soft: #3A2A0C;
+    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 10px 30px rgba(0,0,0,0.55);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 20px 88px; }
+
+  .toolnav{
+    display:flex; gap:6px; flex-wrap:wrap;
+    margin-bottom: 18px;
+  }
+  .toolnav a{
+    font-family: var(--font-sans);
+    font-size: 12.5px; font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 980px;
+    padding: 6px 13px;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .toolnav a:hover{ border-color: var(--accent); color: var(--accent); }
+  .toolnav a:focus-visible{ outline: 2px solid var(--accent); outline-offset: 2px; }
+  .toolnav a.current{
+    color: var(--accent-strong);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  header.top {
+    display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+    gap: 12px; margin-bottom: 26px; padding-bottom: 20px; border-bottom: 1px solid var(--border);
+  }
+  header.top h1 {
+    font-weight: 700; font-size: 32px;
+    margin: 0; letter-spacing: -0.02em; text-wrap: balance;
+  }
+  header.top .sub { color: var(--text-muted); font-size: 14px; }
+  header.top .today {
+    font-family: var(--font-mono); font-size: 12.5px; color: var(--text-muted);
+    background: var(--surface-2); border: none; border-radius: 8px;
+    padding: 6px 12px; font-variant-numeric: tabular-nums;
+  }
+
+  #toast {
+    position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(-140%);
+    background: var(--win); color: #fff; padding: 11px 20px; border-radius: 980px;
+    font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow); z-index: 50;
+    transition: transform 0.3s cubic-bezier(.2,.8,.2,1); pointer-events: none;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  #toast.err { background: var(--loss); }
+
+  .card {
+    background: var(--surface); border: none; border-radius: 18px;
+    padding: 26px 28px; margin-bottom: 20px; box-shadow: var(--shadow);
+  }
+  .card h2 {
+    font-weight: 600; font-size: 19px;
+    margin: 0 0 4px; letter-spacing: -0.01em;
+  }
+  .card .hint { color: var(--text-muted); font-size: 13px; margin: 0 0 18px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px 18px; }
+  .grid.g2 { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.span2 { grid-column: span 2; }
+  .field label {
+    font-size: 12.5px; font-weight: 500;
+    color: var(--text-muted);
+  }
+  input, select, textarea {
+    font-family: inherit; font-size: 14px; color: var(--text); background: var(--surface-2);
+    border: 1px solid transparent; border-radius: 10px; padding: 10px 12px; width: 100%;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  input[type="number"], input[type="date"] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  textarea { resize: vertical; min-height: 64px; font-family: inherit; }
+  textarea#narrative { min-height: 140px; }
+
+  .checklist-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-top: 1px solid var(--border); }
+  .checklist-row:first-of-type { border-top: none; }
+  .checklist-row .num {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent);
+    background: var(--accent-soft); border-radius: 50%; width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+  .checklist-row .txt { flex: 1; font-size: 13.5px; }
+  .checklist-row select { width: 96px; flex-shrink: 0; }
+
+  .grade-banner {
+    display: flex; align-items: center; gap: 14px; margin-top: 18px; padding: 16px 18px;
+    background: var(--surface-2); border: none; border-radius: 14px;
+  }
+  .grade-pill {
+    font-family: var(--font-mono); font-weight: 700; font-size: 20px;
+    padding: 7px 18px; border-radius: 980px; background: var(--accent-soft); color: var(--accent-strong);
+    min-width: 56px; text-align: center;
+  }
+  .grade-pill.blank { color: var(--text-muted); background: var(--surface); }
+  .grade-banner .note { font-size: 12.5px; color: var(--text-muted); }
+
+  fieldset { border: none; padding: 0; margin: 0; }
+  .strategy-block { border-top: 1px solid var(--border); padding-top: 18px; margin-top: 4px; }
+  .strategy-block .tag {
+    display: inline-block; font-size: 12px; font-weight: 600;
+    color: var(--accent-strong); background: var(--accent-soft);
+    padding: 4px 11px; border-radius: 980px; margin-bottom: 12px;
+  }
+
+  .photo-section { margin-bottom: 18px; }
+  .photo-section:last-of-type { margin-bottom: 0; }
+  .photo-section h3 {
+    display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px;
+    font-size: 13.5px; font-weight: 600; color: var(--text);
+  }
+  .photo-section .slot-count { font-size: 11.5px; font-weight: 500; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .size-hint { display: block; margin-top: 6px; }
+  .size-hint.warn { color: var(--loss); font-weight: 600; }
+  .photo-drop {
+    border: 1.5px dashed var(--border); border-radius: 14px; padding: 16px; text-align: center;
+    color: var(--text-muted); font-size: 13px; cursor: pointer; background: var(--surface-2);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .photo-drop:hover { border-color: var(--accent); color: var(--text); }
+  .photo-drop.full { cursor: default; opacity: 0.55; }
+  .photo-drop.full:hover { border-color: var(--border); color: var(--text-muted); }
+  .photo-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; }
+  .photo-item { width: 150px; background: var(--surface-2); border: none; border-radius: 12px; overflow: hidden; }
+  .photo-item img { width: 100%; height: 96px; object-fit: cover; display: block; }
+  .photo-item .fname { display: block; font-size: 10px; color: var(--text-muted); padding: 5px 8px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .photo-item input { border: none; border-radius: 0; background: transparent; font-size: 11.5px; padding: 4px 8px 6px; }
+  .photo-item .rm { display: block; width: 100%; background: none; border: none; border-top: 1px solid var(--border); color: var(--loss); font-size: 11px; padding: 5px; cursor: pointer; font-family: inherit; }
+  .photo-item .rm:hover { background: var(--loss-soft); }
+
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  button {
+    font-family: var(--font-sans); font-size: 14px; font-weight: 600;
+    border-radius: 980px; padding: 11px 20px; cursor: pointer; border: 1px solid transparent;
+    transition: filter 0.12s ease, transform 0.12s ease;
+  }
+  button:hover { filter: brightness(1.05); }
+  button:active { transform: scale(0.97); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.primary { background: var(--accent); color: #fff; }
+  button.secondary { background: var(--surface-2); color: var(--text); border-color: transparent; }
+  button.ghost { background: transparent; color: var(--accent); border-color: transparent; }
+  button.ghost:hover { filter: none; background: var(--accent-soft); }
+  button:disabled { opacity: 0.45; cursor: not-allowed; }
+  @media (prefers-reduced-motion: reduce) {
+    button, input, select, textarea, #toast { transition: none; }
+  }
+
+  .row-target { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+  .row-target input { width: 80px; }
+
+  table.hist { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.hist th, table.hist td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  table.hist th { color: var(--text-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+  table.hist td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  .hist-wrap { overflow-x: auto; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 980px; font-size: 11.5px; font-weight: 600; }
+  .badge.win { background: var(--win-soft); color: var(--win); }
+  .badge.loss { background: var(--loss-soft); color: var(--loss); }
+  .badge.breakeven { background: var(--surface-2); color: var(--text-muted); }
+  .badge.grade { background: var(--accent-soft); color: var(--accent-strong); font-family: var(--font-mono); }
+  .empty-hist { color: var(--text-muted); font-size: 13px; padding: 10px 0; }
+  .hist-actions button { padding: 5px 12px; font-size: 11.5px; }
+
+  footer.note {
+    font-size: 12px; color: var(--text-muted); margin-top: 26px; padding-top: 16px;
+    border-top: 1px solid var(--border); line-height: 1.6;
+  }
+</style>
+
+<div class="wrap">
+  <nav class="toolnav">
+    <a href="index.html">← All tools</a>
+    <a href="trade_entry_form.html" class="current" aria-current="page">Trade Entry Desk</a>
+    <a href="trade_entry_guide.html">Guide</a>
+  </nav>
+  <header class="top">
+    <div>
+      <h1>Trade Entry Desk</h1>
+      <div class="sub">One form, three outputs: a spreadsheet row, a trade card, a running log.</div>
+    </div>
+    <div class="today" id="todayLabel"></div>
+  </header>
+
+  <div id="toast"></div>
+
+  <form id="tradeForm" autocomplete="off">
+
+    <section class="card">
+      <h2>Trade basics</h2>
+      <p class="hint">Strategy drives Setup and Value Location below, so pick it first.</p>
+      <div class="grid">
+        <div class="field"><label for="f_accountNo">Account no</label><input id="f_accountNo" placeholder="e.g. MT5-Acc-01"></div>
+        <div class="field"><label for="f_date">Date</label><input type="date" id="f_date" required></div>
+        <div class="field"><label for="f_session">Session</label>
+          <select id="f_session">
+            <option>London</option><option>New York</option><option>Asia</option><option>London/NY Overlap</option>
+          </select>
+        </div>
+        <div class="field"><label for="f_strategy">Strategy</label><select id="f_strategy" required></select></div>
+        <div class="field"><label for="f_instrument">Instrument</label><select id="f_instrument" required></select></div>
+        <div class="field"><label for="f_position">Position</label>
+          <select id="f_position"><option>Buy</option><option>Sell</option></select>
+        </div>
+        <div class="field"><label for="f_marketState">Market State</label>
+          <select id="f_marketState"><option>Balance</option><option>Imbalance Bullish</option><option>Imbalance Bearish</option></select>
+        </div>
+        <div class="field"><label for="f_htf">HTF</label><input id="f_htf" placeholder="e.g. Daily, H4"></div>
+        <div class="field"><label for="f_entryTf">Entry TF</label><input id="f_entryTf" placeholder="e.g. H1, M1"></div>
+        <div class="field"><label for="f_valueLocation">Value Location</label><select id="f_valueLocation" required></select></div>
+        <div class="field"><label for="f_setup">Setup: what qualified this</label><select id="f_setup" required></select></div>
+        <div class="field"><label for="f_entryType">Entry type: how you got in</label><select id="f_entryType" required></select></div>
+        <div class="field span2"><label for="f_entryLogic">Entry logic (short)</label><input id="f_entryLogic" placeholder="e.g. Bar 2 rejection at PW VAL, X-COT aligned"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Numbers</h2>
+      <div class="grid g2">
+        <div class="field"><label for="f_slPips">SL (pips)</label><input type="number" step="any" id="f_slPips"></div>
+        <div class="field"><label for="f_tpPips">TP (pips)</label><input type="number" step="any" id="f_tpPips"></div>
+        <div class="field"><label for="f_riskPct">Risk %</label><input type="number" step="any" id="f_riskPct" placeholder="0.01 = 1%"></div>
+        <div class="field"><label for="f_rrTarget">RR Target</label><input type="number" step="any" id="f_rrTarget"></div>
+        <div class="field"><label for="f_rrAchieved">RR Achieved</label><input type="number" step="any" id="f_rrAchieved"></div>
+        <div class="field"><label for="f_result">Result</label>
+          <select id="f_result"><option>Win</option><option>Loss</option><option>Breakeven</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Grading checklist</h2>
+      <p class="hint" id="checklistHint">Choose a Strategy above to load its own four checklist criteria.</p>
+      <div id="checklistRows"></div>
+      <div class="grade-banner">
+        <div class="grade-pill blank" id="gradePreview">—</div>
+        <div class="note">Live preview of GRADE (AUTO). Mirrors the spreadsheet's exact cascade formula.</div>
+      </div>
+      <div class="grid g2" style="margin-top:18px;">
+        <div class="field"><label for="f_mindset">Mindset</label>
+          <select id="f_mindset"><option value="">—</option><option>Clear Mindset</option><option>Revenge Trade</option><option>FOMO</option><option>Fear</option><option>Overconfidence</option><option>Impatience</option><option>Tilted</option></select>
+        </div>
+        <div class="field"><label for="f_emotionalScore">Emotional score (1–10)</label><input type="number" min="1" max="10" step="1" id="f_emotionalScore"></div>
+        <div class="field"><label for="f_validInvalid">Valid / Invalid</label>
+          <select id="f_validInvalid"><option value="">—</option><option>Valid</option><option>Invalid</option></select>
+        </div>
+        <div class="field"><label for="f_lossType">Loss type</label>
+          <select id="f_lossType"><option value="">—</option><option>System Loss</option><option>Behavior Loss</option><option>N/A</option></select>
+        </div>
+        <div class="field"><label for="f_riskLadderStep">Risk ladder step</label><input id="f_riskLadderStep" placeholder="e.g. 1%, 0.5%"></div>
+        <div class="field"><label for="f_drawdownFromPeak">Drawdown from peak</label><input id="f_drawdownFromPeak" placeholder="e.g. 2.4%"></div>
+        <div class="field"><label for="f_killSwitchActive">Kill switch active</label>
+          <select id="f_killSwitchActive"><option value="">—</option><option>Yes</option><option>No</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card strategy-block" id="xfsBlock" hidden>
+      <span class="tag">X Framework Swing detail</span>
+      <div class="grid g2">
+        <div class="field"><label for="f_xfsTier">Market state tier</label>
+          <select id="f_xfsTier"><option value="">—</option><option>Weekly</option><option>Monthly</option></select>
+        </div>
+        <div class="field"><label for="f_xfsXcot">X-COT reading</label>
+          <select id="f_xfsXcot"><option value="">—</option><option>Aligned</option><option>Neutral</option><option>Against</option></select>
+        </div>
+        <div class="field"><label for="f_xfsOrderType">Order type</label>
+          <select id="f_xfsOrderType"><option value="">—</option><option>Limit</option><option>Stop</option></select>
+        </div>
+        <div class="field"><label for="f_xfsGtd">Order GTD expiry</label><input type="date" id="f_xfsGtd"></div>
+        <div class="field"><label for="f_xfsWeekend">Weekend rule applied</label>
+          <select id="f_xfsWeekend"><option value="">—</option><option>Yes</option><option>No</option><option>N/A</option></select>
+        </div>
+        <div class="field"><label for="f_xfsDailyRange">Daily-range signal</label>
+          <select id="f_xfsDailyRange"><option value="">—</option><option>Agreed</option><option>Disagreed</option><option>N/A</option></select>
+        </div>
+        <div class="field"><label for="f_xfsPatternAScore">Pattern A confluence (0–5)</label><input type="number" min="0" max="5" step="1" id="f_xfsPatternAScore"></div>
+        <div class="field"><label for="f_xfsHaSubtype">Heikin-Ashi subtype</label>
+          <select id="f_xfsHaSubtype"><option value="">—</option><option>Early Pattern A</option><option>Bank-Zone Pattern A</option><option>Retest-Continuation</option><option>N/A</option></select>
+        </div>
+        <div class="field"><label for="f_xfsRrSignal">RR at signal</label><input type="number" step="any" id="f_xfsRrSignal"></div>
+        <div class="field"><label for="f_xfsRrOptimized">RR at optimized entry</label><input type="number" step="any" id="f_xfsRrOptimized"></div>
+        <div class="field"><label for="f_xfsOptOutcome">Entry optimization outcome</label>
+          <select id="f_xfsOptOutcome"><option value="">—</option><option>Optimized & Improved</option><option>Looked - No Better Found</option><option>Not Looked</option><option>N/A</option></select>
+        </div>
+        <div class="field"><label for="f_xfsUpgradePath">A+ upgrade path</label>
+          <select id="f_xfsUpgradePath"><option value="">—</option><option>X Flow</option><option>Pattern A</option><option>Both</option><option>Neither</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card strategy-block" id="gsBlock" hidden>
+      <span class="tag" id="gsTag">GemSpot detail</span>
+      <div class="grid g2">
+        <div class="field"><label for="f_gsLine">Line</label><input id="f_gsLine" readonly></div>
+        <div class="field"><label for="f_gsSessionBlock">Session block</label>
+          <select id="f_gsSessionBlock"><option value="">—</option><option>Asia</option><option>Europe</option><option>US Prime</option><option>Golden Window (22:00-01:00)</option><option>Late-Session Mgmt Only</option></select>
+        </div>
+        <div class="field"><label for="f_gsOptOutcome">Entry optimization outcome</label>
+          <select id="f_gsOptOutcome"><option value="">—</option><option>Optimized</option><option>Looked - No Better Found</option><option>Not Looked</option><option>N/A</option></select>
+        </div>
+        <div class="field"><label for="f_gsRrDirect">RR direct entry</label><input type="number" step="any" id="f_gsRrDirect"></div>
+        <div class="field"><label for="f_gsRrActual">RR actual entry</label><input type="number" step="any" id="f_gsRrActual"></div>
+        <div class="field"><label for="f_gsLeverage">Leverage used (x)</label><input type="number" step="any" id="f_gsLeverage"></div>
+        <div class="field"><label for="f_gsLeverageOk">Leverage &le;20x OK</label>
+          <select id="f_gsLeverageOk"><option value="">—</option><option>Yes</option><option>No</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card strategy-block" id="mmsBlock" hidden>
+      <span class="tag">MMS detail</span>
+      <div class="grid g2">
+        <div class="field"><label for="f_mmsMarketCategory">Market category</label>
+          <select id="f_mmsMarketCategory"><option value="">—</option><option>Stock/Crypto</option><option>Other Market (Index/Gold/FX)</option></select>
+        </div>
+        <div class="field"><label for="f_mmsBufferPct">Buffer %</label><input type="number" step="any" id="f_mmsBufferPct"></div>
+        <div class="field"><label for="f_mmsCAmplitudePct">C amplitude % at buy point</label><input type="number" step="any" id="f_mmsCAmplitudePct"></div>
+        <div class="field"><label for="f_mmsBaseCCount">Base C count</label><input type="number" min="2" max="6" step="1" id="f_mmsBaseCCount"></div>
+        <div class="field"><label for="f_mmsTpMode">TP mode</label>
+          <select id="f_mmsTpMode"><option value="">—</option><option>Active (Fixed Target)</option><option>Passive (MA50 Trailing)</option></select>
+        </div>
+        <div class="field"><label for="f_mmsBeTrigger">BE trigger</label>
+          <select id="f_mmsBeTrigger"><option value="">—</option><option>Not Yet Triggered</option><option>Price Reached BE Ratio</option><option>MA50 Crossed Entry Price</option><option>Both Conditions Met</option></select>
+        </div>
+        <div class="field"><label for="f_mmsPositionTier">Position tier</label>
+          <select id="f_mmsPositionTier"><option value="">—</option><option>Tier 1 (6.25%)</option><option>Tier 2 (12.5%)</option><option>Tier 3 (25%)</option><option>Tier 4 (50%)</option><option>Tier 5+ (see notes)</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card strategy-block" id="omgBlock" hidden>
+      <span class="tag">OMG detail</span>
+      <div class="grid g2">
+        <div class="field"><label for="f_omgDirectionBias">Direction bias</label>
+          <select id="f_omgDirectionBias"><option value="">—</option><option>Bullish</option><option>Bearish</option><option>No Bias</option></select>
+        </div>
+        <div class="field"><label for="f_omgMarketCondition">Market condition</label>
+          <select id="f_omgMarketCondition"><option value="">—</option><option>Ranging</option><option>Trending</option></select>
+        </div>
+        <div class="field"><label for="f_omgBiasException">Bias exception</label>
+          <select id="f_omgBiasException"><option value="">—</option><option>None</option><option>Range 2 Opposite</option><option>Tokyo Range Breach</option><option>Clean Range Opposite</option></select>
+        </div>
+        <div class="field"><label for="f_omgKeyAreaTimeframe">Key area timeframe</label>
+          <select id="f_omgKeyAreaTimeframe"><option value="">—</option><option>Daily</option><option>H4</option><option>H1</option><option>M30</option><option>M15</option></select>
+        </div>
+        <div class="field"><label for="f_omgSessionWindow">Session window</label>
+          <select id="f_omgSessionWindow"><option value="">—</option><option>Pre-London</option><option>London Open</option><option>Pre-NY</option><option>NY Open</option><option>COMEX Open</option><option>NYSE Open</option><option>London Close</option><option>Outside Window</option></select>
+        </div>
+        <div class="field"><label for="f_omgCleanRangeQuality">Clean range quality</label>
+          <select id="f_omgCleanRangeQuality"><option value="">—</option><option>Large - Clear Runway</option><option>Moderate</option><option>Small - Near Roadblock</option></select>
+        </div>
+        <div class="field"><label for="f_omgEntryTimeRemaining">Entry time remaining</label>
+          <select id="f_omgEntryTimeRemaining"><option value="">—</option><option>&gt;=50% of Candle</option><option>&lt;50% of Candle (Late Entry)</option></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Photos &amp; narrative</h2>
+      <p class="hint">Original files, full resolution, no compression. Embedded in the Markdown/HTML trade card you download below; not kept in this page's saved log (keeps this page small). Save your downloads.<span class="size-hint" id="photoSizeHint"></span></p>
+
+      <div class="photo-section" data-section="dailyBias">
+        <h3>Daily bias <span class="slot-count" id="cnt_dailyBias">0 / 3</span></h3>
+        <div class="photo-drop" id="drop_dailyBias">Click to add up to 3 screenshots</div>
+        <input type="file" class="photo-input" id="input_dailyBias" accept="image/*" multiple hidden>
+        <div class="photo-list" id="list_dailyBias"></div>
+      </div>
+
+      <div class="photo-section" data-section="setup">
+        <h3>H1 POC / setup <span class="slot-count" id="cnt_setup">0 / 2</span></h3>
+        <div class="photo-drop" id="drop_setup">Click to add up to 2 screenshots</div>
+        <input type="file" class="photo-input" id="input_setup" accept="image/*" multiple hidden>
+        <div class="photo-list" id="list_setup"></div>
+      </div>
+
+      <div class="photo-section" data-section="entry">
+        <h3>Entry <span class="slot-count" id="cnt_entry">0 / 2</span></h3>
+        <div class="photo-drop" id="drop_entry">Click to add up to 2 screenshots</div>
+        <input type="file" class="photo-input" id="input_entry" accept="image/*" multiple hidden>
+        <div class="photo-list" id="list_entry"></div>
+      </div>
+
+      <div class="grid" style="margin-top:16px;">
+        <div class="field span2"><label for="narrative">Full narrative (goes into the trade card)</label><textarea id="narrative" placeholder="What did you see, why did you take it, how did it play out..."></textarea></div>
+        <div class="field span2"><label for="f_sheetNote">One-line note (goes into the spreadsheet's Notes column)</label><input id="f_sheetNote" maxlength="180"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Export this trade</h2>
+      <div class="row-target">
+        <span>Next blank row in Trade Log:</span>
+        <input type="number" id="targetRow" min="6" step="1">
+        <span>(edit if your sheet is further along)</span>
+      </div>
+      <div class="btnrow">
+        <button type="button" class="secondary" id="btnCopyRow">Copy spreadsheet row</button>
+        <button type="button" class="secondary" id="btnMd">Download Markdown card</button>
+        <button type="button" class="secondary" id="btnHtml">Download HTML card</button>
+        <button type="button" class="primary" id="btnSave">Save trade &amp; log it</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Recent trades</h2>
+      <p class="hint">Kept on this page (no photos) so you can re-copy a past row or re-download its card text. Photos only exist in files you already saved.</p>
+      <div class="btnrow" style="margin-bottom:14px;">
+        <button type="button" class="ghost" id="btnCopyAll">Copy all as spreadsheet rows</button>
+        <button type="button" class="ghost" id="btnClearHist">Clear log on this page</button>
+      </div>
+      <div class="hist-wrap">
+        <table class="hist" id="histTable">
+          <thead><tr><th>Date</th><th>Strategy</th><th>Instrument</th><th>Setup</th><th>Grade</th><th>Result</th><th>RR</th><th>Row</th><th></th></tr></thead>
+          <tbody id="histBody"></tbody>
+        </table>
+        <div class="empty-hist" id="emptyHist" hidden>Nothing logged yet. Submit a trade above.</div>
+      </div>
+    </section>
+  </form>
+
+  <footer class="note">
+    Spreadsheet row paste: click the target row's first cell (column A) in Trade Log, then paste. Formula
+    columns (ID, Day, Asset Class, streaks, Grade (Auto), Cum RR, Trade ID, the helper columns) are generated
+    as live formulas for that exact row, everything else pastes as your entered values. Downloads need this
+    page's Downloads permission; if a save is declined nothing else is affected, just try that button again.
+  </footer>
+</div>
+
+<script id="trade-history" type="application/json">__TRADE_HISTORY__</script>
+
+<script>
+(function () {
+  // Captured before anything below mutates the DOM (dropdowns filled, date defaulted,
+  // toasts shown, form fields typed into). This frozen string, not the live DOM at
+  // save time, is the template renderFullPage() republishes from, so a save never
+  // bakes in transient UI/runtime state.
+  var PRISTINE_HTML = '<!doctype html>\n' + document.documentElement.outerHTML;
+  "use strict";
+
+  // ---------------------------------------------------------------
+  // Config mirrored from the workbook's Strategy Config / Setup Map /
+  // Value Location Map / Instrument Master tabs.
+  // ---------------------------------------------------------------
+  var STRATEGIES = ["X Framework Swing", "GemSpot - Gold Line", "GemSpot - Index Line", "MMS", "OMG"];
+
+  var CHECKLISTS = {
+    "X Framework Swing": [
+      "Location confirmed at a PVP/FRVP key level (EX POC priority, then PW/PM/EPW/EPM, then FRVP)",
+      "Bar 2 direction confirmation on a CLOSED H4/H1 candle (XEM1)",
+      "X-COT not against the location's implied direction, AND minimum RR (≥1:3 with-trend / ≥1:2 rare counter-trend exception) cleared at signal or Step 3.5 optimized entry",
+      "A+ path confirmed: X Flow (at screen) OR Pattern A confluence ≥4/5, AND TP clear of nearest POI"
+    ],
+    "GemSpot - Gold Line": [
+      "Sweet spot present, in session 1-4, with blue/red ladder stop reference established",
+      "Signal count/direction met on closed candles (H1: 1 signal; lower TFs: 2 same-direction signals)",
+      "RR threshold met: with-trend ≥1.3-1.5, counter-trend ≥2.0-2.5",
+      "Entry position optimized (Step 4: black ladder / crossline / EMA / Granville breakout / small-TF TP)"
+    ],
+    "GemSpot - Index Line": [
+      "TP-zone Match AND price at an H1 crossline, both required",
+      "M1 signal confirmed (ladder break / candle color flip / CHoCH / Buy-Sell), on a closed candle",
+      "RR threshold met at the M1 trigger",
+      "Entry timed to the 21:30 US-open wait-out and inside the 21:30-00:30 primary window"
+    ],
+    "MMS": [
+      "Stage 2 confirmed on Daily (150MA sloping up, price above it with real distance, green-candle volume clearing the Volume-50MA)",
+      "Contraction structure valid: bullish MA alignment (50>150>200), C1 touches 50MA with ≥3 consecutive down/reversal candles, each C's amplitude shrinking, higher lows, Base confirmed (C1 high broken + ≥2 C's)",
+      "Volume confirmed: green-candle volume clears Volume-50MA, AND average daily dollar volume > $1,000,000",
+      "Buy point qualifies and entry optimized: chosen C's amplitude <10%, Buffer calculated per market category, RR ≥1:2 at buffered entry, Breakout Zone identified (Peak/Mid/Low)"
+    ],
+    "OMG": [
+      "Direction bias confirmed on a closed Daily candle (previous day's candle colour), AND no exception triggered (Range 2 opposite, price closed beyond Tokyo's range, or a clean range on the opposite side)",
+      "Setup confirmed on a closed M15/M30 candle matching market condition. Ranging: Breakout or Fake Out with valid top+bottom wick criteria; Trending: Continuation (Onion) or Wick to Fill with valid confirmation-candle wicks",
+      "Entry criteria met per Step 4 rules (Break of Previous/Current Candle High, Flip, or Celery Play) and not time-decayed (≥50% of candle time remaining at trigger)",
+      "Clean range to the next key area (pitstop/roadblock) justifies the RR, AND trade taken inside the high-momentum window (~3-4pm to 10:30-11:30pm UTC+8)"
+    ]
+  };
+
+  // Setup = WHAT qualifying pattern made this a trade candidate.
+  var SETUPS = {
+    "X Framework Swing": ["Big Bubble", "NFT", "BOABS", "Multi Bubble", "First Leg of Pattern A Done"],
+    "GemSpot - Gold Line": ["Segment 1 (Trend Development)", "Segment 2 (Trend Development)", "Segment 3 (Continuation or Reversal)", "Segment 4 (Continuation or Reversal)"],
+    "GemSpot - Index Line": ["Long Setup (Blue TP below H1 Crossline)", "Short Setup (Red TP above H1 Crossline)"],
+    "MMS": ["C2 Buy Point", "C3 Buy Point", "C4 Buy Point", "C5 Buy Point", "C6 Buy Point"],
+    "OMG": ["Breakout", "Fake Out", "Continuation (Onion)", "Wick to Fill"]
+  };
+
+  // Entry Type = HOW the entry was actually built/optimized -- distinct from
+  // Setup. (GemSpot's old Setup list lived here all along; it was mislabeled.)
+  var ENTRY_TYPES = {
+    "X Framework Swing": ["Direct Bar2 Entry (unoptimized)", "Xflow Bar2 Entry (optimized)", "Pattern A - HA Color Change Entry (optimized)", "M15 IRL Break"],
+    "GemSpot - Gold Line": ["Direct Signal Entry (unoptimized)", "Black Ladder Optimized Entry", "Crossline Optimized Entry", "EMA Pullback Optimized Entry", "Granville Breakout-Candle Entry", "Small-Timeframe TP Optimized Entry"],
+    "GemSpot - Index Line": ["Ladder Break Signal", "Candle Color Flip Signal", "CHoCH Signal", "Buy/Sell Signal"],
+    "MMS": ["Peak Area Breakout (High Certainty)", "Mid Area Breakout (Medium Certainty)", "Low Area Breakout (Cost Advantage)"],
+    "OMG": ["Break of Previous Candle High", "Break of Current Candle High", "Flip", "Celery Play"]
+  };
+
+  var VALUE_LOCATIONS = {
+    "X Framework Swing": ["EX PW POC", "EX PM POC", "EX PD POC", "PW VAH", "PW POC", "PW VAL", "PM VAH", "PM VAL", "PM POC", "PD VAH", "PD VAL", "PD POC", "CM VAH", "CM VAL", "CM POC", "CW VAH", "CW VAL", "CW POC", "CD POC", "CD VAH", "CD VAL", "BSL", "SSL"],
+    "GemSpot - Gold Line": ["Blue/Red Ladder", "Black Ladder", "TP Zone", "Daily High/Low"],
+    "GemSpot - Index Line": ["H1 Crossline", "M1 TP Zone (Match)"],
+    "MMS": ["Base Breakout Level (C-high + Buffer)"],
+    "OMG": ["Daily/H4 Key Area", "SBR (Support Becomes Resistance)", "RBS (Resistance Becomes Support)", "Tokyo High/Low", "Range 2 Level", "Clean Range Pitstop (Roadblock)"]
+  };
+
+  var INSTRUMENTS = ["EU/6E!", "GU/6B!", "XAU/GC!", "NQ", "XAUUSD", "MNQ", "MYM"];
+
+  // Photo sections mirror the workbook's own image columns exactly:
+  // Daily Bias (V:X, 3 slots), H1 POC/Setup (Y:Z, 2 slots), Entry (AA:AB, 2 slots).
+  var PHOTO_SECTIONS = [
+    { key: 'dailyBias', label: 'Daily bias', max: 3 },
+    { key: 'setup', label: 'H1 POC / setup', max: 2 },
+    { key: 'entry', label: 'Entry', max: 2 }
+  ];
+  var LARGE_FILE_WARN_BYTES = 15 * 1024 * 1024; // ~15MB embedded (base64); downloads cap out at 16MiB/file
+
+  // ---------------------------------------------------------------
+  // Formula templates for Trade Log's 13 auto-computed columns.
+  // N = target row, P = N-1 (previous row, for streak comparisons).
+  // ---------------------------------------------------------------
+  function formulas(N) {
+    var P = N - 1;
+    return {
+      id: '=IF(C' + N + '="","",ROW()-4)',
+      day: '=IF(C' + N + '="","",TEXT(C' + N + ',"dddd"))',
+      assetClass: "=IFERROR(INDEX('Instrument Master'!$B$3:$B$200,MATCH(G" + N + ",'Instrument Master'!$A$3:$A$200,0)),\"\")",
+      wstrk: '=IF(V' + N + '="Win",IF(AND(V' + P + '="Win",F' + P + '=F' + N + '),AE' + P + '+1,1),0)',
+      lstrk: '=IF(V' + N + '="Loss",IF(AND(V' + P + '="Loss",F' + P + '=F' + N + '),AF' + P + '+1,1),0)',
+      mWstrk: '=IF(AND(V' + N + '="Win",TEXT(C' + N + ',"YYYYMM")=TEXT(C' + P + ',"YYYYMM"),F' + P + '=F' + N + '),IF(V' + P + '="Win",AG' + P + '+1,1),IF(V' + N + '="Win",1,0))',
+      mLstrk: '=IF(AND(V' + N + '="Loss",TEXT(C' + N + ',"YYYYMM")=TEXT(C' + P + ',"YYYYMM"),F' + P + '=F' + N + '),IF(V' + P + '="Loss",AH' + P + '+1,1),IF(V' + N + '="Loss",1,0))',
+      gradeAuto: '=IF(OR(AI' + N + '="",AJ' + N + '="",AK' + N + '="",AL' + N + '=""),"",IF(AND(AI' + N + '="Yes",AJ' + N + '="Yes",AK' + N + '="Yes",AL' + N + '="Yes"),"A+",IF(AND(AI' + N + '="Yes",AJ' + N + '="Yes",AK' + N + '="Yes",AL' + N + '="No"),"A",IF(AND(AI' + N + '="Yes",AJ' + N + '="Yes",AK' + N + '="No"),"A-","B"))))',
+      cumRr: '=IF(S' + N + '="","",SUM($S$5:S' + N + '))',
+      tradeId: '=IF(C' + N + '="","",F' + N + '&"_"&G' + N + '&"_"&TEXT(C' + N + ',"YYYYMMDD")&"_"&A' + N + ')',
+      isWin: '=IF(V' + N + '="Win",1,IF(OR(V' + N + '="Loss",V' + N + '="Breakeven"),0,""))',
+      isClosed: '=IF(OR(V' + N + '="Win",V' + N + '="Loss",V' + N + '="Breakeven"),1,"")',
+      monthKey: '=IF(C' + N + '="","",TEXT(C' + N + ',"YYYY-MM"))'
+    };
+  }
+
+  // ---------------------------------------------------------------
+  // State
+  // ---------------------------------------------------------------
+  // Self-hosted fallback: when this page runs outside the Claude artifact
+  // viewer (no artifactCap, so nothing republishes the page on save), the
+  // browser's localStorage is used instead so logged trades survive a
+  // reload. It's per-browser/per-device -- it does not sync between your
+  // different PCs. Inside the Claude artifact viewer, the existing
+  // publish-and-reload flow remains the source of truth; this is just a
+  // best-effort local backup there too.
+  var LOCAL_HISTORY_KEY = 'tradeDeskHistory';
+  function loadLocalHistory() {
+    try {
+      var raw = localStorage.getItem(LOCAL_HISTORY_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) { return null; }
+  }
+  function saveLocalHistory(h) {
+    try { localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(h)); } catch (e) { /* private window, quota, etc. */ }
+  }
+
+  var historyEl = document.getElementById('trade-history');
+  var HISTORY = [];
+  try { HISTORY = JSON.parse(historyEl.textContent || '[]'); } catch (e) { HISTORY = []; }
+  var localHistory = loadLocalHistory();
+  if (localHistory && localHistory.length) { HISTORY = localHistory; }
+  var NEXT_ROW = (HISTORY.length ? HISTORY[HISTORY.length - 1].row + 1 : 6);
+  // { dailyBias: [...], setup: [...], entry: [...] }, each item {dataUrl, caption, name, size}.
+  // Original files, uncompressed, never persisted, only used for this submission's downloads.
+  var photos = {}; PHOTO_SECTIONS.forEach(function (s) { photos[s.key] = []; });
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ---------------------------------------------------------------
+  // Init: dropdowns
+  // ---------------------------------------------------------------
+  function fillSelect(el, options, placeholder) {
+    el.innerHTML = '';
+    if (placeholder) {
+      var o = document.createElement('option');
+      o.value = ''; o.textContent = placeholder;
+      el.appendChild(o);
+    }
+    options.forEach(function (v) {
+      var o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      el.appendChild(o);
+    });
+  }
+
+  fillSelect($('f_strategy'), STRATEGIES, 'Choose a strategy');
+  fillSelect($('f_instrument'), INSTRUMENTS, null);
+  $('targetRow').value = NEXT_ROW;
+  $('f_date').value = new Date().toISOString().slice(0, 10);
+
+  var todayLabel = document.getElementById('todayLabel');
+  todayLabel.textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
+
+  function renderChecklist() {
+    var strat = $('f_strategy').value;
+    var rows = $('checklistRows');
+    rows.innerHTML = '';
+    if (!strat) {
+      $('checklistHint').hidden = false;
+      updateGradePreview();
+      return;
+    }
+    $('checklistHint').hidden = true;
+    CHECKLISTS[strat].forEach(function (text, i) {
+      var row = document.createElement('div');
+      row.className = 'checklist-row';
+      var num = document.createElement('div');
+      num.className = 'num'; num.textContent = (i + 1);
+      var txt = document.createElement('div');
+      txt.className = 'txt'; txt.textContent = text;
+      var sel = document.createElement('select');
+      sel.id = 'f_chk' + (i + 1);
+      sel.innerHTML = '<option value="">—</option><option>Yes</option><option>No</option>';
+      sel.addEventListener('change', updateGradePreview);
+      row.appendChild(num); row.appendChild(txt); row.appendChild(sel);
+      rows.appendChild(row);
+    });
+    updateGradePreview();
+  }
+
+  function updateGradePreview() {
+    var c1 = ($('f_chk1') || {}).value, c2 = ($('f_chk2') || {}).value,
+        c3 = ($('f_chk3') || {}).value, c4 = ($('f_chk4') || {}).value;
+    var pill = $('gradePreview');
+    var grade = computeGrade(c1, c2, c3, c4);
+    if (!grade) { pill.textContent = '—'; pill.classList.add('blank'); return; }
+    pill.textContent = grade; pill.classList.remove('blank');
+  }
+
+  function computeGrade(c1, c2, c3, c4) {
+    if (!c1 || !c2 || !c3 || !c4) return '';
+    if (c1 === 'Yes' && c2 === 'Yes' && c3 === 'Yes' && c4 === 'Yes') return 'A+';
+    if (c1 === 'Yes' && c2 === 'Yes' && c3 === 'Yes' && c4 === 'No') return 'A';
+    if (c1 === 'Yes' && c2 === 'Yes' && c3 === 'No') return 'A-';
+    return 'B';
+  }
+
+  function onStrategyChange() {
+    var strat = $('f_strategy').value;
+    fillSelect($('f_setup'), SETUPS[strat] || [], strat ? null : 'Choose a strategy first');
+    fillSelect($('f_entryType'), ENTRY_TYPES[strat] || [], strat ? null : 'Choose a strategy first');
+    fillSelect($('f_valueLocation'), VALUE_LOCATIONS[strat] || [], strat ? null : 'Choose a strategy first');
+    renderChecklist();
+
+    var isXfs = strat === 'X Framework Swing';
+    var isGs = strat === 'GemSpot - Gold Line' || strat === 'GemSpot - Index Line';
+    var isMms = strat === 'MMS';
+    var isOmg = strat === 'OMG';
+    $('xfsBlock').hidden = !isXfs;
+    $('gsBlock').hidden = !isGs;
+    $('mmsBlock').hidden = !isMms;
+    $('omgBlock').hidden = !isOmg;
+    if (isGs) {
+      $('f_gsLine').value = strat.indexOf('Gold Line') !== -1 ? 'Gold' : 'Index';
+      $('gsTag').textContent = strat + ' detail';
+    }
+  }
+
+  $('f_strategy').addEventListener('change', onStrategyChange);
+  $('f_gsLeverage').addEventListener('input', function () {
+    var v = parseFloat(this.value);
+    if (!isNaN(v)) $('f_gsLeverageOk').value = v <= 20 ? 'Yes' : 'No';
+  });
+
+  // ---------------------------------------------------------------
+  // Photos: one drop zone per section, original files, no re-encoding.
+  // ---------------------------------------------------------------
+  PHOTO_SECTIONS.forEach(function (s) {
+    var drop = $('drop_' + s.key), input = $('input_' + s.key);
+    drop.addEventListener('click', function () {
+      if (photos[s.key].length >= s.max) return;
+      input.click();
+    });
+    input.addEventListener('change', function (e) {
+      var files = Array.prototype.slice.call(e.target.files);
+      files.forEach(function (file) { addPhoto(s.key, s.max, file); });
+      e.target.value = '';
+    });
+  });
+
+  function addPhoto(sectionKey, max, file) {
+    if (photos[sectionKey].length >= max) {
+      toast('That section already has its ' + max + ' photo' + (max > 1 ? 's' : '') + '.', true);
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (ev) {
+      photos[sectionKey].push({ dataUrl: ev.target.result, caption: '', name: file.name, size: file.size });
+      renderPhotos(sectionKey);
+    };
+    reader.readAsDataURL(file); // original bytes, untouched, no canvas re-encode/resize
+  }
+
+  function renderPhotos(sectionKey) {
+    var items = photos[sectionKey];
+    var list = $('list_' + sectionKey);
+    var section = PHOTO_SECTIONS.filter(function (s) { return s.key === sectionKey; })[0];
+    list.innerHTML = '';
+    items.forEach(function (p, i) {
+      var item = document.createElement('div');
+      item.className = 'photo-item';
+      var img = document.createElement('img'); img.src = p.dataUrl;
+      var fname = document.createElement('span'); fname.className = 'fname'; fname.textContent = p.name || '';
+      var cap = document.createElement('input');
+      cap.placeholder = 'Caption (optional)'; cap.value = p.caption;
+      cap.addEventListener('input', function () { items[i].caption = this.value; });
+      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'rm'; rm.textContent = 'Remove';
+      rm.addEventListener('click', function () { items.splice(i, 1); renderPhotos(sectionKey); });
+      item.appendChild(img); item.appendChild(fname); item.appendChild(cap); item.appendChild(rm);
+      list.appendChild(item);
+    });
+    $('cnt_' + sectionKey).textContent = items.length + ' / ' + section.max;
+    var drop = $('drop_' + sectionKey);
+    var full = items.length >= section.max;
+    drop.classList.toggle('full', full);
+    drop.textContent = full
+      ? 'All ' + section.max + ' slot' + (section.max > 1 ? 's' : '') + ' filled, remove one to add another'
+      : 'Click to add up to ' + section.max + ' screenshot' + (section.max > 1 ? 's' : '');
+    updatePhotoSizeHint();
+  }
+
+  function allPhotos() {
+    var out = [];
+    PHOTO_SECTIONS.forEach(function (s) {
+      photos[s.key].forEach(function (p) { out.push({ section: s.label, key: s.key, photo: p }); });
+    });
+    return out;
+  }
+
+  function estimatedEmbeddedBytes() {
+    var total = 0;
+    allPhotos().forEach(function (e) { total += e.photo.size; });
+    return Math.ceil(total * 4 / 3); // base64 inflation
+  }
+
+  function updatePhotoSizeHint() {
+    var el = $('photoSizeHint');
+    var n = allPhotos().length;
+    if (!n) { el.textContent = ''; el.className = 'size-hint'; return; }
+    var bytes = estimatedEmbeddedBytes();
+    var mb = (bytes / (1024 * 1024)).toFixed(1);
+    var over = bytes > LARGE_FILE_WARN_BYTES;
+    el.textContent = ' Estimated trade-card size from photos: ~' + mb + ' MB.' +
+      (over ? ' That may be too large to save (downloads cap out around 16 MB), consider removing a photo.' : '');
+    el.className = 'size-hint' + (over ? ' warn' : '');
+  }
+
+  // ---------------------------------------------------------------
+  // Gather current form state
+  // ---------------------------------------------------------------
+  function gather() {
+    var strat = $('f_strategy').value;
+    return {
+      accountNo: $('f_accountNo').value,
+      date: $('f_date').value, session: $('f_session').value, strategy: strat,
+      instrument: $('f_instrument').value, position: $('f_position').value,
+      marketState: $('f_marketState').value, htf: $('f_htf').value, entryTf: $('f_entryTf').value,
+      valueLocation: $('f_valueLocation').value, entryLogic: $('f_entryLogic').value,
+      slPips: $('f_slPips').value, tpPips: $('f_tpPips').value, riskPct: $('f_riskPct').value,
+      rrTarget: $('f_rrTarget').value, rrAchieved: $('f_rrAchieved').value, setup: $('f_setup').value,
+      entryType: $('f_entryType').value,
+      result: $('f_result').value, sheetNote: $('f_sheetNote').value,
+      chk1: ($('f_chk1') || {}).value || '', chk2: ($('f_chk2') || {}).value || '',
+      chk3: ($('f_chk3') || {}).value || '', chk4: ($('f_chk4') || {}).value || '',
+      mindset: $('f_mindset').value, emotionalScore: $('f_emotionalScore').value,
+      validInvalid: $('f_validInvalid').value, lossType: $('f_lossType').value,
+      riskLadderStep: $('f_riskLadderStep').value, drawdownFromPeak: $('f_drawdownFromPeak').value,
+      killSwitchActive: $('f_killSwitchActive').value,
+      xfsTier: $('f_xfsTier').value, xfsXcot: $('f_xfsXcot').value, xfsOrderType: $('f_xfsOrderType').value,
+      xfsGtd: $('f_xfsGtd').value, xfsWeekend: $('f_xfsWeekend').value, xfsDailyRange: $('f_xfsDailyRange').value,
+      xfsPatternAScore: $('f_xfsPatternAScore').value, xfsHaSubtype: $('f_xfsHaSubtype').value,
+      xfsRrSignal: $('f_xfsRrSignal').value, xfsRrOptimized: $('f_xfsRrOptimized').value,
+      xfsOptOutcome: $('f_xfsOptOutcome').value, xfsUpgradePath: $('f_xfsUpgradePath').value,
+      gsLine: $('f_gsLine').value, gsSessionBlock: $('f_gsSessionBlock').value,
+      gsOptOutcome: $('f_gsOptOutcome').value, gsRrDirect: $('f_gsRrDirect').value,
+      gsRrActual: $('f_gsRrActual').value, gsLeverage: $('f_gsLeverage').value,
+      gsLeverageOk: $('f_gsLeverageOk').value,
+      mmsMarketCategory: $('f_mmsMarketCategory').value, mmsBufferPct: $('f_mmsBufferPct').value,
+      mmsCAmplitudePct: $('f_mmsCAmplitudePct').value, mmsBaseCCount: $('f_mmsBaseCCount').value,
+      mmsTpMode: $('f_mmsTpMode').value, mmsBeTrigger: $('f_mmsBeTrigger').value,
+      mmsPositionTier: $('f_mmsPositionTier').value,
+      omgDirectionBias: $('f_omgDirectionBias').value, omgMarketCondition: $('f_omgMarketCondition').value,
+      omgBiasException: $('f_omgBiasException').value, omgKeyAreaTimeframe: $('f_omgKeyAreaTimeframe').value,
+      omgSessionWindow: $('f_omgSessionWindow').value, omgCleanRangeQuality: $('f_omgCleanRangeQuality').value,
+      omgEntryTimeRemaining: $('f_omgEntryTimeRemaining').value,
+      narrative: $('narrative').value,
+      grade: computeGrade(($('f_chk1') || {}).value, ($('f_chk2') || {}).value, ($('f_chk3') || {}).value, ($('f_chk4') || {}).value)
+    };
+  }
+
+  function safeTsv(v) {
+    if (v === undefined || v === null) return '';
+    return String(v).replace(/[\t\r\n]+/g, ' ').trim();
+  }
+
+  // ---------------------------------------------------------------
+  // Build the 84-column row (values + formulas) for a given row number.
+  // Column order matches the workbook's Trade Log header exactly (A:CF).
+  // ---------------------------------------------------------------
+  function buildRowCells(d, N) {
+    var f = formulas(N);
+    return [
+      f.id, d.accountNo, d.date, f.day, d.session, d.strategy, d.instrument, f.assetClass, d.position, // A:I
+      d.marketState, d.htf, d.entryTf, d.valueLocation, d.entryLogic, d.slPips, d.tpPips,       // J:P
+      d.riskPct, d.rrTarget, d.rrAchieved, d.setup, d.entryType, d.result, d.sheetNote,         // Q:W
+      '', '', '', '', '', '', '',                                                              // X:AD (image cols)
+      f.wstrk, f.lstrk, f.mWstrk, f.mLstrk,                                                     // AE:AH
+      d.chk1, d.chk2, d.chk3, d.chk4, f.gradeAuto, d.mindset, f.cumRr, f.tradeId,               // AI:AP
+      f.isWin, f.isClosed, f.monthKey,                                                          // AQ:AS
+      d.emotionalScore, d.validInvalid, d.lossType, d.riskLadderStep, d.drawdownFromPeak, d.killSwitchActive, // AT:AY
+      d.xfsTier, d.xfsXcot, d.xfsOrderType, d.xfsGtd, d.xfsWeekend, d.xfsDailyRange, d.xfsPatternAScore,      // AZ:BF
+      d.xfsHaSubtype, d.xfsRrSignal, d.xfsRrOptimized, d.xfsOptOutcome, d.xfsUpgradePath,        // BG:BK
+      d.gsLine, d.gsSessionBlock, d.gsOptOutcome, d.gsRrDirect, d.gsRrActual, d.gsLeverage, d.gsLeverageOk,   // BL:BR
+      d.mmsMarketCategory, d.mmsBufferPct, d.mmsCAmplitudePct, d.mmsBaseCCount,                  // BS:BV
+      d.mmsTpMode, d.mmsBeTrigger, d.mmsPositionTier,                                            // BW:BY
+      d.omgDirectionBias, d.omgMarketCondition, d.omgBiasException, d.omgKeyAreaTimeframe,       // BZ:CC
+      d.omgSessionWindow, d.omgCleanRangeQuality, d.omgEntryTimeRemaining                        // CD:CF
+    ].map(safeTsv);
+  }
+
+  function rowToTsv(d, N) { return buildRowCells(d, N).join('\t'); }
+
+  // ---------------------------------------------------------------
+  // Markdown + HTML trade-card generation
+  // ---------------------------------------------------------------
+  function tradeTitle(d) { return (d.instrument || 'Trade') + ', ' + (d.strategy || '') + ', ' + (d.date || ''); }
+
+  function gradeWord(g) {
+    return g || 'ungraded';
+  }
+
+  function buildMarkdown(d) {
+    var lines = [];
+    lines.push('# ' + tradeTitle(d));
+    lines.push('');
+    lines.push('**Account:** ' + (d.accountNo || '—') + '  |  **Grade:** ' + gradeWord(d.grade) +
+      '  |  **Result:** ' + (d.result || '—') +
+      '  |  **RR Achieved:** ' + (d.rrAchieved || '—') + '  |  **Session:** ' + (d.session || '—'));
+    lines.push('');
+    PHOTO_SECTIONS.forEach(function (s) {
+      var items = photos[s.key];
+      if (!items.length) return;
+      lines.push('## ' + s.label);
+      lines.push('');
+      items.forEach(function (p, i) {
+        lines.push('![' + (p.caption || (s.label + ' ' + (i + 1))) + '](' + p.dataUrl + ')');
+        if (p.caption) lines.push('*' + p.caption + '*');
+        lines.push('');
+      });
+    });
+    if (d.narrative) {
+      lines.push('## Narrative');
+      lines.push('');
+      lines.push(d.narrative);
+      lines.push('');
+    }
+    lines.push('## Trade facts');
+    lines.push('');
+    lines.push('| Field | Value |');
+    lines.push('|---|---|');
+    var facts = [
+      ['Date', d.date], ['Strategy', d.strategy], ['Instrument', d.instrument], ['Position', d.position],
+      ['Setup', d.setup], ['Entry Type', d.entryType], ['Value Location', d.valueLocation], ['Market State', d.marketState],
+      ['HTF / Entry TF', (d.htf || '—') + ' / ' + (d.entryTf || '—')],
+      ['Entry Logic', d.entryLogic], ['SL / TP (pips)', (d.slPips || '—') + ' / ' + (d.tpPips || '—')],
+      ['Risk %', d.riskPct], ['RR Target / Achieved', (d.rrTarget || '—') + ' / ' + (d.rrAchieved || '—')],
+      ['Emotional Score', d.emotionalScore], ['Valid / Invalid', d.validInvalid], ['Loss Type', d.lossType]
+    ];
+    if (d.strategy === 'X Framework Swing') {
+      facts.push(['X-COT Reading', d.xfsXcot], ['RR Signal / Optimized', (d.xfsRrSignal || '—') + ' / ' + (d.xfsRrOptimized || '—')],
+        ['Entry Optimization', d.xfsOptOutcome], ['A+ Upgrade Path', d.xfsUpgradePath], ['Heikin-Ashi Subtype', d.xfsHaSubtype]);
+    }
+    if (d.strategy === 'GemSpot - Gold Line' || d.strategy === 'GemSpot - Index Line') {
+      facts.push(['Line', d.gsLine], ['Session Block', d.gsSessionBlock], ['Entry Optimization', d.gsOptOutcome],
+        ['RR Direct / Actual', (d.gsRrDirect || '—') + ' / ' + (d.gsRrActual || '—')],
+        ['Leverage Used', d.gsLeverage], ['Leverage ≤20x OK', d.gsLeverageOk]);
+    }
+    if (d.strategy === 'MMS') {
+      facts.push(['Market Category', d.mmsMarketCategory], ['Buffer %', d.mmsBufferPct],
+        ['C Amplitude % at Buy Point', d.mmsCAmplitudePct], ['Base C Count', d.mmsBaseCCount],
+        ['TP Mode', d.mmsTpMode], ['BE Trigger', d.mmsBeTrigger], ['Position Tier', d.mmsPositionTier]);
+    }
+    if (d.strategy === 'OMG') {
+      facts.push(['Direction Bias', d.omgDirectionBias], ['Market Condition', d.omgMarketCondition],
+        ['Bias Exception', d.omgBiasException], ['Key Area Timeframe', d.omgKeyAreaTimeframe],
+        ['Session Window', d.omgSessionWindow], ['Clean Range Quality', d.omgCleanRangeQuality],
+        ['Entry Time Remaining', d.omgEntryTimeRemaining]);
+    }
+    facts.forEach(function (row) { lines.push('| ' + row[0] + ' | ' + (row[1] || '—') + ' |'); });
+    lines.push('');
+    lines.push('---');
+    lines.push('*Generated by Trade Entry Desk on ' + new Date().toISOString().slice(0, 10) + '.*');
+    return lines.join('\n');
+  }
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function buildHtmlCard(d) {
+    var photoHtml = PHOTO_SECTIONS.map(function (s) {
+      var items = photos[s.key];
+      if (!items.length) return '';
+      return '<h2>' + esc(s.label) + '</h2>' + items.map(function (p, i) {
+        return '<figure><img src="' + p.dataUrl + '" alt="' + esc(p.caption || (s.label + ' ' + (i + 1))) + '">' +
+          (p.caption ? '<figcaption>' + esc(p.caption) + '</figcaption>' : '') + '</figure>';
+      }).join('\n');
+    }).join('\n');
+    var gradeClass = (d.grade || '').indexOf('A') === 0 ? 'good' : 'plain';
+    var factsRows = [
+      ['Date', d.date], ['Strategy', d.strategy], ['Instrument', d.instrument], ['Position', d.position],
+      ['Setup', d.setup], ['Entry Type', d.entryType], ['Value Location', d.valueLocation], ['Market State', d.marketState],
+      ['HTF / Entry TF', (d.htf || '—') + ' / ' + (d.entryTf || '—')],
+      ['Entry Logic', d.entryLogic], ['SL / TP (pips)', (d.slPips || '—') + ' / ' + (d.tpPips || '—')],
+      ['Risk %', d.riskPct], ['RR Target / Achieved', (d.rrTarget || '—') + ' / ' + (d.rrAchieved || '—')],
+      ['Emotional Score', d.emotionalScore], ['Valid / Invalid', d.validInvalid], ['Loss Type', d.lossType]
+    ];
+    if (d.strategy === 'X Framework Swing') {
+      factsRows.push(['X-COT Reading', d.xfsXcot], ['RR Signal / Optimized', (d.xfsRrSignal || '—') + ' / ' + (d.xfsRrOptimized || '—')],
+        ['Entry Optimization', d.xfsOptOutcome], ['A+ Upgrade Path', d.xfsUpgradePath], ['Heikin-Ashi Subtype', d.xfsHaSubtype]);
+    }
+    if (d.strategy === 'GemSpot - Gold Line' || d.strategy === 'GemSpot - Index Line') {
+      factsRows.push(['Line', d.gsLine], ['Session Block', d.gsSessionBlock], ['Entry Optimization', d.gsOptOutcome],
+        ['RR Direct / Actual', (d.gsRrDirect || '—') + ' / ' + (d.gsRrActual || '—')],
+        ['Leverage Used', d.gsLeverage], ['Leverage ≤20x OK', d.gsLeverageOk]);
+    }
+    if (d.strategy === 'MMS') {
+      factsRows.push(['Market Category', d.mmsMarketCategory], ['Buffer %', d.mmsBufferPct],
+        ['C Amplitude % at Buy Point', d.mmsCAmplitudePct], ['Base C Count', d.mmsBaseCCount],
+        ['TP Mode', d.mmsTpMode], ['BE Trigger', d.mmsBeTrigger], ['Position Tier', d.mmsPositionTier]);
+    }
+    if (d.strategy === 'OMG') {
+      factsRows.push(['Direction Bias', d.omgDirectionBias], ['Market Condition', d.omgMarketCondition],
+        ['Bias Exception', d.omgBiasException], ['Key Area Timeframe', d.omgKeyAreaTimeframe],
+        ['Session Window', d.omgSessionWindow], ['Clean Range Quality', d.omgCleanRangeQuality],
+        ['Entry Time Remaining', d.omgEntryTimeRemaining]);
+    }
+    var factsHtml = factsRows.map(function (r) {
+      return '<tr><th>' + esc(r[0]) + '</th><td>' + esc(r[1] || '—') + '</td></tr>';
+    }).join('\n');
+
+    return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<title>' + esc(tradeTitle(d)) + '</title>' +
+      '<style>' +
+      ':root{--bg:#F5F5F7;--surface:#fff;--border:#E5E5EA;--text:#1D1D1F;--muted:#6E6E73;--accent:#0071E3;--accentsoft:#E8F1FC;--win:#248A3D;--winsoft:#E3F7E9;--loss:#D70015;--losssoft:#FFE8E6;}' +
+      '@media (prefers-color-scheme: dark){:root{--bg:#000;--surface:#1C1C1E;--border:#38383A;--text:#F5F5F7;--muted:#98989D;--accent:#0A84FF;--accentsoft:#122840;--win:#30D158;--winsoft:#0F2A18;--loss:#FF453A;--losssoft:#3A1512;}}' +
+      '*{box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;margin:0;padding:32px 18px;line-height:1.55;-webkit-font-smoothing:antialiased}' +
+      '.card{max-width:760px;margin:0 auto;background:var(--surface);border:none;border-radius:20px;padding:30px 32px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px rgba(0,0,0,.07)}' +
+      'h1{font-weight:700;font-size:26px;margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance}' +
+      '.meta{font-size:13.5px;color:var(--muted);margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}' +
+      '.pill{display:inline-block;padding:4px 12px;border-radius:980px;font-weight:600;font-family:ui-monospace,"SF Mono",Menlo,monospace}' +
+      '.pill.good{background:var(--winsoft);color:var(--win)}.pill.plain{background:var(--accentsoft);color:var(--accent)}' +
+      'figure{margin:0 0 18px}figure img{width:100%;border-radius:14px;border:none;display:block}' +
+      'figcaption{font-size:12.5px;color:var(--muted);margin-top:6px;text-align:center}' +
+      'h2{font-size:17px;font-weight:600;margin:26px 0 10px;letter-spacing:-.005em}' +
+      '.narrative{white-space:pre-wrap;font-size:14.5px}' +
+      'table{width:100%;border-collapse:collapse;font-size:13.5px}' +
+      'th{text-align:left;color:var(--muted);font-weight:600;padding:7px 10px 7px 0;width:38%;vertical-align:top}' +
+      'td{padding:7px 0;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}' +
+      'tr{border-bottom:1px solid var(--border)}' +
+      '.foot{margin-top:24px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px}' +
+      '</style></head><body><div class="card">' +
+      '<h1>' + esc(tradeTitle(d)) + '</h1>' +
+      '<div class="meta"><span>' + esc(d.accountNo || '—') + '</span>' +
+      '<span class="pill ' + gradeClass + '">' + esc(gradeWord(d.grade)) + '</span>' +
+      '<span>' + esc(d.result || '—') + '</span><span>RR ' + esc(d.rrAchieved || '—') + '</span>' +
+      '<span>' + esc(d.session || '—') + '</span></div>' +
+      photoHtml +
+      (d.narrative ? '<h2>Narrative</h2><div class="narrative">' + esc(d.narrative) + '</div>' : '') +
+      '<h2>Trade facts</h2><table>' + factsHtml + '</table>' +
+      '<div class="foot">Generated by Trade Entry Desk on ' + new Date().toISOString().slice(0, 10) + '.</div>' +
+      '</div></body></html>';
+  }
+
+  // ---------------------------------------------------------------
+  // Toast
+  // ---------------------------------------------------------------
+  var toastTimer = null;
+  function toast(msg, isErr) {
+    var t = $('toast');
+    t.textContent = msg; t.className = isErr ? 'show err' : 'show';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.className = ''; }, 3200);
+  }
+
+  // ---------------------------------------------------------------
+  // Capabilities
+  // ---------------------------------------------------------------
+  // Both capabilities are Claude-artifact-viewer-only. Outside that viewer
+  // (self-hosted, opened as a plain file, any other browser) window.claude
+  // is simply absent -- caught below -- and every button instead uses the
+  // plain-browser fallback (Blob download / localStorage) so the page is
+  // fully functional when uploaded to your own hosting or opened locally.
+  var artifactCap = null, downloadsCap = null;
+  (async function () {
+    try { artifactCap = await window.claude.use('artifact'); } catch (e) { artifactCap = null; }
+    try { downloadsCap = await window.claude.use('downloads'); } catch (e) { downloadsCap = null; }
+    // Buttons are left enabled either way -- offerDownload()/persist() branch
+    // internally between the native capability and the browser-native fallback.
+  })();
+
+  function browserDownload(filename, data) {
+    try {
+      var blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      return true;
+    } catch (err) {
+      toast('Could not save file: ' + (err && err.message ? err.message : 'unknown error'), true);
+      return false;
+    }
+  }
+
+  async function offerDownload(filename, data) {
+    if (!downloadsCap) { return browserDownload(filename, data); }
+    try {
+      await downloadsCap.save({ filename: filename, data: data });
+      return true;
+    } catch (err) {
+      if (err && err.code === 'declined') { toast('Save declined.', true); return false; }
+      // Fall back to a plain browser download rather than failing outright.
+      return browserDownload(filename, data);
+    }
+  }
+
+  function fileSafe(s) { return String(s || 'trade').replace(/[^a-z0-9\-_]+/gi, '_').slice(0, 60); }
+
+  // Short, filename-friendly code per strategy so downloads stay readable as the
+  // list of strategies grows -- add a new strategy to STRATEGIES above and a
+  // matching short code here; anything missing just falls back to fileSafe(name).
+  var STRATEGY_CODE = {
+    'X Framework Swing': 'XFS',
+    'GemSpot - Gold Line': 'GemSpot-Gold',
+    'GemSpot - Index Line': 'GemSpot-Index',
+    'MMS': 'MMS',
+    'OMG': 'OMG'
+  };
+  function strategyCode(s) { return STRATEGY_CODE[s] || fileSafe(s); }
+
+  // date_account_strategy_instrument keeps every download unique and sortable
+  // once you're juggling multiple accounts and five-plus strategies on the same
+  // instrument and day.
+  function tradeFileStem(d) {
+    return fileSafe([d.date, d.accountNo || 'NoAcct', strategyCode(d.strategy), d.instrument].join('_'));
+  }
+
+  // ---------------------------------------------------------------
+  // Buttons
+  // ---------------------------------------------------------------
+  $('btnCopyRow').addEventListener('click', async function () {
+    var d = gather();
+    var N = parseInt($('targetRow').value, 10) || NEXT_ROW;
+    try {
+      await navigator.clipboard.writeText(rowToTsv(d, N));
+      toast('Row for row ' + N + ' copied. Click cell A' + N + ' in Trade Log and paste.');
+    } catch (e) { toast('Clipboard copy failed, your browser may need a permission.', true); }
+  });
+
+  $('btnCopyAll').addEventListener('click', async function () {
+    if (!HISTORY.length) { toast('Nothing logged yet.', true); return; }
+    var lines = HISTORY.map(function (h) { return rowToTsv(h.data, h.row); });
+    try {
+      await navigator.clipboard.writeText(lines.join('\n'));
+      toast(HISTORY.length + ' rows copied. Paste starting at A' + HISTORY[0].row + '.');
+    } catch (e) { toast('Clipboard copy failed.', true); }
+  });
+
+  function warnIfLarge() {
+    if (estimatedEmbeddedBytes() > LARGE_FILE_WARN_BYTES) {
+      toast('Photos are large (~' + (estimatedEmbeddedBytes() / (1024 * 1024)).toFixed(1) + ' MB) and the save may be rejected as too big. Trying anyway.', true);
+    }
+  }
+
+  $('btnMd').addEventListener('click', async function () {
+    var d = gather();
+    warnIfLarge();
+    var ok = await offerDownload(tradeFileStem(d) + '.md', buildMarkdown(d));
+    if (ok) toast('Markdown card saved.');
+  });
+
+  $('btnHtml').addEventListener('click', async function () {
+    var d = gather();
+    warnIfLarge();
+    var ok = await offerDownload(tradeFileStem(d) + '.html', buildHtmlCard(d));
+    if (ok) toast('HTML card saved.');
+  });
+
+  $('btnClearHist').addEventListener('click', function () {
+    if (!confirm('Clear the trades logged on this page? Already-downloaded files are unaffected.')) return;
+    HISTORY = [];
+    persist('History cleared.');
+  });
+
+  $('btnSave').addEventListener('click', async function () {
+    var d = gather();
+    if (!d.date || !d.strategy || !d.instrument) {
+      toast('Date, Strategy and Instrument are required.', true); return;
+    }
+    var N = parseInt($('targetRow').value, 10) || NEXT_ROW;
+    HISTORY.push({ row: N, data: d, savedAt: new Date().toISOString() });
+    NEXT_ROW = N + 1;
+    await persist('Trade saved to the log, row ' + N + '.');
+  });
+
+  async function persist(successMsg) {
+    saveLocalHistory(HISTORY); // best-effort local backup, always -- see LOCAL_HISTORY_KEY note above
+    renderHistory();
+    var html = renderFullPage();
+    if (!artifactCap) {
+      // Self-hosted / plain-browser view: no publish-and-reload cycle available,
+      // so localStorage above is the persistence and this toast fires immediately.
+      toast(successMsg + ' (stored in this browser -- does not sync to other PCs.)');
+      return;
+    }
+    sessionStorage.setItem('tradeDeskToast', successMsg);
+    try {
+      await artifactCap.publish(html);
+      // view reloads on success; nothing further runs
+    } catch (err) {
+      sessionStorage.removeItem('tradeDeskToast');
+      if (err && err.code === 'conflict') { return; } // reload incoming, do nothing
+      toast('Could not save: ' + (err && err.message ? err.message : 'unknown error'), true);
+    }
+  }
+
+  function renderHistory() {
+    var body = $('histBody');
+    body.innerHTML = '';
+    $('emptyHist').hidden = !!HISTORY.length;
+    HISTORY.slice().reverse().forEach(function (h) {
+      var d = h.data;
+      var tr = document.createElement('tr');
+      var resultClass = (d.result || '').toLowerCase();
+      tr.innerHTML =
+        '<td>' + esc(d.date) + '</td><td>' + esc(d.strategy) + '</td><td>' + esc(d.instrument) + '</td>' +
+        '<td>' + esc(d.setup) + '</td><td><span class="badge grade">' + esc(d.grade || '—') + '</span></td>' +
+        '<td><span class="badge ' + esc(resultClass) + '">' + esc(d.result || '—') + '</span></td>' +
+        '<td class="num">' + esc(d.rrAchieved || '—') + '</td><td class="num">' + h.row + '</td>' +
+        '<td class="hist-actions"><button type="button" data-row="' + h.row + '">Copy</button></td>';
+      body.appendChild(tr);
+    });
+    Array.prototype.forEach.call(body.querySelectorAll('button[data-row]'), function (btn) {
+      btn.addEventListener('click', async function () {
+        var row = parseInt(this.getAttribute('data-row'), 10);
+        var entry = HISTORY.filter(function (h) { return h.row === row; })[0];
+        if (!entry) return;
+        try {
+          await navigator.clipboard.writeText(rowToTsv(entry.data, entry.row));
+          toast('Row ' + row + ' copied.');
+        } catch (e) { toast('Clipboard copy failed.', true); }
+      });
+    });
+  }
+
+  function renderFullPage() {
+    // Canonical source of truth: PRISTINE_HTML (captured at load, before any DOM
+    // mutation) + HISTORY. Never serialize the live/mutated DOM at save time.
+    //
+    // Safety: HISTORY holds free-typed field values (narrative, notes, entry
+    // logic, etc). If any of those ever contain the closing-script-tag
+    // sequence (typed or pasted by a user), embedding it unescaped here
+    // would close this script element early and leave the rest of the
+    // page's JavaScript sitting in the document as plain visible text --
+    // a real bug that hit this page once already. Escaping every "<" as
+    // < keeps the JSON valid (JSON.parse decodes it right back to
+    // "<") while making an early close impossible.
+    var safeHistoryJson = JSON.stringify(HISTORY).replace(/</g, '\\u003c');
+    return PRISTINE_HTML.replace(
+      /<script id="trade-history" type="application\/json">[\s\S]*?<\/script>/,
+      '<script id="trade-history" type="application/json">' + safeHistoryJson + '<\/script>'
+    );
+  }
+
+  // ---------------------------------------------------------------
+  // Boot
+  // ---------------------------------------------------------------
+  renderHistory();
+  var pending = sessionStorage.getItem('tradeDeskToast');
+  if (pending) { toast(pending); sessionStorage.removeItem('tradeDeskToast'); }
+})();
+</script>

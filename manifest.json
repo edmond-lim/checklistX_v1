@@ -1,7 +1,7 @@
 {
   "name": "Edmond's Checklists",
   "short_name": "Checklists",
-  "description": "Trading operations, MMS strategy, GemSpot gate, task report and site survey checklists.",
+  "description": "Trade entry desk, trading operations, MMS strategy, GemSpot gate, task report and site survey checklists.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -23,6 +23,18 @@
     }
   ],
   "shortcuts": [
+    {
+      "name": "Trade Entry Desk",
+      "short_name": "Trade Entry",
+      "url": "./trade_entry_form.html",
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
     {
       "name": "Trading Operations",
       "short_name": "Trade Ops",

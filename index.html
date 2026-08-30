@@ -176,6 +176,28 @@
   }
   .card:hover .arrow{transform:translateX(3px); color:var(--tint);}
 
+  /* ---------- Card-with-guide-tab variant (Trade Entry Desk) ---------- */
+  .card-hit{
+    position:absolute; inset:0;
+    z-index:1;
+    border-radius:inherit;
+  }
+  .card-hit:focus-visible{outline:3px solid var(--tint); outline-offset:3px; border-radius:22px;}
+  .guide-badge{
+    position:absolute; top:12px; right:14px;
+    z-index:2;
+    width:29px; height:29px;
+    border-radius:50%;
+    display:grid; place-items:center;
+    background:var(--tint-soft);
+    text-decoration:none;
+    font-size:13.5px;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    transition:transform .15s ease;
+  }
+  .guide-badge:hover{transform:scale(1.1);}
+  .guide-badge:focus-visible{outline:3px solid var(--tint); outline-offset:2px;}
+
   /* ---------- Narrow phones ---------- */
   @media (max-width:360px){
     body{padding-left:12px; padding-right:12px;}
@@ -238,6 +260,21 @@
   <div class="datechip">🕰️ <span id="dateLine">--</span> · <b id="timeLine">--:--</b></div>
 
   <div class="label">📈 Trading</div>
+
+  <div class="card" style="--tint:var(--accent-2); --tint-soft:#E1F3FA">
+    <a class="card-hit" href="trade_entry_form.html" aria-label="Open Trade Entry Desk"></a>
+    <span class="ring" id="ringDesk"><span class="face">🧾</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">Trade Entry Desk</span>
+        <span class="pill">Form</span>
+      </span>
+      <span class="desc">Log a trade, grade it, copy the spreadsheet row.</span>
+      <span class="stat" id="statDesk">✨ ready when you are</span>
+    </span>
+    <span class="arrow">›</span>
+    <a class="guide-badge" href="trade_entry_guide.html" aria-label="Open Trade Entry Desk guide" title="Guide">📖</a>
+  </div>
 
   <a class="card" href="trading-checklist.html"
      style="--tint:var(--honey); --tint-soft:#FBF0DC">
@@ -370,6 +407,16 @@
   }
 
   function refreshStats(o){
+    // Trade Entry Desk — trades logged today (reads the form's own saved log)
+    const deskHistory = read('tradeDeskHistory');
+    const deskToday = Array.isArray(deskHistory)
+      ? deskHistory.filter(h => (h.savedAt || '').slice(0,10) === local())
+      : [];
+    $('ringDesk').style.setProperty('--p', 0);
+    $('statDesk').textContent = deskToday.length
+      ? `🧾 ${deskToday.length} trade${deskToday.length > 1 ? 's' : ''} logged today`
+      : '✨ no trades logged today';
+
     // Trading — today's daily routine (26 items across 4 stages)
     const dayKey = `session:${o.year}-${o.month}-${o.day}`;
     setRing('ringTrade','statTrade', countChecked(read(dayKey)), 26,
