@@ -1,4 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Trade Entry Desk Guide</title>
+<meta name="theme-color" content="#F5F5F7">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trade Entry Guide">
 <style>
   :root {
     --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -281,13 +292,28 @@
     .wrap { padding: 36px 16px 72px; }
     h1 { font-size: 27px; }
     .lede { font-size: 15.5px; }
+    .eyebrow { font-size: 14px; }
+    h2 { font-size: 19px; }
+    .section-sub { font-size: 15px; }
     .card { padding: 18px 16px; }
+    .callout { font-size: 15.5px; }
     ol.steps > li { padding: 0 0 20px 38px; margin-left: 12px; }
     ol.steps > li::before { left: -12px; width: 26px; height: 26px; font-size: 13px; }
+    ol.steps h3 { font-size: 16.5px; }
+    ol.steps p { font-size: 15.5px; }
+    ol.steps .muted { font-size: 14.5px; }
+    .btn-tag { font-size: 14px; }
+    .mini-card h4 { font-size: 15.5px; }
+    .mini-card p { font-size: 14.5px; }
+    table.ref { font-size: 15px; }
     table.ref th, table.ref td { padding: 9px 8px; }
-    .toolnav a { padding: 7px 13px; }
+    table.ref th { font-size: 13px; }
+    footer.page-foot { font-size: 14px; }
+    .toolnav a { font-size: 13.5px; padding: 7px 14px; }
   }
 </style>
+</head>
+<body>
 
 <div class="wrap">
 
@@ -429,3 +455,13 @@
   </footer>
 
 </div>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('service-worker.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,4 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Trade Entry Desk</title>
+<meta name="theme-color" content="#F5F5F7">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Trade Entry Desk">
 <style>
   :root {
     --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -248,16 +259,35 @@
     .card { padding: 20px 18px; }
     header.top h1 { font-size: 26px; }
     header.top { margin-bottom: 20px; padding-bottom: 16px; }
+    header.top .sub { font-size: 15px; }
+    header.top .today { font-size: 13.5px; }
     .grid, .grid.g2 { grid-template-columns: 1fr; }
     .field.span2 { grid-column: span 1; }
+    .field label { font-size: 14px; }
+    .card h2 { font-size: 20px; }
+    .card .hint { font-size: 14.5px; }
     .btnrow { gap: 8px; }
     .btnrow button { flex: 1 1 auto; }
+    button { font-size: 16px; }
     .checklist-row { gap: 10px; }
-    .checklist-row select { width: 84px; }
+    .checklist-row .txt { font-size: 15px; }
+    .checklist-row select { width: 84px; font-size: 15px; }
+    .grade-banner .note { font-size: 14px; }
+    .strategy-block .tag { font-size: 13px; }
     .photo-item { width: calc(50% - 6px); }
+    .photo-section h3 { font-size: 14.5px; }
+    .size-hint { font-size: 13px; }
+    .row-target { font-size: 14px; }
+    table.hist { font-size: 14px; }
     table.hist th, table.hist td { padding: 9px 10px; }
+    table.hist th { font-size: 12px; }
+    .badge { font-size: 12.5px; }
+    .toolnav a { font-size: 13.5px; padding: 7px 14px; }
+    footer.note { font-size: 13px; }
   }
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <nav class="toolnav">
@@ -1277,3 +1307,13 @@
   if (pending) { toast(pending); sessionStorage.removeItem('tradeDeskToast'); }
 })();
 </script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('service-worker.js').catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
