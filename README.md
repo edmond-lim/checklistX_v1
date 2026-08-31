@@ -41,7 +41,7 @@ The service worker serves the cached copy first, so phones can keep showing the 
 Open `service-worker.js` and bump the version:
 
 ```js
-const CACHE_NAME = 'checklists-v12';  // → 'checklists-v13'
+const CACHE_NAME = 'checklists-v14';  // → 'checklists-v15'
 ```
 
 Old caches are deleted automatically on the next visit. If you add a new top-level page,

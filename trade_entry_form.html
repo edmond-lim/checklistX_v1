@@ -158,7 +158,7 @@
   input[type="number"] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
   input[type="date"] {
     font-family: inherit;
-    -webkit-min-logical-width: 100%; /* iOS Safari sometimes ignores width:100% on date fields without this */
+    max-width: 100%;
   }
   input[type="date"]::-webkit-date-and-time-value { text-align: left; }
   textarea { resize: vertical; min-height: 64px; font-family: inherit; }
