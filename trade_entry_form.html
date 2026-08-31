@@ -155,7 +155,12 @@
   input:focus, select:focus, textarea:focus {
     outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
   }
-  input[type="number"], input[type="date"] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  input[type="number"] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+  input[type="date"] {
+    font-family: inherit;
+    -webkit-min-logical-width: 100%; /* iOS Safari sometimes ignores width:100% on date fields without this */
+  }
+  input[type="date"]::-webkit-date-and-time-value { text-align: left; }
   textarea { resize: vertical; min-height: 64px; font-family: inherit; }
   textarea#narrative { min-height: 140px; }
 
