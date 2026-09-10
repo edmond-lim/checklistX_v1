@@ -4,76 +4,152 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>🌸 My Checklists</title>
-<meta name="theme-color" content="#FDF2F8">
+<meta name="theme-color" content="#F5F5F7">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon192.png">
 <link rel="icon" href="icon192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Checklists">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-a:#FDF2F8; --bg-b:#F3EFFC; --bg-c:#EAF6FB;
-    --surface:#FFFFFF; --surface-2:#FBF2F8;
-    --ink:#4A3B52; --ink-soft:#A594AE;
-    --line:#F1DCEA;
-    --accent:#C68FD9; --accent-dark:#A96BC2; --accent-2:#7EC8E3;
-    --track:#F3E7F3;
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-    --orchid:#C68FD9;
-    --honey:#E8B24E;
-    --mint:#5FC5A6;
-    --slate:#7FA8D4;
-    --coral:#EE8672;
+    --bg: #F5F5F7;
+    --surface: #FFFFFF;
+    --surface-2: #F2F2F4;
+    --border: #E5E5EA;
+    --text: #1D1D1F;
+    --text-muted: #6E6E73;
 
-    --font-display:'Baloo 2', sans-serif;
-    --font-body:'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --accent: #0071E3;
+    --accent-strong: #0059B3;
+    --accent-soft: #E8F1FC;
+
+    --win: #248A3D;
+    --win-soft: #E3F7E9;
+    --loss: #D70015;
+    --loss-soft: #FFE8E6;
+    --warn: #C46200;
+    --warn-soft: #FFF1DC;
+
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 28px rgba(0,0,0,0.07);
+
+    /* Per-card tint tokens — kept as named vars since each card sets --tint inline */
+    --accent-2: #0071E3;
+    --honey: #C46200;
+    --mint: #248A3D;
+    --slate: #5856D6;
+    --orchid: #AF52DE;
+    --coral: #FF2D55;
+    --slate-soft: #EAEAFC;
+    --orchid-soft: #F5E8FC;
+    --coral-soft: #FFE3EA;
+
+    /* Avera Energy brand tokens (navy / signal orange) */
+    --avera-navy: #103F5F;
+    --avera-navy-soft: #E3EAEF;
+    --avera-orange: #F05323;
+    --avera-orange-soft: #FCE1D5;
+    --avera-steel: #5B7083;
+    --avera-steel-soft: #E6EAED;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #000000;
+      --surface: #1C1C1E;
+      --surface-2: #2C2C2E;
+      --border: #38383A;
+      --text: #F5F5F7;
+      --text-muted: #98989D;
+      --accent: #0A84FF;
+      --accent-strong: #409CFF;
+      --accent-soft: rgba(10,132,255,0.16);
+      --win: #30D158;
+      --win-soft: rgba(48,209,88,0.16);
+      --loss: #FF453A;
+      --loss-soft: rgba(255,69,58,0.16);
+      --warn: #FF9F0A;
+      --warn-soft: rgba(255,159,10,0.16);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.4);
+      --accent-2: #0A84FF;
+      --honey: #FF9F0A;
+      --mint: #30D158;
+      --slate: #5E5CE6;
+      --orchid: #BF5AF2;
+      --coral: #FF375F;
+      --slate-soft: rgba(94,92,230,0.16);
+      --orchid-soft: rgba(191,90,242,0.16);
+      --coral-soft: rgba(255,55,95,0.16);
+      --avera-navy: #5B9BD1;
+      --avera-navy-soft: rgba(91,155,209,0.16);
+      --avera-orange: #FF7A4D;
+      --avera-orange-soft: rgba(255,122,77,0.16);
+      --avera-steel: #9CB4C4;
+      --avera-steel-soft: rgba(156,180,196,0.16);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #000000;
+    --surface: #1C1C1E;
+    --surface-2: #2C2C2E;
+    --border: #38383A;
+    --text: #F5F5F7;
+    --text-muted: #98989D;
+    --accent: #0A84FF;
+    --accent-strong: #409CFF;
+    --accent-soft: rgba(10,132,255,0.16);
+    --win: #30D158;
+    --win-soft: rgba(48,209,88,0.16);
+    --loss: #FF453A;
+    --loss-soft: rgba(255,69,58,0.16);
+    --warn: #FF9F0A;
+    --warn-soft: rgba(255,159,10,0.16);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.4);
+    --accent-2: #0A84FF;
+    --honey: #FF9F0A;
+    --mint: #30D158;
+    --slate: #5E5CE6;
+    --orchid: #BF5AF2;
+    --coral: #FF375F;
+    --slate-soft: rgba(94,92,230,0.16);
+    --orchid-soft: rgba(191,90,242,0.16);
+    --coral-soft: rgba(255,55,95,0.16);
+    --avera-navy: #5B9BD1;
+    --avera-navy-soft: rgba(91,155,209,0.16);
+    --avera-orange: #FF7A4D;
+    --avera-orange-soft: rgba(255,122,77,0.16);
+    --avera-steel: #9CB4C4;
+    --avera-steel-soft: rgba(156,180,196,0.16);
   }
 
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0; padding:0;}
   html{-webkit-text-size-adjust:100%; text-size-adjust:100%;}
   body{
-    background:linear-gradient(135deg, var(--bg-a) 0%, var(--bg-b) 50%, var(--bg-c) 100%);
-    background-attachment:fixed;
-    color:var(--ink);
-    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-sans);
     min-height:100vh; min-height:100dvh;
-    padding:calc(30px + env(safe-area-inset-top)) 16px calc(36px + env(safe-area-inset-bottom));
-    position:relative;
-    overflow-x:hidden;
+    padding:calc(48px + env(safe-area-inset-top)) 20px calc(48px + env(safe-area-inset-bottom));
   }
 
-  /* soft floating blobs */
-  .blob{
-    position:fixed;
-    border-radius:50%;
-    filter:blur(42px);
-    opacity:.5;
-    pointer-events:none;
-    z-index:0;
-  }
-  .blob.b1{width:220px;height:220px; background:#F9D6EC; top:-70px; right:-60px; animation:drift 18s ease-in-out infinite;}
-  .blob.b2{width:180px;height:180px; background:#D8E9FA; bottom:40px; left:-70px; animation:drift 22s ease-in-out infinite reverse;}
-  @keyframes drift{
-    0%,100%{transform:translate(0,0) scale(1);}
-    50%{transform:translate(14px,20px) scale(1.08);}
-  }
   @media (prefers-reduced-motion: reduce){
     *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
   }
 
-  .wrap{max-width:600px; margin:0 auto; position:relative; z-index:1;}
+  .wrap{max-width:600px; margin:0 auto;}
 
   /* ---------- Header ---------- */
   .hello{
-    font-family:var(--font-display);
-    font-weight:800;
-    font-size:clamp(25px, 7.4vw, 34px);
+    font-family:var(--font-sans);
+    font-weight:700;
+    font-size:clamp(26px, 7.4vw, 34px);
     letter-spacing:-.01em;
     line-height:1.2;
+    margin:0;
+    color:var(--text);
   }
   .hello .wave{display:inline-block; transform-origin:70% 70%; animation:wave 2.6s ease-in-out infinite;}
   @keyframes wave{
@@ -82,95 +158,85 @@
   }
   .datechip{
     display:inline-flex; align-items:center; gap:7px;
-    margin-top:10px;
+    margin-top:12px;
     background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:999px;
+    border:1px solid var(--border);
+    border-radius:980px;
     padding:7px 14px;
-    font-weight:700; font-size:13.5px;
-    color:var(--ink-soft);
-    box-shadow:0 3px 10px rgba(198,143,217,.12);
+    font-weight:600; font-size:13.5px;
+    color:var(--text-muted);
+    box-shadow:var(--shadow);
   }
-  .datechip b{color:var(--accent-dark); font-weight:800;}
+  .datechip b{color:var(--text); font-weight:650;}
 
   .label{
-    font-family:var(--font-display);
-    font-size:13px; font-weight:700;
-    letter-spacing:.08em; text-transform:uppercase;
-    color:var(--ink-soft);
-    margin:26px 0 10px 4px;
+    font-family:var(--font-sans);
+    font-size:13px; font-weight:600;
+    letter-spacing:.02em; text-transform:none;
+    color:var(--text-muted);
+    margin:28px 0 10px 2px;
   }
 
   /* ---------- Tool cards ---------- */
   .card{
     display:flex; align-items:center; gap:14px;
     background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:22px;
+    border-radius:18px;
     padding:16px 16px 16px 15px;
-    margin-bottom:13px;
-    text-decoration:none; color:var(--ink);
-    box-shadow:0 6px 20px rgba(198,143,217,.14);
-    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    margin-bottom:12px;
+    text-decoration:none; color:var(--text);
+    box-shadow:var(--shadow);
+    transition:transform .18s ease, box-shadow .18s ease;
     position:relative;
     overflow:hidden;
   }
-  .card::before{
-    content:'';
-    position:absolute; inset:0 auto 0 0;
-    width:5px;
-    background:var(--tint);
-    opacity:.55;
-  }
   .card:hover{
-    transform:translateY(-3px);
-    border-color:var(--tint);
-    box-shadow:0 12px 26px rgba(198,143,217,.2);
+    transform:translateY(-2px);
+    box-shadow:0 2px 4px rgba(0,0,0,0.05), 0 14px 32px rgba(0,0,0,0.09);
   }
   .card:active{transform:translateY(-1px) scale(.995);}
-  .card:focus-visible{outline:3px solid var(--tint); outline-offset:3px;}
-  .card:hover .ring{transform:rotate(-6deg) scale(1.04);}
+  .card:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  .card:hover .ring{transform:scale(1.04);}
 
   /* progress ring + emoji */
   .ring{
     --p:0;
-    width:58px; height:58px; flex-shrink:0;
+    width:56px; height:56px; flex-shrink:0;
     border-radius:50%;
-    background:conic-gradient(var(--tint) calc(var(--p) * 1%), var(--track) 0);
+    background:conic-gradient(var(--tint) calc(var(--p) * 1%), var(--surface-2) 0);
     display:grid; place-items:center;
     transition:transform .25s cubic-bezier(.34,1.56,.64,1), background .4s ease;
-    margin-left:4px;
   }
   .ring .face{
-    width:46px; height:46px;
+    width:45px; height:45px;
     border-radius:50%;
-    background:var(--surface-2);
+    background:var(--surface);
     display:grid; place-items:center;
-    font-size:23px;
+    font-size:22px;
     line-height:1;
   }
 
   .body{flex:1; min-width:0;}
   .row1{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
-  .name{font-family:var(--font-display); font-weight:700; font-size:clamp(17px, 4.7vw, 19.5px); min-width:0; overflow-wrap:break-word;}
+  .name{font-family:var(--font-sans); font-weight:650; font-size:clamp(16.5px, 4.7vw, 18px); min-width:0; overflow-wrap:break-word; color:var(--text);}
   .pill{
-    font-family:var(--font-body); font-weight:800;
-    font-size:11px; letter-spacing:.05em; text-transform:uppercase;
+    font-family:var(--font-sans); font-weight:700;
+    font-size:10.5px; letter-spacing:.04em; text-transform:uppercase;
     color:var(--tint);
     background:var(--tint-soft);
-    border-radius:999px;
+    border-radius:980px;
     padding:3px 9px;
   }
-  .desc{font-size:13.5px; font-weight:600; color:var(--ink-soft); line-height:1.5; margin-top:5px;}
+  .desc{font-size:13.5px; font-weight:500; color:var(--text-muted); line-height:1.5; margin-top:4px;}
   .stat{
-    font-size:12.5px; font-weight:800;
+    font-size:12.5px; font-weight:650;
     color:var(--tint);
     margin-top:8px;
     display:flex; align-items:center; gap:5px;
   }
   .arrow{
-    font-family:var(--font-display); font-weight:700;
-    color:var(--ink-soft); font-size:21px;
+    font-family:var(--font-sans); font-weight:600;
+    color:var(--text-muted); font-size:20px;
     flex-shrink:0; padding-right:2px;
     transition:transform .18s ease, color .18s ease;
   }
@@ -182,78 +248,71 @@
     z-index:1;
     border-radius:inherit;
   }
-  .card-hit:focus-visible{outline:3px solid var(--tint); outline-offset:3px; border-radius:22px;}
+  .card-hit:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:18px;}
   .guide-badge{
     position:absolute; top:12px; right:14px;
     z-index:2;
-    width:29px; height:29px;
+    width:28px; height:28px;
     border-radius:50%;
     display:grid; place-items:center;
     background:var(--tint-soft);
     text-decoration:none;
-    font-size:13.5px;
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
+    font-size:13px;
     transition:transform .15s ease;
   }
   .guide-badge:hover{transform:scale(1.1);}
-  .guide-badge:focus-visible{outline:3px solid var(--tint); outline-offset:2px;}
+  .guide-badge:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
 
   /* ---------- Narrow phones ---------- */
   @media (max-width:360px){
-    body{padding-left:12px; padding-right:12px;}
-    .card{padding:14px 13px 14px 12px; gap:11px; border-radius:18px;}
-    .ring{width:50px; height:50px; margin-left:2px;}
-    .ring .face{width:40px; height:40px; font-size:20px;}
-    .desc{font-size:14.5px;}
+    body{padding-left:16px; padding-right:16px;}
+    .card{padding:14px 13px 14px 12px; gap:11px; border-radius:16px;}
+    .ring{width:48px; height:48px;}
+    .ring .face{width:38px; height:38px; font-size:19px;}
+    .desc{font-size:14px;}
   }
 
   /* ---------- Phone landscape: shrink the header, keep cards visible ---------- */
   @media (max-height:460px) and (orientation:landscape){
-    body{padding-top:calc(16px + env(safe-area-inset-top));}
-    .label{margin-top:16px;}
-    .blob{display:none;}
+    body{padding-top:calc(20px + env(safe-area-inset-top));}
+    .label{margin-top:18px;}
   }
 
   /* ---------- Tablet & desktop ---------- */
   @media (min-width:760px){
     .wrap{max-width:680px;}
     .card{padding:20px 20px 20px 19px; gap:16px;}
-    .ring{width:64px; height:64px;}
-    .ring .face{width:51px; height:51px; font-size:26px;}
+    .ring{width:62px; height:62px;}
+    .ring .face{width:50px; height:50px; font-size:25px;}
     .desc{font-size:13px;}
   }
 
   /* ---------- Footer ---------- */
   .note{
-    margin-top:22px;
-    background:rgba(255,255,255,.7);
-    border:1px dashed var(--line);
-    border-radius:18px;
-    padding:14px 16px;
-    font-size:13px; font-weight:600; line-height:1.6;
-    color:var(--ink-soft);
+    margin-top:24px;
+    background:var(--accent-soft);
+    border-radius:14px;
+    padding:16px 18px;
+    font-size:13.5px; font-weight:500; line-height:1.6;
+    color:var(--text);
   }
-  .note b{color:var(--accent-dark); font-weight:800;}
+  .note b{color:var(--accent-strong); font-weight:650;}
   #installBtn{
     display:none;
-    margin-top:10px;
-    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    margin-top:12px;
+    background:var(--accent);
     color:#fff; border:none;
-    border-radius:999px;
-    padding:11px 18px; min-height:42px;
-    font-family:var(--font-display); font-weight:700; font-size:14.5px;
+    border-radius:980px;
+    padding:10px 18px; min-height:40px;
+    font-family:var(--font-sans); font-weight:650; font-size:14px;
     cursor:pointer;
-    box-shadow:0 4px 12px rgba(198,143,217,.35);
-    transition:transform .12s ease, opacity .15s ease;
+    transition:opacity .15s ease, transform .12s ease;
   }
   #installBtn:hover{opacity:.9;}
   #installBtn:active{transform:scale(.96);}
 </style>
 </head>
 <body>
-<span class="blob b1"></span>
-<span class="blob b2"></span>
-
 <div class="wrap">
 
   <h1 class="hello"><span id="greeting">Hello</span>, Edmond <span class="wave">👋</span></h1>
@@ -261,7 +320,7 @@
 
   <div class="label">📈 Trading</div>
 
-  <div class="card" style="--tint:var(--accent-2); --tint-soft:#E1F3FA">
+  <div class="card" style="--tint:var(--accent-2); --tint-soft:var(--accent-soft)">
     <a class="card-hit" href="trade_entry_form.html" aria-label="Open Trade Entry Desk"></a>
     <span class="ring" id="ringDesk"><span class="face">🧾</span></span>
     <span class="body">
@@ -277,7 +336,7 @@
   </div>
 
   <a class="card" href="trading-checklist.html"
-     style="--tint:var(--honey); --tint-soft:#FBF0DC">
+     style="--tint:var(--honey); --tint-soft:var(--warn-soft)">
     <span class="ring" id="ringTrade"><span class="face">🕯️</span></span>
     <span class="body">
       <span class="row1">
@@ -291,7 +350,7 @@
   </a>
 
   <a class="card" href="mms-checklist.html"
-     style="--tint:var(--mint); --tint-soft:#DFF3EC">
+     style="--tint:var(--mint); --tint-soft:var(--win-soft)">
     <span class="ring" id="ringMms"><span class="face">🌿</span></span>
     <span class="body">
       <span class="row1">
@@ -305,7 +364,7 @@
   </a>
 
   <a class="card" href="gemspot-checklist.html"
-     style="--tint:var(--slate); --tint-soft:#E4EDF7">
+     style="--tint:var(--slate); --tint-soft:var(--slate-soft)">
     <span class="ring" id="ringGem"><span class="face">💎</span></span>
     <span class="body">
       <span class="row1">
@@ -318,10 +377,10 @@
     <span class="arrow">›</span>
   </a>
 
-  <div class="label">🌷 Work</div>
+  <div class="label">🔆 Avera Energy</div>
 
   <a class="card" href="task-checklist.html"
-     style="--tint:var(--orchid); --tint-soft:#F6E8FA">
+     style="--tint:var(--orchid); --tint-soft:var(--orchid-soft)">
     <span class="ring" id="ringTask"><span class="face">📝</span></span>
     <span class="body">
       <span class="row1">
@@ -335,7 +394,7 @@
   </a>
 
   <a class="card" href="site-survey.html"
-     style="--tint:var(--coral); --tint-soft:#FBE6E1">
+     style="--tint:var(--coral); --tint-soft:var(--coral-soft)">
     <span class="ring" id="ringSurvey"><span class="face">🔆</span></span>
     <span class="body">
       <span class="row1">
@@ -344,6 +403,48 @@
       </span>
       <span class="desc">Solar site survey — project info, roof &amp; electrical data, photos, LMRA.</span>
       <span class="stat" id="statSurvey">📋 44 checks · print when done</span>
+    </span>
+    <span class="arrow">›</span>
+  </a>
+
+  <a class="card" href="solar-atap-toolkit.html"
+     style="--tint:var(--avera-orange); --tint-soft:var(--avera-orange-soft)">
+    <span class="ring" id="ringAtap"><span class="face">☀️</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">Solar ATAP Toolkit</span>
+        <span class="pill">GP/ST 60/2025</span>
+      </span>
+      <span class="desc">Capacity &amp; fee calculator, ATAP vs NEM, timeline &amp; document checklist.</span>
+      <span class="stat">📐 calculator · comparison · checklist</span>
+    </span>
+    <span class="arrow">›</span>
+  </a>
+
+  <a class="card" href="avera_solar_calc_suite.html"
+     style="--tint:var(--avera-navy); --tint-soft:var(--avera-navy-soft)">
+    <span class="ring" id="ringCalc"><span class="face">🧮</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">Solar PV Calculator Suite</span>
+        <span class="pill">Sizing</span>
+      </span>
+      <span class="desc">Sizing &amp; energy, electrical, financial calcs, unit converter, glossary.</span>
+      <span class="stat">⚡ 6 calculator tabs</span>
+    </span>
+    <span class="arrow">›</span>
+  </a>
+
+  <a class="card" href="avera-project-tools.html"
+     style="--tint:var(--avera-steel); --tint-soft:var(--avera-steel-soft)">
+    <span class="ring" id="ringProj"><span class="face">🗂️</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">Project Tools</span>
+        <span class="pill">Internal</span>
+      </span>
+      <span class="desc">Folder sync checker, project folder generator, file renamer.</span>
+      <span class="stat">🛠️ 3 utilities in one place</span>
     </span>
     <span class="arrow">›</span>
   </a>

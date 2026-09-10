@@ -1,0 +1,2623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avera Energy — Project Tools</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Montserrat","Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:#FAFAF8;
+    color:#1A1A1A;
+  }
+  .app-topbar{
+    background:#103F5F;
+    border-bottom:3px solid #F05323;
+    position:sticky; top:0; z-index:100;
+  }
+  .app-topbar-inner{
+    max-width:1180px; margin:0 auto;
+    padding:10px 20px;
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .app-logo{height:28px; width:28px; border-radius:6px; display:block; flex:none; background:#fff;}
+  .app-title{
+    color:#fff; font-weight:700; font-size:14px; letter-spacing:.02em;
+    margin-right:auto;
+  }
+  .app-tabs{display:flex; gap:6px; flex-wrap:wrap;}
+  .app-tab{
+    background:transparent; border:1px solid rgba(255,255,255,0.35); color:#fff;
+    padding:7px 14px; border-radius:6px; font-size:12.5px; font-weight:600;
+    font-family:"Montserrat",sans-serif; cursor:pointer; transition:background .15s,border-color .15s;
+  }
+  .app-tab:hover{border-color:#fff;}
+  .app-tab.active{background:#F05323; border-color:#F05323;}
+  .tool-panel{max-width:100%;}
+  .site-nav{background:#fff; border-bottom:1px solid #E7EDF1;}
+  .site-nav-inner{max-width:1180px; margin:0 auto; padding:8px 20px; display:flex; gap:6px; flex-wrap:wrap;}
+  .site-nav a{font-family:"Montserrat",sans-serif; font-size:11.5px; font-weight:700; color:#103F5F;
+    text-decoration:none; padding:5px 11px; border-radius:980px; border:1.5px solid #E7EDF1; white-space:nowrap;}
+  .site-nav a:hover{border-color:#103F5F;}
+  .site-nav a:focus-visible{outline:2px solid #103F5F; outline-offset:2px;}
+  .site-nav a.current{color:#fff; background:#103F5F; border-color:#103F5F;}
+
+#tool-sync{
+    
+    --navy: #103F5F;        
+    --navy-tint: #E7EDF1;   
+    --solar: #F05323;       
+    --solar-tint: #FDE7DF;
+    --signal: #F7941D;      
+    --signal-tint: #FDF0DD;
+    --cinnabar: #EF4136;    
+    --cinnabar-tint: #FDECEA;
+    --mist: #ABCED1;        
+    --champagne: #E7D3B0;   
+    --champagne-tint: #FBF5EB;
+
+    --bg: #F6F7F6;          
+    --panel: #FFFFFF;
+    --panel-2: #EEF1F2;
+    --border: #D9DEE2;      
+    --ink: #1A1A1A;
+    --text: #1A1A1A;
+    --text-dim: #5C6B75;    
+    --text-faint: #8A8A8A;  
+
+    
+    --accent: var(--solar);
+    --accent-dim: #C7401A;
+    --blue: var(--navy);
+    --orange: var(--signal);
+    --red: var(--cinnabar);
+    --green: var(--navy);
+    --gray: var(--text-faint);
+
+    --mono: "SF Mono", "Consolas", "Menlo", monospace;
+    --head: "Montserrat", "Segoe UI", sans-serif;
+    --sans: "Calibri", "Carlito", -apple-system, "Segoe UI", sans-serif;
+  }
+#tool-sync, #tool-sync *{box-sizing:border-box;}
+#tool-sync{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--sans); font-size:14px; line-height:1.5;
+  }
+#tool-sync .app{max-width:1100px; margin:0 auto; padding:32px 24px 80px;}
+#tool-sync .brandbar{display:flex; align-items:center; gap:12px; margin-bottom:22px;}
+#tool-sync .brandbar img{height:30px; width:auto; display:block;}
+#tool-sync header{margin-bottom:28px; position:relative;}
+#tool-sync header .eyebrow{
+    font-family:var(--head); font-weight:700; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--solar); margin-bottom:6px;
+  }
+#tool-sync h1{font-family:var(--head); font-weight:700; font-size:23px; margin:0 0 10px; letter-spacing:-.01em; color:var(--navy);}
+#tool-sync header p{color:var(--text-dim); margin:0; font-size:13.5px; max-width:640px;}
+#tool-sync .accent-rule{display:flex; align-items:center; gap:0; height:3px; margin:14px 0 0; max-width:340px;}
+#tool-sync .accent-rule .head{width:46px; height:100%; background:var(--solar);}
+#tool-sync .accent-rule .tail{flex:1; height:1px; background:var(--border);}
+#tool-sync #unsupported{
+    background:var(--cinnabar-tint); border:1px solid #F3B7AF; color:#7A241C;
+    padding:16px 18px; border-radius:8px; margin-top:20px; font-size:13.5px;
+  }
+#tool-sync #unsupported b{color:var(--cinnabar);}
+#tool-sync .folder-row{display:flex; gap:14px; margin:24px 0 16px;}
+#tool-sync .folder-card{
+    flex:1; background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:16px 18px; position:relative;
+  }
+#tool-sync .folder-card .role{
+    font-family:var(--head); font-weight:700; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--text-faint); margin-bottom:8px;
+  }
+#tool-sync .folder-card .role.target{color:var(--solar);}
+#tool-sync .folder-card .path{
+    font-family:var(--mono); font-size:13px; color:var(--text); min-height:20px;
+    word-break:break-all; margin-bottom:12px;
+  }
+#tool-sync .folder-card .path.empty{color:var(--text-faint); font-style:italic;}
+#tool-sync button.pick{
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    padding:7px 14px; border-radius:6px; font-size:12.5px; cursor:pointer; font-family:var(--sans);
+  }
+#tool-sync button.pick:hover{border-color:var(--solar); color:var(--solar);}
+#tool-sync .action-row{display:flex; align-items:center; gap:14px; margin:20px 0;}
+#tool-sync button.primary{
+    background:var(--solar); color:#fff; border:none; padding:10px 20px;
+    border-radius:7px; font-size:13.5px; font-weight:600; font-family:var(--head); cursor:pointer;
+  }
+#tool-sync button.primary:disabled{background:var(--panel-2); color:var(--text-faint); cursor:not-allowed;}
+#tool-sync button.primary:not(:disabled):hover{background:var(--accent-dim);}
+#tool-sync #scanStatus{color:var(--text-dim); font-size:13px; font-family:var(--mono);}
+#tool-sync #summary{
+    display:flex; gap:10px; flex-wrap:wrap; margin:22px 0;
+  }
+#tool-sync .stat{
+    background:var(--panel); border:1px solid var(--border); border-radius:8px;
+    padding:10px 14px; min-width:90px;
+  }
+#tool-sync .stat .n{font-size:19px; font-weight:700; font-family:var(--head);}
+#tool-sync .stat .l{font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em; margin-top:2px;}
+#tool-sync .stat.identical .n{color:var(--text-faint);}
+#tool-sync .stat.source-newer .n{color:var(--navy);}
+#tool-sync .stat.target-newer .n{color:var(--signal);}
+#tool-sync .stat.conflict .n{color:var(--cinnabar);}
+#tool-sync .stat.missing .n{color:var(--text-dim);}
+#tool-sync .filters{display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;}
+#tool-sync .filter-btn{
+    background:transparent; border:1px solid var(--border); color:var(--text-dim);
+    padding:6px 12px; border-radius:20px; font-size:12px; cursor:pointer; font-family:var(--sans);
+  }
+#tool-sync .filter-btn.active{background:var(--solar-tint); border-color:var(--solar); color:var(--accent-dim);}
+#tool-sync table{width:100%; border-collapse:collapse; font-size:13px;}
+#tool-sync thead th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--text-faint); border-bottom:1px solid var(--border); padding:8px 10px; font-weight:600;
+    font-family:var(--head);
+  }
+#tool-sync tbody tr{border-bottom:1px solid var(--border);}
+#tool-sync tbody tr:hover{background:var(--panel-2);}
+#tool-sync td{padding:9px 10px; vertical-align:middle;}
+#tool-sync .fname{font-family:var(--mono); font-size:12.5px;}
+#tool-sync .badge{
+    display:inline-block; padding:2px 9px; border-radius:20px; font-size:11px; font-weight:600;
+    font-family:var(--mono); letter-spacing:.02em;
+  }
+#tool-sync .badge.identical{background:var(--panel-2); color:var(--text-faint);}
+#tool-sync .badge.source-newer{background:var(--navy-tint); color:var(--navy);}
+#tool-sync .badge.target-newer{background:var(--signal-tint); color:#9C5D0E;}
+#tool-sync .badge.conflict{background:var(--cinnabar-tint); color:var(--cinnabar);}
+#tool-sync .badge.new-source{background:var(--navy-tint); color:var(--navy);}
+#tool-sync .badge.only-target{background:var(--champagne-tint); color:#8A6A2E;}
+#tool-sync .badge.no-history{background:var(--cinnabar-tint); color:var(--cinnabar);}
+#tool-sync .meta{color:var(--text-faint); font-size:11.5px; font-family:var(--mono);}
+#tool-sync .row-actions{display:flex; gap:6px; flex-wrap:wrap; align-items:center;}
+#tool-sync .row-actions button{
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    padding:4px 10px; border-radius:5px; font-size:11.5px; cursor:pointer; font-family:var(--sans);
+  }
+#tool-sync .row-actions button.push{color:var(--navy); border-color:#C3D2DA;}
+#tool-sync .row-actions button.pull{color:#9C5D0E; border-color:#EFD3A8;}
+#tool-sync .row-actions button.accept{color:#8A6A2E; border-color:#E4D2AC;}
+#tool-sync .choice-group{display:flex; gap:4px; align-items:center; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:3px;}
+#tool-sync .choice-group span.label{font-size:11px; color:var(--text-faint); padding:0 4px;}
+#tool-sync .choice-group button.copy{color:var(--solar); border-color:#F3C3B2;}
+#tool-sync .choice-group button.move{color:#9C5D0E; border-color:#EFD3A8;}
+#tool-sync .choice-group button.cancel{color:var(--text-faint);}
+#tool-sync .row-actions button:hover{filter:brightness(0.96);}
+#tool-sync .row-actions button:disabled{opacity:.4; cursor:default;}
+#tool-sync .row-actions .done{color:var(--navy); font-weight:600; font-size:11.5px; font-family:var(--mono);}
+#tool-sync th.chk, #tool-sync td.chk{width:30px; text-align:center; padding:6px 4px;}
+#tool-sync input[type=checkbox]{accent-color:var(--solar); cursor:pointer;}
+#tool-sync input[type=checkbox]:disabled{cursor:default; opacity:.25;}
+#tool-sync .toolbar{display:flex; align-items:flex-start; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
+#tool-sync .toolbar .filters{margin-bottom:0; flex:1;}
+#tool-sync #searchBox{
+    background:var(--panel); border:1px solid var(--border); color:var(--text);
+    border-radius:6px; padding:6px 10px; font-size:12.5px; font-family:var(--mono); width:190px;
+  }
+#tool-sync #searchBox:focus{outline:none; border-color:var(--solar);}
+#tool-sync #searchBox::placeholder{color:var(--text-faint);}
+#tool-sync #progressWrap{
+    display:none; height:6px; background:var(--panel-2); border:1px solid var(--border);
+    border-radius:4px; overflow:hidden; margin:0 0 16px;
+  }
+#tool-sync #progressBar{height:100%; width:0%; background:var(--solar); transition:width .12s linear;}
+#tool-sync #bulkBar{
+    display:none; position:fixed; left:50%; transform:translateX(-50%); bottom:22px; z-index:40;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:10px 14px; box-shadow:0 8px 30px rgba(16,63,95,.18);
+    align-items:center; gap:12px;
+  }
+#tool-sync #bulkBar.open{display:flex;}
+#tool-sync #bulkInfo{font-family:var(--mono); font-size:12px; color:var(--text-dim); white-space:nowrap;}
+#tool-sync #bulkBar button{
+    padding:7px 14px; border-radius:6px; font-size:12.5px; cursor:pointer; font-family:var(--sans);
+    border:1px solid var(--border); background:var(--panel-2); color:var(--text);
+  }
+#tool-sync #bulkBar button.bpush{color:var(--navy); border-color:#C3D2DA;}
+#tool-sync #bulkBar button.bpull{color:#9C5D0E; border-color:#EFD3A8;}
+#tool-sync #bulkBar button:disabled{opacity:.35; cursor:default;}
+#tool-sync #bulkBar button:not(:disabled):hover{filter:brightness(0.96);}
+#tool-sync .review-note{color:var(--text-dim); font-size:12px; margin-bottom:10px; font-family:var(--sans);}
+#tool-sync .review-list{margin:0 0 14px; max-height:40vh; overflow:auto; border:1px solid var(--border); border-radius:6px;}
+#tool-sync .review-list div{padding:5px 10px; border-bottom:1px solid var(--border); font-size:12px;
+    display:flex; justify-content:space-between; gap:10px; align-items:center;}
+#tool-sync .review-list div:last-child{border-bottom:none;}
+#tool-sync .review-actions{display:flex; gap:8px; align-items:center;}
+#tool-sync .review-actions button{
+    padding:8px 16px; border-radius:6px; font-size:13px; cursor:pointer; font-family:var(--sans);
+    border:1px solid var(--border); background:var(--panel-2); color:var(--text);
+  }
+#tool-sync .review-actions button.copy{color:var(--solar); border-color:#F3C3B2;}
+#tool-sync .review-actions button.move{color:#9C5D0E; border-color:#EFD3A8;}
+#tool-sync #results, #tool-sync #summary{display:none;}
+#tool-sync #empty-state{display:none; text-align:center; color:var(--text-dim); padding:40px 0;}
+#tool-sync .modal-backdrop{
+    display:none; position:fixed; inset:0; background:rgba(16,26,32,.5); z-index:50;
+    align-items:center; justify-content:center; padding:24px;
+  }
+#tool-sync .modal-backdrop.open{display:flex;}
+#tool-sync .modal{
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    width:100%; max-width:900px; max-height:85vh; display:flex; flex-direction:column; overflow:hidden;
+    box-shadow:0 20px 50px rgba(16,63,95,.22);
+  }
+#tool-sync .modal-head{
+    padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;
+  }
+#tool-sync .modal-head .fname{font-size:13px;}
+#tool-sync .modal-head button{background:none; border:none; color:var(--text-dim); font-size:18px; cursor:pointer;}
+#tool-sync .modal-body{padding:16px 18px; overflow:auto; font-family:var(--mono); font-size:12px;}
+#tool-sync .diff-cols{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+#tool-sync .diff-col h4{font-size:11px; text-transform:uppercase; color:var(--text-faint); margin:0 0 8px; letter-spacing:.06em; font-family:var(--head);}
+#tool-sync .diff-col pre{
+    background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:10px;
+    margin:0; white-space:pre-wrap; word-break:break-word; max-height:55vh; overflow:auto;
+  }
+#tool-sync .diff-line{display:block; padding:0 4px;}
+#tool-sync .diff-line.added{background:var(--navy-tint); color:var(--navy);}
+#tool-sync .diff-line.removed{background:var(--cinnabar-tint); color:#A32A21;}
+#tool-sync .binary-note{color:var(--text-dim); font-style:italic;}
+#tool-sync footer{margin-top:40px; color:var(--text-faint); font-size:11.5px; border-top:1px solid var(--border); padding-top:14px;}
+#tool-gen{
+    --canvas: #FAFAF8;
+    --panel: #F4F5F7;
+    --field: #FFFFFF;
+    --border: #D9D9D9;
+    --border-soft: #E6E7EA;
+    --ink: #1A1A1A;
+    --body: #3C3C3C;
+    --muted: #8A8A8A;
+    --navy: #103F5F;
+    --navy-tint: rgba(16,63,95,0.08);
+    --navy-tint-strong: rgba(16,63,95,0.14);
+    --orange: #F05323;
+    --orange-tint: rgba(240,83,35,0.10);
+    --signal: #F7941D;
+    --cinnabar: #EF4136;
+    --mist: #ABCED1;
+    --champagne: #E7D3B0;
+    --ok: #3C8F5B;
+    --ok-tint: rgba(60,143,91,0.10);
+    --danger: #EF4136;
+    --danger-tint: rgba(239,65,54,0.08);
+    --mono: ui-monospace, "Cascadia Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+    --sans: "Montserrat", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+#tool-gen, #tool-gen *{ box-sizing: border-box; }
+#tool-gen{ margin:0; padding:0; }
+#tool-gen{
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 32px 20px 60px;
+  }
+#tool-gen .wrap{ max-width: 1180px; margin: 0 auto; }
+#tool-gen .brand-header{
+    margin-bottom: 22px;
+  }
+#tool-gen .brand-header img{
+    height: 34px;
+    width: auto;
+    display: block;
+  }
+#tool-gen .eyebrow{
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin: 22px 0 6px;
+  }
+#tool-gen h1{
+    font-size: 28px;
+    margin: 0 0 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--navy);
+    font-family: var(--sans);
+  }
+#tool-gen .accent-rule{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+#tool-gen .accent-rule .bar{
+    width: 34px; height: 4px; border-radius: 2px;
+    background: var(--orange);
+  }
+#tool-gen .accent-rule .tail{
+    height: 1px; flex: 1; max-width: 130px;
+    background: var(--border);
+  }
+#tool-gen .sub{ color: var(--body); font-size: 14.5px; margin: 0 0 26px; max-width: 640px; line-height: 1.55; }
+#tool-gen .compat-banner{
+    display:none;
+    background: var(--danger-tint);
+    border: 1px solid var(--danger);
+    color: #8f2418;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    margin-bottom: 20px;
+  }
+#tool-gen .grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+@media (max-width: 900px){#tool-gen .grid{ grid-template-columns: 1fr; }}
+#tool-gen .panel{
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+  }
+#tool-gen .panel + .panel{ margin-top: 20px; }
+#tool-gen .panel h2{
+    font-family: var(--sans);
+    font-size: 12px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin: 0 0 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+#tool-gen .panel h2 img{
+    width: 15px; height: 15px; display:block;
+  }
+#tool-gen label{
+    display:block;
+    font-size: 12.5px;
+    color: var(--body);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+#tool-gen .field{ margin-bottom: 16px; }
+#tool-gen input[type="text"], #tool-gen input[type="number"], #tool-gen textarea{
+    width: 100%;
+    background: var(--field);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: 9px 11px;
+    border-radius: 5px;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+#tool-gen input[type="text"]:focus, #tool-gen input[type="number"]:focus, #tool-gen textarea:focus{
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px var(--orange-tint);
+  }
+#tool-gen input.mono{ font-family: var(--mono); }
+#tool-gen textarea{ resize: vertical; min-height: 40px; font-size: 13px; line-height: 1.4; font-family: var(--sans); }
+#tool-gen .status-toggle{
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+#tool-gen .status-toggle button{
+    flex: 1;
+    background: var(--field);
+    border: none;
+    color: var(--body);
+    padding: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: background .15s, color .15s;
+  }
+#tool-gen .status-toggle button.active.presales{ background: var(--navy); color: #ffffff; }
+#tool-gen .status-toggle button.active.awarded{ background: var(--orange); color: #ffffff; }
+#tool-gen .status-toggle button:not(.active):hover{ background: var(--navy-tint); }
+#tool-gen .num-row{ display:flex; gap: 12px; }
+#tool-gen .num-row .field{ flex: 1; }
+#tool-gen .pad-row{ display:flex; gap: 12px; }
+#tool-gen .pad-row .field{ flex: 1; margin-bottom: 0; }
+#tool-gen .hint{ font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+#tool-gen button.btn{
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--field);
+    color: var(--navy);
+    transition: border-color .15s, background .15s, color .15s;
+  }
+#tool-gen button.btn:hover{ border-color: var(--orange); color: var(--orange); }
+#tool-gen button.btn.primary{
+    background: var(--orange);
+    color: #ffffff;
+    border-color: var(--orange);
+  }
+#tool-gen button.btn.primary:hover{ background: var(--cinnabar); border-color: var(--cinnabar); color: #ffffff; }
+#tool-gen button.btn.primary:disabled{
+    background: var(--border);
+    color: #ffffff;
+    border-color: var(--border);
+    cursor: not-allowed;
+  }
+#tool-gen button.btn.ghost{ background: transparent; color: var(--body); }
+#tool-gen button.btn.ghost:hover{ color: var(--orange); }
+#tool-gen button.btn.small{ padding: 6px 10px; font-size: 12px; }
+#tool-gen button.btn.danger-ghost{ background: transparent; border-color: var(--border); color: var(--cinnabar); }
+#tool-gen button.btn.danger-ghost:hover{ border-color: var(--cinnabar); color: var(--cinnabar); }
+#tool-gen .btn-row{ display:flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+#tool-gen .parent-line{
+    display:flex; align-items:center; gap:10px; margin-bottom: 16px;
+    font-family: var(--mono); font-size: 12.5px; color: var(--body);
+  }
+#tool-gen .parent-line .path{ color: var(--navy); font-weight: 600; word-break: break-all; }
+#tool-gen .sf-row{
+    display: grid;
+    grid-template-columns: 1fr 1.4fr auto;
+    gap: 8px;
+    align-items: start;
+    margin-bottom: 8px;
+  }
+#tool-gen .sf-row input{ font-size: 13px; }
+#tool-gen .sf-row textarea{ font-size: 12.5px; min-height: 38px; }
+#tool-gen .sf-row .rm{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 5px;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+  }
+#tool-gen .sf-row .rm:hover{ border-color: var(--cinnabar); color: var(--cinnabar); }
+#tool-gen .sf-head{
+    display: grid;
+    grid-template-columns: 1fr 1.4fr auto;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+#tool-gen .folder-name-preview{
+    font-family: var(--mono);
+    font-size: 17px;
+    color: var(--ink);
+    background: var(--field);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+#tool-gen .chip{
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
+    padding: 4px 9px;
+    border-radius: 3px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+#tool-gen .chip.presales{ background: var(--navy); }
+#tool-gen .chip.awarded{ background: var(--orange); }
+#tool-gen .tree{ font-family: var(--mono); font-size: 13px; }
+#tool-gen .tree-row{
+    display:flex; align-items:flex-start; gap: 8px;
+    padding: 6px 0;
+    border-bottom: none;
+  }
+#tool-gen .tree-row:last-child{ border-bottom: none; }
+#tool-gen .folder-icon{ flex: none; margin-top: 1px; }
+#tool-gen .tree-name{ color: var(--ink); font-weight: 600; }
+#tool-gen .tree-note{ color: var(--muted); font-size: 11.5px; font-family: var(--sans); margin-top: 2px; }
+#tool-gen .log{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--field);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    height: 160px;
+    overflow-y: auto;
+    line-height: 1.7;
+  }
+#tool-gen .log .ok{ color: var(--ok); }
+#tool-gen .log .err{ color: var(--cinnabar); }
+#tool-gen .log .info{ color: var(--body); }
+#tool-gen .log .empty{ color: var(--muted); }
+#tool-gen .footer-note{
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+  }
+#tool-rename{
+    --ink:#103F5F;
+    --ink-soft:#2E6288;
+    --paper:#FBF9F4;
+    --card:#FFFFFF;
+    --line:#D9D9D9;
+    --accent:#F05323;
+    --accent-deep:#C23D14;
+    --success:#2E7D52;
+    --success-bg:#E9F5EE;
+    --danger:#EF4136;
+    --danger-bg:#FDEBEA;
+    --muted:#8A8A8A;
+    --sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --display:"Montserrat",ui-sans-serif,system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+#tool-rename, #tool-rename *{box-sizing:border-box;}
+#tool-rename{
+    margin:0;
+    font-family:var(--sans);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.5;
+  }
+#tool-rename a{color:var(--ink-soft);}
+#tool-rename .hero{
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 28px),
+      var(--ink);
+    color:#fff;
+    padding:40px 24px 32px;
+  }
+#tool-rename .hero-inner{max-width:760px;margin:0 auto;}
+#tool-rename .brand-logo{display:block;width:150px;height:auto;margin-bottom:22px;}
+#tool-rename .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#FFD9B3;
+    margin:0 0 10px;
+  }
+#tool-rename h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:32px;
+    margin:0 0 8px;
+    letter-spacing:-0.01em;
+  }
+#tool-rename .hero p{
+    margin:0;
+    color:#CBD9E6;
+    font-size:15px;
+    max-width:560px;
+  }
+#tool-rename main{max-width:760px;margin:0 auto;padding:28px 24px 80px;}
+#tool-rename .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:24px;
+    margin-bottom:20px;
+  }
+#tool-rename .card h2{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:17px;
+    margin:0 0 10px;
+    color:var(--ink);
+    position:relative;
+    padding-bottom:10px;
+  }
+#tool-rename .card h2::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:100%;
+    height:2px;
+    background:linear-gradient(to right, var(--accent) 0 32px, var(--line) 32px 100%);
+  }
+#tool-rename .card .hint{
+    color:var(--muted);
+    font-size:13px;
+    margin:0 0 18px;
+  }
+#tool-rename .field{margin-bottom:16px;}
+#tool-rename .field:last-child{margin-bottom:0;}
+#tool-rename label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+#tool-rename input[type="text"], #tool-rename input[type="date"]{
+    width:100%;
+    padding:11px 12px;
+    font-size:15px;
+    font-family:var(--sans);
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    color:var(--ink);
+  }
+#tool-rename input[type="text"]:focus, #tool-rename input[type="date"]:focus, #tool-rename button:focus-visible, #tool-rename .choice-btn:focus-visible{
+    outline:none;
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(232,136,58,0.22);
+  }
+#tool-rename input.invalid{border-color:var(--danger);}
+#tool-rename .field-error{font-size:12.5px;color:var(--danger);margin-top:5px;display:none;}
+#tool-rename .checkbox-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:14px;
+  }
+#tool-rename .checkbox-row label{margin:0;font-weight:500;font-size:13.5px;color:var(--ink-soft);cursor:pointer;}
+#tool-rename .checkbox-row input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;}
+#tool-rename .preview-text{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--ink-soft);
+    background:#F4F6F8;
+    border:1px solid var(--line);
+    border-radius:7px;
+    padding:9px 11px;
+    margin-top:14px;
+    word-break:break-all;
+  }
+#tool-rename .preview-text .num{color:var(--accent-deep);font-weight:600;}
+#tool-rename .choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media (max-width:560px){#tool-rename .choices{grid-template-columns:1fr;}}
+#tool-rename .choice-btn{
+    border:1.5px solid var(--line);
+    background:#fff;
+    border-radius:10px;
+    padding:18px 16px;
+    text-align:left;
+    cursor:pointer;
+    font-family:var(--sans);
+    transition:border-color .15s, transform .1s;
+  }
+#tool-rename .choice-btn:hover{border-color:var(--accent);}
+#tool-rename .choice-btn:active{transform:scale(0.99);}
+#tool-rename .choice-btn .icon{font-size:22px;}
+#tool-rename .choice-btn .title{
+    display:block;
+    font-weight:700;
+    font-size:15px;
+    margin:8px 0 4px;
+    color:var(--ink);
+  }
+#tool-rename .choice-btn .desc{font-size:12.5px;color:var(--muted);}
+#tool-rename input[type="file"]{display:none;}
+#tool-rename .note{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:14px;
+  }
+#tool-rename .banner{
+    border-radius:8px;
+    padding:11px 14px;
+    font-size:13.5px;
+    margin-top:14px;
+    display:none;
+  }
+#tool-rename .banner.danger{background:var(--danger-bg);color:var(--danger);}
+#tool-rename .banner.show{display:block;}
+#tool-rename table{width:100%;border-collapse:collapse;font-size:13.5px;}
+#tool-rename th{
+    text-align:left;
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--muted);
+    border-bottom:1.5px solid var(--line);
+    padding:0 8px 8px;
+  }
+#tool-rename td{
+    padding:9px 8px;
+    border-bottom:1px solid var(--line);
+    vertical-align:middle;
+  }
+#tool-rename tr.conflict td{background:var(--danger-bg);}
+#tool-rename .fname-old{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--muted);
+  }
+#tool-rename .fname-new{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--ink);
+  }
+#tool-rename .fname-new .num{color:var(--accent-deep);font-weight:700;}
+#tool-rename .arrow{color:var(--line);padding:0 2px;}
+#tool-rename .typetag{
+    font-size:11px;
+    padding:2px 7px;
+    border-radius:20px;
+    background:#F1F4F7;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+#tool-rename .conflict-msg{font-size:12px;color:var(--danger);margin-top:2px;}
+#tool-rename .table-wrap{max-height:380px;overflow-y:auto;border:1px solid var(--line);border-radius:8px;margin-bottom:18px;}
+#tool-rename .table-wrap table{margin:0;}
+#tool-rename .table-wrap th{position:sticky;top:0;background:#fff;}
+#tool-rename button.primary{
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    font-family:var(--sans);
+    font-weight:700;
+    font-size:14.5px;
+    padding:12px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+#tool-rename button.primary:hover{background:var(--accent-deep);}
+#tool-rename button.primary:disabled{background:#C9CFD6;cursor:not-allowed;}
+#tool-rename button.ghost{
+    background:transparent;
+    color:var(--ink-soft);
+    border:1.5px solid var(--line);
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:14px;
+    padding:11px 20px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+#tool-rename button.ghost:hover{border-color:var(--ink-soft);}
+#tool-rename .actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+#tool-rename .summary-row{display:flex;gap:20px;margin-bottom:16px;flex-wrap:wrap;}
+#tool-rename .stat{font-size:13.5px;color:var(--muted);}
+#tool-rename .stat b{color:var(--ink);font-size:15px;}
+#tool-rename .result-banner{
+    border-radius:10px;
+    padding:16px 18px;
+    margin-bottom:16px;
+  }
+#tool-rename .result-banner.ok{background:var(--success-bg);color:var(--success);}
+#tool-rename .result-banner.warn{background:#FFF4E8;color:var(--accent-deep);}
+#tool-rename .result-banner b{display:block;font-family:var(--display);font-size:16px;margin-bottom:2px;}
+#tool-rename .fail-list{font-family:var(--mono);font-size:12px;color:var(--danger);margin-top:6px;}
+#tool-rename .fail-list div{margin-top:3px;}
+#tool-rename .step-label{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--accent-deep);
+    background:#FFF1E2;
+    padding:2px 8px;
+    border-radius:5px;
+    margin-bottom:10px;
+    letter-spacing:.03em;
+  }
+#tool-rename footer{
+    max-width:760px;margin:0 auto;padding:0 24px 50px;
+    color:var(--muted);font-size:12.5px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html">← All tools</a>
+    <a href="site-survey.html">Site Survey</a>
+    <a href="solar-atap-toolkit.html">Solar ATAP Toolkit</a>
+    <a href="avera_solar_calc_suite.html">Solar PV Calc Suite</a>
+    <a href="avera-project-tools.html" class="current" aria-current="page">Project Tools</a>
+  </div>
+</nav>
+
+<div class="app-topbar">
+  <div class="app-topbar-inner">
+    <img class="app-logo" src="data:image/png;base64,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" alt="Avera Energy">
+    <div class="app-title">Avera Energy — Internal Tools</div>
+    <div class="app-tabs">
+      <button type="button" class="app-tab active" data-tool="sync">Folder Sync Checker</button>
+      <button type="button" class="app-tab" data-tool="gen">Project Folder Generator</button>
+      <button type="button" class="app-tab" data-tool="rename">File Renamer</button>
+    </div>
+  </div>
+</div>
+
+<div id="tool-sync" class="tool-panel" style="display:block;">
+
+<div class="app">
+    <header>
+    <div class="eyebrow">Reconciliation tool</div>
+    <h1>Folder Sync Checker</h1>
+    <p>Compares a source folder against the target (project) folder, tells you which files are newer where, flags anything edited directly in the target, and lets you push updates with one click.</p>
+    <div class="accent-rule"><div class="head"></div><div class="tail"></div></div>
+  </header>
+
+  <div id="unsupported">
+    <b>This tool needs Chrome or Edge.</b> It uses the File System Access API to read and write local folders directly, which Firefox and Safari don't support. Please reopen this file in Chrome or Edge.
+  </div>
+
+  <div id="main" hidden>
+    <div class="folder-row">
+      <div class="folder-card" id="sourceCard">
+        <div class="role">Source</div>
+        <div class="path empty" id="sourcePath">No folder selected</div>
+        <button class="pick" id="pickSource">Select Source Folder</button>
+      </div>
+      <div class="folder-card" id="targetCard">
+        <div class="role target">Target (project folder)</div>
+        <div class="path empty" id="targetPath">No folder selected</div>
+        <button class="pick" id="pickTarget">Select Target Folder</button>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="primary" id="compareBtn" disabled>Compare Folders</button>
+      <span id="scanStatus"></span>
+    </div>
+    <div id="progressWrap"><div id="progressBar"></div></div>
+
+    <div id="summary">
+      <div class="stat identical"><div class="n" id="statIdentical">0</div><div class="l">Identical</div></div>
+      <div class="stat source-newer"><div class="n" id="statSourceNewer">0</div><div class="l">Source newer</div></div>
+      <div class="stat target-newer"><div class="n" id="statTargetNewer">0</div><div class="l">Target edited</div></div>
+      <div class="stat conflict"><div class="n" id="statConflict">0</div><div class="l">Conflicts</div></div>
+      <div class="stat missing"><div class="n" id="statMissing">0</div><div class="l">Missing / new</div></div>
+    </div>
+
+    <div id="results">
+      <div class="toolbar">
+        <div class="filters" id="filters"></div>
+        <input id="searchBox" type="search" placeholder="Filter by filename…" autocomplete="off">
+        <button class="pick" id="exportCsv">Export CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th class="chk"><input type="checkbox" id="selectAll" title="Select all visible bulk-eligible rows"></th>
+            <th style="width:32%">File</th>
+            <th style="width:12%">Status</th>
+            <th style="width:20%">Source</th>
+            <th style="width:20%">Target</th>
+            <th style="width:14%">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div id="empty-state">Select both folders, then click Compare Folders to see results here.</div>
+  </div>
+
+  <div id="bulkBar">
+    <span id="bulkInfo"></span>
+    <button class="bpush" id="bulkPushBtn">Push Selected →</button>
+    <button class="bpull" id="bulkPullBtn">← Pull Selected</button>
+    <button id="bulkClearBtn">Clear</button>
+  </div>
+
+  <footer>
+    Sync history is stored as a hidden file (<span style="font-family:var(--mono)">.sync-log.json</span>) at the root of the target folder, so it travels with the project. Nothing is sent anywhere — all comparison and copying happens locally in your browser.
+  </footer>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="fname" id="modalTitle"></span>
+      <button id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+
+
+</div>
+
+<div id="tool-gen" class="tool-panel" style="display:none;">
+
+<div class="wrap">
+  
+
+  <div class="eyebrow">Project Setup</div>
+  <h1>Folder Set Generator</h1>
+  <div class="accent-rule"><span class="bar"></span><span class="tail"></span></div>
+  <p class="sub">Builds a project folder named to your PS-number / running-number convention, with your standard subfolders and a short note placed inside each one — so the structure is identical every time, and easy to adjust when a project needs something different.</p>
+
+  <div class="compat-banner" id="compatBanner">
+    This tool needs the File System Access API, available in Chrome or Edge on desktop. You can still plan the naming and subfolder list below, but folder creation is disabled in this browser.
+  </div>
+
+  <div class="grid">
+    <!-- LEFT: FORM -->
+    <div>
+      <div class="panel">
+        <h2><img src="data:image/png;base64,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" alt="">Project</h2>
+
+        <div class="field">
+          <label>Status</label>
+          <div class="status-toggle">
+            <button type="button" class="active presales" id="btnPresales">Pre-sales</button>
+            <button type="button" class="awarded" id="btnAwarded">Awarded</button>
+          </div>
+        </div>
+
+        <div class="num-row">
+          <div class="field">
+            <label id="numLabel">PS number</label>
+            <input type="text" inputmode="numeric" class="mono" id="numberInput" placeholder="e.g. 14">
+          </div>
+          <div class="field">
+            <label>Project name</label>
+            <input type="text" id="nameInput" placeholder="e.g. Kajang Solar Rooftop">
+          </div>
+        </div>
+
+        <div class="pad-row" id="padRow">
+          <div class="field">
+            <label>Pre-sales pad digits</label>
+            <input type="number" min="1" max="6" class="mono" id="psDigits" value="3">
+          </div>
+        </div>
+        <p class="hint" id="padHint">Controls the zero-padding — e.g. 3 digits turns "14" into "014".</p>
+      </div>
+
+      <div class="panel">
+        <h2><img src="data:image/png;base64,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" alt="">Where to create it</h2>
+        <div class="parent-line">
+          <span>Location:</span>
+          <span class="path" id="parentPath">none selected</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" id="pickBtn">Select parent folder…</button>
+          <button class="btn" id="saveTemplateBtn">Save this list as default here</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2><img src="data:image/png;base64,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" alt="">Subfolders</h2>
+        <div class="sf-head" id="sfHead">
+          <span>Name</span>
+          <span>Note placed inside (_ReadMe.txt)</span>
+          <span></span>
+        </div>
+        <div id="sfRows"></div>
+        <div class="btn-row">
+          <button class="btn small" id="addRowBtn">+ Add folder</button>
+          <button class="btn small ghost" id="resetBtn">Reset to defaults</button>
+          <button class="btn small danger-ghost" id="clearBtn">Clear list</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: PREVIEW + LOG -->
+    <div>
+      <div class="panel">
+        <h2><img src="data:image/png;base64,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" alt="">Preview</h2>
+        <div class="folder-name-preview">
+          <span class="chip presales" id="statusChip">PRE-SALES</span>
+          <span id="folderNamePreview">PS014_Project Name</span>
+        </div>
+        <div class="tree" id="treePreview"></div>
+      </div>
+
+      <div class="panel">
+        <h2><img src="data:image/png;base64,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" alt="">Create</h2>
+        <div class="btn-row" style="margin-bottom:14px;">
+          <button class="btn primary" id="generateBtn" disabled>Generate folder</button>
+        </div>
+        <div class="log" id="logBox"><span class="empty">Nothing created yet.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-note">Avera Energy Holdings Sdn. Bhd. — Internal Tool</div>
+</div>
+
+
+
+</div>
+
+<div id="tool-rename" class="tool-panel" style="display:none;">
+
+
+<div id="appContent">
+
+<div class="hero">
+  <div class="hero-inner">
+    
+    <p class="eyebrow">// batch file renamer</p>
+    <h1>Project File Renamer</h1>
+    <p>Rename a folder of survey photos and videos into one consistent format — no typing each name by hand, no terminal.</p>
+  </div>
+</div>
+
+<main>
+
+  <div class="card">
+    <span class="step-label">STEP 1</span>
+    <h2>Naming details</h2>
+    <p class="hint">These three fields become the start of every file name.</p>
+
+    <div class="field">
+      <label for="projectName">Project name or code</label>
+      <input type="text" id="projectName" placeholder="e.g. SiteA or PRJ-204">
+      <div class="field-error" id="err-project">Enter a project name or code.</div>
+    </div>
+
+    <div class="field">
+      <label for="category">Category / issue / comment</label>
+      <input type="text" id="category" placeholder="e.g. Defect, SiteSurvey, Progress">
+      <div class="field-error" id="err-category">Enter a category, issue, or comment.</div>
+    </div>
+
+    <div class="field">
+      <label for="dateInput">Date</label>
+      <input type="date" id="dateInput">
+    </div>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="dashDate">
+      <label for="dashDate">Use dashes in the date (2026-06-25 instead of 20260625)</label>
+    </div>
+    <div class="checkbox-row">
+      <input type="checkbox" id="padNumbers">
+      <label for="padNumbers">Pad numbers with leading zeros (01, 02… — useful for 10+ files so they sort correctly)</label>
+    </div>
+
+    <div class="preview-text" id="livePreview">projectname_category_20260625_<span class="num">1</span>.jpg</div>
+  </div>
+
+  <div class="card" id="selectCard">
+    <span class="step-label">STEP 2</span>
+    <h2>Choose your files</h2>
+    <p class="hint">Pick whichever option works on your computer — both lead to the same preview step before anything changes.</p>
+
+    <div class="choices">
+      <button class="choice-btn" id="btnFolder">
+        <span class="icon">📂</span>
+        <span class="title">Select a folder</span>
+        <span class="desc">Renames the files directly inside the folder. Works in Chrome and Edge.</span>
+      </button>
+      <button class="choice-btn" id="btnFiles">
+        <span class="icon">🗂️</span>
+        <span class="title">Choose files</span>
+        <span class="desc">Renames copies and downloads them as a ZIP. Works in any browser.</span>
+      </button>
+    </div>
+    <input type="file" id="fileInput" multiple accept="image/*,video/*">
+    <div class="banner danger" id="selectError"></div>
+  </div>
+
+  <div class="card" id="previewCard" style="display:none">
+    <span class="step-label">STEP 3</span>
+    <h2>Preview</h2>
+    <p class="hint">Nothing has been renamed yet. Check this list, then confirm.</p>
+
+    <div class="summary-row">
+      <span class="stat"><b id="countImages">0</b> images</span>
+      <span class="stat"><b id="countVideos">0</b> videos</span>
+    </div>
+
+    <div class="banner danger" id="conflictBanner">Some new names already exist as other files in this folder. Fix the conflicts below (try a different category) before continuing.</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Original name</th><th></th><th>New name</th></tr></thead>
+        <tbody id="previewBody"></tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="confirmBtn">Rename now</button>
+      <button class="ghost" id="cancelBtn">Cancel</button>
+    </div>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <span class="step-label">DONE</span>
+    <h2>Result</h2>
+    <div id="resultBody"></div>
+    <div class="actions">
+      <button class="primary" id="anotherBtn">Rename another folder</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Files never leave your computer, everything happens in your browser. Nothing is uploaded anywhere.<br>
+  Avera Energy Holdings Sdn. Bhd. — internal project tool.
+</footer>
+
+</div>
+
+
+
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.app-tab');
+  var panels = {
+    sync: document.getElementById('tool-sync'),
+    gen: document.getElementById('tool-gen'),
+    rename: document.getElementById('tool-rename')
+  };
+  tabs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tabs.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      Object.keys(panels).forEach(function(k){ panels[k].style.display = 'none'; });
+      panels[btn.getAttribute('data-tool')].style.display = 'block';
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+
+const LOG_FILE_NAME = '.sync-log.json';
+const IGNORE_NAMES = new Set(['.DS_Store', 'Thumbs.db', LOG_FILE_NAME, 'desktop.ini']);
+const TEXT_EXT = new Set(['txt','md','csv','json','js','ts','jsx','tsx','html','htm','css','xml','yaml','yml','log','ini','py','java','c','cpp','h','sql','bat','sh']);
+const MAX_DIFF_SIZE = 300000; // bytes
+const MAX_DIFF_LINES = 2000; // the diff algorithm is O(lines²) in memory — byte size alone doesn't bound this
+                              // (e.g. a 100KB file with 50,000 short lines will crash the tab without this cap)
+
+const supported = 'showDirectoryPicker' in window;
+document.getElementById('unsupported').style.display = supported ? 'none' : 'block';
+document.getElementById('main').hidden = !supported;
+
+let sourceHandle = null, targetHandle = null;
+let sourceFiles = new Map(); // relPath -> {file, handle, hash, size, mtime}
+let targetFiles = new Map();
+let syncLog = {}; // relPath -> { hash, syncedAt }
+let rows = [];
+let currentFilter = 'attention';
+let visibleRows = [];       // rows currently shown in the table (after filter + search)
+let selected = new Set();   // relPaths currently checked for bulk actions
+let searchQuery = '';       // lowercase filename filter
+
+// Conflicts and needs-review rows are deliberately excluded from bulk actions —
+// they involve edits on both sides (or unknown history) and must be resolved row-by-row.
+const BULK_PUSH_OK = new Set(['source-newer', 'new-source']);
+const BULK_PULL_OK = new Set(['target-newer', 'only-target']);
+function bulkEligible(status){ return BULK_PUSH_OK.has(status) || BULK_PULL_OK.has(status); }
+
+function ext(name){ const i = name.lastIndexOf('.'); return i === -1 ? '' : name.slice(i+1).toLowerCase(); }
+function fmtSize(n){
+  if(n == null) return '—';
+  if(n < 1024) return n + ' B';
+  if(n < 1024*1024) return (n/1024).toFixed(1) + ' KB';
+  return (n/1024/1024).toFixed(2) + ' MB';
+}
+function fmtDate(t){
+  if(!t) return '—';
+  const d = new Date(t);
+  return d.toLocaleString(undefined, {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+}
+
+const MAX_HASH_BYTES = 150 * 1024 * 1024; // ~150MB — beyond this, hashing whole-file-in-memory risks crashing the tab
+
+async function hashFile(file){
+  if(file.size > MAX_HASH_BYTES){
+    // Too large to safely read into memory for hashing. Fall back to a size+mtime fingerprint
+    // so the tool still works, just with less certainty than a real content hash.
+    return `nohash:${file.size}:${file.lastModified}`;
+  }
+  const buf = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+let scanErrors = [];
+
+// Phase 1: enumerate all file handles quickly (no reading), so the progress bar has a real total.
+async function collectEntries(dirHandle, relPath, list){
+  for await (const [name, handle] of dirHandle.entries()){
+    if(IGNORE_NAMES.has(name) || name.startsWith('~$')) continue;
+    // Normalize unicode (Mac/Windows can encode accented filenames differently — NFD vs NFC —
+    // which would otherwise make the same filename fail to match across source/target).
+    const cleanName = name.normalize('NFC');
+    const childPath = (relPath ? relPath + '/' + cleanName : cleanName);
+    if(handle.kind === 'directory'){
+      await collectEntries(handle, childPath, list);
+    } else {
+      list.push({ path: childPath, handle });
+    }
+  }
+}
+
+// Phase 2: read + hash each collected file, reporting progress after every file.
+async function hashEntries(list, map, onProgress){
+  for(let i = 0; i < list.length; i++){
+    const { path, handle } = list[i];
+    try{
+      const file = await handle.getFile();
+      const hash = await hashFile(file);
+      map.set(path, { file, handle, hash, size: file.size, mtime: file.lastModified });
+    } catch(e){
+      // A single locked/open/unreadable file (e.g. someone has it open in Excel) should not
+      // abort the entire comparison — skip it, note it, and keep going.
+      scanErrors.push({ path, message: e.message });
+    }
+    onProgress();
+    if((i + 1) % 10 === 0) await new Promise(r => setTimeout(r)); // let the UI repaint on big folders
+  }
+}
+
+function showProgress(){ document.getElementById('progressWrap').style.display = 'block'; setProgressPct(0); }
+function hideProgress(){ document.getElementById('progressWrap').style.display = 'none'; }
+function setProgressPct(pct){ document.getElementById('progressBar').style.width = Math.min(100, pct) + '%'; }
+
+async function loadSyncLog(){
+  try{
+    const fh = await targetHandle.getFileHandle(LOG_FILE_NAME);
+    const file = await fh.getFile();
+    const text = await file.text();
+    syncLog = JSON.parse(text);
+  } catch(e){
+    syncLog = {};
+  }
+}
+
+async function saveSyncLog(){
+  const fh = await targetHandle.getFileHandle(LOG_FILE_NAME, { create: true });
+  const writable = await fh.createWritable();
+  await writable.write(JSON.stringify(syncLog, null, 2));
+  await writable.close();
+}
+
+function classify(){
+  rows = [];
+  const allPaths = new Set([...sourceFiles.keys(), ...targetFiles.keys()]);
+  for(const path of allPaths){
+    const s = sourceFiles.get(path);
+    const t = targetFiles.get(path);
+    const log = syncLog[path];
+
+    if(s && t){
+      if(s.hash === t.hash){
+        rows.push({ path, status:'identical', s, t });
+        continue;
+      }
+      if(!log){
+        rows.push({ path, status:'no-history', s, t });
+        continue;
+      }
+      const sourceChanged = s.hash !== log.hash;
+      const targetChanged = t.hash !== log.hash;
+      if(sourceChanged && !targetChanged) rows.push({ path, status:'source-newer', s, t });
+      else if(!sourceChanged && targetChanged) rows.push({ path, status:'target-newer', s, t });
+      else rows.push({ path, status:'conflict', s, t });
+    } else if(s && !t){
+      rows.push({ path, status:'new-source', s, t:null });
+    } else if(!s && t){
+      rows.push({ path, status:'only-target', s:null, t });
+    }
+  }
+  rows.sort((a,b) => a.path.localeCompare(b.path));
+}
+
+function updateSummary(){
+  const counts = { identical:0, 'source-newer':0, 'target-newer':0, conflict:0, 'no-history':0, 'new-source':0, 'only-target':0 };
+  rows.forEach(r => counts[r.status]++);
+  document.getElementById('statIdentical').textContent = counts.identical;
+  document.getElementById('statSourceNewer').textContent = counts['source-newer'];
+  document.getElementById('statTargetNewer').textContent = counts['target-newer'];
+  document.getElementById('statConflict').textContent = counts.conflict + counts['no-history'];
+  document.getElementById('statMissing').textContent = counts['new-source'] + counts['only-target'];
+}
+
+const STATUS_LABEL = {
+  'identical':'Identical', 'source-newer':'Source newer', 'target-newer':'Target edited',
+  'conflict':'Conflict', 'no-history':'Needs review', 'new-source':'New in source', 'only-target':'Only in target'
+};
+
+function renderFilters(){
+  const groups = [
+    { key:'attention', label:'Needs attention' },
+    { key:'all', label:'All' },
+    { key:'identical', label:'Identical' },
+    { key:'source-newer', label:'Source newer' },
+    { key:'target-newer', label:'Target edited' },
+    { key:'conflict', label:'Conflicts' },
+    { key:'missing', label:'Missing / new' },
+  ];
+  const el = document.getElementById('filters');
+  el.innerHTML = '';
+  groups.forEach(g => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (currentFilter === g.key ? ' active' : '');
+    btn.textContent = g.label;
+    btn.onclick = () => { currentFilter = g.key; renderFilters(); renderTable(); };
+    el.appendChild(btn);
+  });
+}
+
+function matchesFilter(status){
+  if(currentFilter === 'all') return true;
+  if(currentFilter === 'attention') return status !== 'identical';
+  if(currentFilter === 'missing') return status === 'new-source' || status === 'only-target';
+  if(currentFilter === 'conflict') return status === 'conflict' || status === 'no-history';
+  return status === currentFilter;
+}
+
+function renderTable(){
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  const filtered = rows.filter(r =>
+    matchesFilter(r.status) && (!searchQuery || r.path.toLowerCase().includes(searchQuery))
+  );
+  visibleRows = filtered;
+  for(const r of filtered){
+    const tr = document.createElement('tr');
+
+    const tdChk = document.createElement('td');
+    tdChk.className = 'chk';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    if(bulkEligible(r.status)){
+      cb.checked = selected.has(r.path);
+      cb.onchange = () => {
+        if(cb.checked) selected.add(r.path); else selected.delete(r.path);
+        syncSelectAll();
+        updateBulkBar();
+      };
+    } else {
+      cb.disabled = true;
+      cb.title = r.status === 'identical'
+        ? 'Already in sync'
+        : 'Conflicts / needs-review must be handled individually';
+    }
+    tdChk.appendChild(cb);
+    tr.appendChild(tdChk);
+
+    const tdName = document.createElement('td');
+    tdName.innerHTML = `<span class="fname">${escapeHtml(r.path)}</span>`;
+    tr.appendChild(tdName);
+
+    const tdStatus = document.createElement('td');
+    tdStatus.innerHTML = `<span class="badge ${r.status}">${STATUS_LABEL[r.status]}</span>`;
+    tr.appendChild(tdStatus);
+
+    const tdSource = document.createElement('td');
+    tdSource.innerHTML = r.s ? `<span class="meta">${fmtSize(r.s.size)} · ${fmtDate(r.s.mtime)}</span>` : '<span class="meta">—</span>';
+    tr.appendChild(tdSource);
+
+    const tdTarget = document.createElement('td');
+    tdTarget.innerHTML = r.t ? `<span class="meta">${fmtSize(r.t.size)} · ${fmtDate(r.t.mtime)}</span>` : '<span class="meta">—</span>';
+    tr.appendChild(tdTarget);
+
+    const tdAction = document.createElement('td');
+    tdAction.appendChild(buildActions(r));
+    tr.appendChild(tdAction);
+
+    tbody.appendChild(tr);
+  }
+  document.getElementById('results').style.display = rows.length ? 'block' : 'none';
+  document.getElementById('empty-state').style.display = rows.length ? 'none' : 'block';
+  syncSelectAll();
+  updateBulkBar();
+}
+
+// Keep the header "select all" checkbox in step with the visible eligible rows.
+function syncSelectAll(){
+  const box = document.getElementById('selectAll');
+  const eligible = visibleRows.filter(r => bulkEligible(r.status));
+  const sel = eligible.filter(r => selected.has(r.path)).length;
+  box.disabled = eligible.length === 0;
+  box.checked = eligible.length > 0 && sel === eligible.length;
+  box.indeterminate = sel > 0 && sel < eligible.length;
+}
+
+function updateBulkBar(){
+  // Prune selections that are no longer bulk-eligible (e.g. just synced, or removed by a move).
+  const byPath = new Map(rows.map(r => [r.path, r]));
+  for(const p of [...selected]){
+    const r = byPath.get(p);
+    if(!r || !bulkEligible(r.status)) selected.delete(p);
+  }
+  const bar = document.getElementById('bulkBar');
+  if(selected.size === 0){ bar.classList.remove('open'); return; }
+  let pushable = 0, pullable = 0;
+  for(const p of selected){
+    const r = byPath.get(p);
+    if(BULK_PUSH_OK.has(r.status)) pushable++;
+    if(BULK_PULL_OK.has(r.status)) pullable++;
+  }
+  document.getElementById('bulkInfo').textContent =
+    `${selected.size} selected · ${pushable} pushable · ${pullable} pullable`;
+  document.getElementById('bulkPushBtn').disabled = pushable === 0;
+  document.getElementById('bulkPullBtn').disabled = pullable === 0;
+  bar.classList.add('open');
+}
+
+function buildActions(r){
+  const wrap = document.createElement('div');
+  wrap.className = 'row-actions';
+
+  if(r.status === 'identical'){
+    wrap.innerHTML = '<span class="meta">—</span>';
+    return wrap;
+  }
+
+  const canPreview = r.s && r.t && TEXT_EXT.has(ext(r.path));
+  if(canPreview){
+    const btn = document.createElement('button');
+    btn.textContent = 'Preview';
+    btn.onclick = () => previewRow(r);
+    wrap.appendChild(btn);
+  }
+
+  // Push: source -> target. Valid whenever a source file exists and isn't already identical.
+  if(r.s && (r.status === 'source-newer' || r.status === 'no-history' || r.status === 'conflict' || r.status === 'new-source')){
+    const btn = document.createElement('button');
+    btn.className = 'push';
+    btn.textContent = r.t ? 'Push Source →' : 'Add to Target';
+    btn.onclick = () => showChoice(wrap, btn, {
+      onCopy: () => pushAction(r, 'copy', wrap),
+      onMove: () => pushAction(r, 'move', wrap)
+    });
+    wrap.appendChild(btn);
+  }
+
+  // Pull: target -> source. Valid whenever a target file exists and isn't already identical.
+  if(r.t && (r.status === 'target-newer' || r.status === 'no-history' || r.status === 'conflict' || r.status === 'only-target')){
+    const btn = document.createElement('button');
+    btn.className = 'pull';
+    btn.textContent = r.s ? '← Pull Target' : 'Add to Source';
+    btn.onclick = () => showChoice(wrap, btn, {
+      onCopy: () => pullAction(r, 'copy', wrap),
+      onMove: () => pullAction(r, 'move', wrap)
+    });
+    wrap.appendChild(btn);
+  }
+
+  // Baseline-only resolutions (no file operation) — for genuine conflicts / bypass cases.
+  if(r.t && (r.status === 'target-newer' || r.status === 'no-history' || r.status === 'conflict')){
+    const btn = document.createElement('button');
+    btn.className = 'accept';
+    btn.textContent = 'Keep Target (no copy)';
+    btn.onclick = () => acceptBaseline(r, 't', wrap);
+    wrap.appendChild(btn);
+  }
+  if(r.s && (r.status === 'no-history' || r.status === 'conflict')){
+    const btn = document.createElement('button');
+    btn.className = 'accept';
+    btn.textContent = 'Keep Source (no copy)';
+    btn.onclick = () => acceptBaseline(r, 's', wrap);
+    wrap.appendChild(btn);
+  }
+
+  return wrap;
+}
+
+// Replaces a clicked action button with an inline Copy / Move / Cancel choice.
+function showChoice(wrap, triggerBtn, { onCopy, onMove }){
+  const others = Array.from(wrap.children).filter(el => el !== triggerBtn);
+  others.forEach(el => el.style.display = 'none');
+  triggerBtn.style.display = 'none';
+
+  const group = document.createElement('div');
+  group.className = 'choice-group';
+  group.innerHTML = `<span class="label">Copy or move?</span>`;
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'copy'; copyBtn.textContent = 'Copy';
+  copyBtn.onclick = () => { group.remove(); onCopy(); };
+
+  const moveBtn = document.createElement('button');
+  moveBtn.className = 'move'; moveBtn.textContent = 'Move';
+  moveBtn.onclick = () => { group.remove(); onMove(); };
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'cancel'; cancelBtn.textContent = 'Cancel';
+  cancelBtn.onclick = () => {
+    group.remove();
+    triggerBtn.style.display = '';
+    others.forEach(el => el.style.display = '');
+  };
+
+  group.appendChild(copyBtn);
+  group.appendChild(moveBtn);
+  group.appendChild(cancelBtn);
+  wrap.appendChild(group);
+}
+
+async function getDirHandleForPath(rootHandle, folderPath, create){
+  let dir = rootHandle;
+  if(!folderPath) return dir;
+  for(const part of folderPath.split('/')){
+    if(!part) continue;
+    dir = await dir.getDirectoryHandle(part, create ? { create: true } : undefined);
+  }
+  return dir;
+}
+
+async function writeFileTo(rootHandle, relPath, sourceFile){
+  const parts = relPath.split('/');
+  const fname = parts.pop();
+  const dir = await getDirHandleForPath(rootHandle, parts.join('/'), true);
+  const fh = await dir.getFileHandle(fname, { create: true });
+  const writable = await fh.createWritable();
+  await writable.write(sourceFile);
+  await writable.close();
+  return fh;
+}
+
+async function deleteFileAt(rootHandle, relPath){
+  const parts = relPath.split('/');
+  const fname = parts.pop();
+  const dir = await getDirHandleForPath(rootHandle, parts.join('/'), false);
+  await dir.removeEntry(fname);
+}
+
+// Core push: copy (or move) the source file into the target folder.
+// No UI and no log save here — shared by the single-row button and bulk runs.
+async function doPush(r, mode){
+  const fh = await writeFileTo(targetHandle, r.path, r.s.file);
+  const newFile = await fh.getFile();
+  const newHash = await hashFile(newFile);
+  targetFiles.set(r.path, { file: newFile, handle: fh, hash: newHash, size: newFile.size, mtime: newFile.lastModified });
+  r.t = targetFiles.get(r.path);
+
+  if(mode === 'move'){
+    await deleteFileAt(sourceHandle, r.path);
+    sourceFiles.delete(r.path);
+    r.s = null;
+    delete syncLog[r.path];
+    r.status = 'only-target';
+  } else {
+    syncLog[r.path] = { hash: newHash, syncedAt: Date.now() };
+    r.status = 'identical';
+  }
+}
+
+async function pushAction(r, mode, wrap){
+  wrap.innerHTML = '<span class="meta">Working…</span>';
+  try{
+    await doPush(r, mode);
+    await saveSyncLog();
+    updateSummary();
+    renderTable(); // rebuild so the badge cell and any active filter reflect the new status
+  } catch(e){
+    wrap.innerHTML = `<span class="meta" style="color:var(--red)">Failed: ${e.message}</span>`;
+  }
+}
+
+// Core pull: copy (or move) the target file into the source folder.
+async function doPull(r, mode){
+  const fh = await writeFileTo(sourceHandle, r.path, r.t.file);
+  const newFile = await fh.getFile();
+  const newHash = await hashFile(newFile);
+  sourceFiles.set(r.path, { file: newFile, handle: fh, hash: newHash, size: newFile.size, mtime: newFile.lastModified });
+  r.s = sourceFiles.get(r.path);
+
+  if(mode === 'move'){
+    await deleteFileAt(targetHandle, r.path);
+    targetFiles.delete(r.path);
+    r.t = null;
+    delete syncLog[r.path];
+    r.status = 'new-source';
+  } else {
+    syncLog[r.path] = { hash: newHash, syncedAt: Date.now() };
+    r.status = 'identical';
+  }
+}
+
+async function pullAction(r, mode, wrap){
+  wrap.innerHTML = '<span class="meta">Working…</span>';
+  try{
+    await doPull(r, mode);
+    await saveSyncLog();
+    updateSummary();
+    renderTable();
+  } catch(e){
+    wrap.innerHTML = `<span class="meta" style="color:var(--red)">Failed: ${e.message}</span>`;
+  }
+}
+
+// ---------- Bulk actions ----------
+
+let pendingBulk = null; // { direction: 'push'|'pull', items: row[] }
+
+// Review-before-apply: shows exactly what the batch will touch, then asks Copy or Move once.
+function openBulkReview(direction){
+  const okSet = direction === 'push' ? BULK_PUSH_OK : BULK_PULL_OK;
+  const byPath = new Map(rows.map(r => [r.path, r]));
+  const items = [...selected].map(p => byPath.get(p)).filter(r => r && okSet.has(r.status));
+  if(items.length === 0) return;
+  const skipped = selected.size - items.length;
+  items.sort((a, b) => a.path.localeCompare(b.path));
+  pendingBulk = { direction, items };
+
+  document.getElementById('modalTitle').textContent =
+    direction === 'push' ? `Push ${items.length} file(s): Source → Target` : `Pull ${items.length} file(s): Target → Source`;
+
+  const listHtml = items.map(r =>
+    `<div><span class="fname">${escapeHtml(r.path)}</span><span class="badge ${r.status}">${STATUS_LABEL[r.status]}</span></div>`
+  ).join('');
+
+  const skipNote = skipped
+    ? ` ${skipped} selected file(s) aren't eligible for this direction and will be skipped.`
+    : '';
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="review-note">Review the list below, then choose Copy (keep both sides) or Move (delete from the ${direction === 'push' ? 'source' : 'target'} after copying).${skipNote}</div>
+    <div class="review-list">${listHtml}</div>
+    <div class="review-actions">
+      <button class="copy" id="bulkCopyBtn">Copy all</button>
+      <button class="move" id="bulkMoveBtn">Move all</button>
+      <button id="bulkCancelBtn">Cancel</button>
+    </div>`;
+
+  document.getElementById('bulkCopyBtn').onclick = () => runBulk('copy');
+  document.getElementById('bulkMoveBtn').onclick = () => runBulk('move');
+  document.getElementById('bulkCancelBtn').onclick = () => {
+    pendingBulk = null;
+    document.getElementById('modalBackdrop').classList.remove('open');
+  };
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+
+async function runBulk(mode){
+  if(!pendingBulk) return;
+  const { direction, items } = pendingBulk;
+  pendingBulk = null;
+  document.getElementById('modalBackdrop').classList.remove('open');
+
+  const status = document.getElementById('scanStatus');
+  document.getElementById('bulkPushBtn').disabled = true;
+  document.getElementById('bulkPullBtn').disabled = true;
+  showProgress();
+
+  const failures = [];
+  for(let i = 0; i < items.length; i++){
+    const r = items[i];
+    status.textContent = `${direction === 'push' ? 'Pushing' : 'Pulling'} ${i + 1}/${items.length}: ${r.path}`;
+    setProgressPct((i / items.length) * 100);
+    try{
+      if(direction === 'push') await doPush(r, mode);
+      else await doPull(r, mode);
+    } catch(e){
+      // One failed file shouldn't stop the batch — record it and continue.
+      failures.push({ path: r.path, message: e.message });
+    }
+    if((i + 1) % 5 === 0) await new Promise(res => setTimeout(res)); // keep the UI responsive
+  }
+  setProgressPct(100);
+  await saveSyncLog(); // single save for the whole batch
+  hideProgress();
+
+  selected.clear();
+  updateSummary();
+  renderTable();
+
+  let msg = `Bulk ${direction} done — ${items.length - failures.length}/${items.length} succeeded.`;
+  if(failures.length){
+    msg += ' Failed: ' + failures.slice(0, 5).map(f => f.path).join(', ') + (failures.length > 5 ? ', …' : '');
+  }
+  status.textContent = msg;
+}
+
+// ---------- CSV export ----------
+
+function exportCsv(){
+  if(!rows.length) return;
+  const esc = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const lines = ['path,status,source_size_bytes,source_modified,target_size_bytes,target_modified'];
+  rows.forEach(r => {
+    lines.push([
+      esc(r.path),
+      esc(STATUS_LABEL[r.status]),
+      r.s ? r.s.size : '',
+      r.s ? new Date(r.s.mtime).toISOString() : '',
+      r.t ? r.t.size : '',
+      r.t ? new Date(r.t.mtime).toISOString() : ''
+    ].join(','));
+  });
+  const blob = new Blob([lines.join('\r\n')], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+  a.download = `sync-report-${stamp}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// Baseline-only resolution: no file is touched, just tells the log which side to trust going forward.
+async function acceptBaseline(r, side, wrap){
+  const hash = side === 't' ? r.t.hash : r.s.hash;
+  syncLog[r.path] = { hash, syncedAt: Date.now() };
+  await saveSyncLog();
+  r.status = 'identical';
+  updateSummary();
+  renderTable();
+}
+
+function diffLines(a, b){
+  const n = a.length, m = b.length;
+  const dp = Array.from({length: n+1}, () => new Array(m+1).fill(0));
+  for(let i = n-1; i >= 0; i--){
+    for(let j = m-1; j >= 0; j--){
+      dp[i][j] = a[i] === b[j] ? dp[i+1][j+1] + 1 : Math.max(dp[i+1][j], dp[i][j+1]);
+    }
+  }
+  let i=0, j=0; const out = [];
+  while(i < n && j < m){
+    if(a[i] === b[j]){ out.push({type:'same', line:a[i]}); i++; j++; }
+    else if(dp[i+1][j] >= dp[i][j+1]){ out.push({type:'removed', line:a[i]}); i++; }
+    else { out.push({type:'added', line:b[j]}); j++; }
+  }
+  while(i < n){ out.push({type:'removed', line:a[i]}); i++; }
+  while(j < m){ out.push({type:'added', line:b[j]}); j++; }
+  return out;
+}
+
+async function previewRow(r){
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+  title.textContent = r.path;
+  body.innerHTML = 'Loading preview…';
+  document.getElementById('modalBackdrop').classList.add('open');
+
+  if(r.s.size > MAX_DIFF_SIZE || r.t.size > MAX_DIFF_SIZE){
+    body.innerHTML = `<div class="binary-note">File too large to diff inline (over ${fmtSize(MAX_DIFF_SIZE)}). Source: ${fmtSize(r.s.size)}, Target: ${fmtSize(r.t.size)}.</div>`;
+    return;
+  }
+
+  const [srcText, tgtText] = await Promise.all([r.s.file.text(), r.t.file.text()]);
+  const srcLines = srcText.split('\n');
+  const tgtLines = tgtText.split('\n');
+
+  if(srcLines.length > MAX_DIFF_LINES || tgtLines.length > MAX_DIFF_LINES){
+    body.innerHTML = `<div class="binary-note">File has too many lines to diff safely in-browser (${srcLines.length} vs ${tgtLines.length} lines, cap is ${MAX_DIFF_LINES}). Showing raw content instead.</div>
+      <div class="diff-cols">
+        <div class="diff-col"><h4>Source</h4><pre>${escapeHtml(srcText.slice(0, 20000))}${srcText.length > 20000 ? '\n…(truncated)' : ''}</pre></div>
+        <div class="diff-col"><h4>Target</h4><pre>${escapeHtml(tgtText.slice(0, 20000))}${tgtText.length > 20000 ? '\n…(truncated)' : ''}</pre></div>
+      </div>`;
+    return;
+  }
+
+  const diff = diffLines(srcLines, tgtLines);
+
+  const srcHtml = diff.filter(d => d.type !== 'added').map(d =>
+    `<span class="diff-line ${d.type==='removed'?'removed':''}">${escapeHtml(d.line)}</span>`).join('\n');
+  const tgtHtml = diff.filter(d => d.type !== 'removed').map(d =>
+    `<span class="diff-line ${d.type==='added'?'added':''}">${escapeHtml(d.line)}</span>`).join('\n');
+
+  body.innerHTML = `
+    <div class="diff-cols">
+      <div class="diff-col"><h4>Source</h4><pre>${srcHtml}</pre></div>
+      <div class="diff-col"><h4>Target</h4><pre>${tgtHtml}</pre></div>
+    </div>`;
+}
+
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+document.getElementById('modalClose').onclick = () => {
+  pendingBulk = null;
+  document.getElementById('modalBackdrop').classList.remove('open');
+};
+document.getElementById('modalBackdrop').onclick = (e) => {
+  if(e.target.id === 'modalBackdrop'){ pendingBulk = null; e.currentTarget.classList.remove('open'); }
+};
+
+document.getElementById('searchBox').oninput = (e) => {
+  searchQuery = e.target.value.trim().toLowerCase();
+  renderTable();
+};
+document.getElementById('exportCsv').onclick = exportCsv;
+
+document.getElementById('selectAll').onchange = (e) => {
+  const eligible = visibleRows.filter(r => bulkEligible(r.status));
+  if(e.target.checked) eligible.forEach(r => selected.add(r.path));
+  else eligible.forEach(r => selected.delete(r.path));
+  renderTable();
+};
+
+document.getElementById('bulkPushBtn').onclick = () => openBulkReview('push');
+document.getElementById('bulkPullBtn').onclick = () => openBulkReview('pull');
+document.getElementById('bulkClearBtn').onclick = () => { selected.clear(); renderTable(); };
+
+document.getElementById('pickSource').onclick = async () => {
+  try{
+    sourceHandle = await window.showDirectoryPicker();
+    document.getElementById('sourcePath').textContent = sourceHandle.name;
+    document.getElementById('sourcePath').classList.remove('empty');
+    checkReady();
+  } catch(e){ /* user cancelled */ }
+};
+
+document.getElementById('pickTarget').onclick = async () => {
+  try{
+    targetHandle = await window.showDirectoryPicker();
+    document.getElementById('targetPath').textContent = targetHandle.name;
+    document.getElementById('targetPath').classList.remove('empty');
+    checkReady();
+  } catch(e){ /* user cancelled */ }
+};
+
+function checkReady(){
+  document.getElementById('compareBtn').disabled = !(sourceHandle && targetHandle);
+}
+
+document.getElementById('compareBtn').onclick = async () => {
+  const status = document.getElementById('scanStatus');
+  const btn = document.getElementById('compareBtn');
+  btn.disabled = true;
+  status.textContent = 'Listing files…';
+  sourceFiles = new Map();
+  targetFiles = new Map();
+  scanErrors = [];
+  selected.clear();
+  try{
+    const srcList = [], tgtList = [];
+    await collectEntries(sourceHandle, '', srcList);
+    await collectEntries(targetHandle, '', tgtList);
+
+    const total = srcList.length + tgtList.length;
+    showProgress();
+    let done = 0;
+    const tick = () => {
+      done++;
+      setProgressPct(total ? (done / total) * 100 : 100);
+      status.textContent = `Hashing files… ${done}/${total}`;
+    };
+    await hashEntries(srcList, sourceFiles, tick);
+    await hashEntries(tgtList, targetFiles, tick);
+    hideProgress();
+
+    status.textContent = 'Loading sync history…';
+    await loadSyncLog();
+
+    // Drop log entries for files that no longer exist on either side, so the log doesn't
+    // accumulate cruft for files that were deleted or moved outside this tool.
+    for(const path of Object.keys(syncLog)){
+      if(!sourceFiles.has(path) && !targetFiles.has(path)) delete syncLog[path];
+    }
+
+    classify();
+    updateSummary();
+    renderFilters();
+    renderTable();
+    document.getElementById('summary').style.display = 'flex';
+    let msg = `Done — ${sourceFiles.size} source files, ${targetFiles.size} target files.`;
+    if(scanErrors.length){
+      msg += ` ${scanErrors.length} file(s) skipped (couldn't be read — likely open in another program): ` +
+        scanErrors.slice(0, 5).map(e => e.path).join(', ') + (scanErrors.length > 5 ? ', …' : '');
+    }
+    status.textContent = msg;
+  } catch(e){
+    hideProgress();
+    status.textContent = 'Error: ' + e.message;
+  }
+  btn.disabled = false;
+};
+
+})();
+</script>
+
+<script>
+(function(){
+
+const FOLDER_ICON = `<svg class="folder-icon" width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0.5 1.5C0.5 0.947715 0.947715 0.5 1.5 0.5H5L6.5 2H12.5C13.0523 2 13.5 2.44772 13.5 3V10.5C13.5 11.0523 13.0523 11.5 12.5 11.5H1.5C0.947715 11.5 0.5 11.0523 0.5 10.5V1.5Z" stroke="#103F5F" stroke-width="1"/>
+</svg>`;
+
+const DEFAULT_SUBFOLDERS = [
+  {name:"01 Site Visit", note:"Site survey reports, photos, roof/land measurements, shading analysis, access notes."},
+  {name:"02 Design & Proposal", note:"System design drawings, single line diagram (SLD), sizing calculations, and the proposal/quotation sent to the client."},
+  {name:"03 Letters & Approvals", note:"Official correspondence, cover letters, and approval or acknowledgement letters to and from authorities or the client."},
+  {name:"04 SARE Agreements", note:"Signed SARE agreements and related contractual documents for this project."},
+  {name:"05 Engineering & Licensing", note:"Engineering drawings, technical specifications, and licensing or permit submissions (e.g. JPN, Suruhanjaya Tenaga)."},
+  {name:"06 Procurement", note:"Purchase orders, supplier quotations, delivery orders, and equipment procurement records."},
+  {name:"07 Construction", note:"Installation records, work progress photos, site diaries, and construction-phase documentation."},
+  {name:"08 Commissioning & O&M", note:"Commissioning test reports, handover documents, and ongoing operations & maintenance records."}
+];
+
+let subfolders = []; // starts empty — user loads the Avera default set or builds their own
+let statusType = 'presales'; // 'presales' | 'awarded'
+let parentHandle = null;
+
+const $ = (id) => document.getElementById(id);
+const numberInput = $('numberInput');
+const nameInput = $('nameInput');
+const psDigitsInput = $('psDigits');
+const numLabel = $('numLabel');
+const padRow = $('padRow');
+const padHint = $('padHint');
+const sfRowsEl = $('sfRows');
+const sfHeadEl = $('sfHead');
+const folderNamePreview = $('folderNamePreview');
+const statusChip = $('statusChip');
+const treePreview = $('treePreview');
+const parentPathEl = $('parentPath');
+const generateBtn = $('generateBtn');
+const logBox = $('logBox');
+
+function sanitize(str){
+  return (str || '').replace(/[\\\/:\*\?"<>\|]/g, '').replace(/\s+/g,' ').trim();
+}
+
+function computeFolderName(){
+  const num = numberInput.value.trim();
+  let prefix;
+  if(statusType === 'presales'){
+    const digits = parseInt(psDigitsInput.value||'3',10);
+    prefix = (num && !isNaN(num)) ? ('PS'+String(parseInt(num,10)).padStart(digits,'0')) : 'PS???';
+  } else {
+    // Awarded: use the running number exactly as given by Finance — no padding, no reformatting.
+    prefix = sanitize(num) || '????';
+  }
+  const projectName = sanitize(nameInput.value.trim()) || 'Project Name';
+  return `${prefix}_${projectName}`;
+}
+
+function renderRows(){
+  sfRowsEl.innerHTML = '';
+
+  if(subfolders.length === 0){
+    if(sfHeadEl) sfHeadEl.style.display = 'none';
+    sfRowsEl.innerHTML = `
+      <div class="sf-empty">
+        <p class="hint" style="margin:0 0 12px;">No subfolders yet. Load the standard Avera set, or add folders one by one below.</p>
+        <button type="button" class="btn primary" id="loadDefaultsBtn">Load default subfolders (8)</button>
+      </div>
+    `;
+    const loadBtn = document.getElementById('loadDefaultsBtn');
+    if(loadBtn){
+      loadBtn.addEventListener('click', () => {
+        subfolders = JSON.parse(JSON.stringify(DEFAULT_SUBFOLDERS));
+        renderRows();
+        updatePreview();
+      });
+    }
+  } else {
+    if(sfHeadEl) sfHeadEl.style.display = '';
+    subfolders.forEach((sf, idx) => {
+      const row = document.createElement('div');
+      row.className = 'sf-row';
+      row.innerHTML = `
+        <input type="text" class="mono sf-name" data-idx="${idx}" value="${escapeAttr(sf.name)}">
+        <textarea class="sf-note" data-idx="${idx}">${escapeHtml(sf.note)}</textarea>
+        <button type="button" class="rm" data-idx="${idx}" title="Remove">×</button>
+      `;
+      sfRowsEl.appendChild(row);
+    });
+
+    sfRowsEl.querySelectorAll('.sf-name').forEach(el => {
+      el.addEventListener('input', e => {
+        subfolders[+e.target.dataset.idx].name = e.target.value;
+        updatePreview();
+      });
+    });
+    sfRowsEl.querySelectorAll('.sf-note').forEach(el => {
+      el.addEventListener('input', e => {
+        subfolders[+e.target.dataset.idx].note = e.target.value;
+        updatePreview();
+      });
+    });
+    sfRowsEl.querySelectorAll('.rm').forEach(el => {
+      el.addEventListener('click', e => {
+        subfolders.splice(+e.target.dataset.idx, 1);
+        renderRows();
+        updatePreview();
+      });
+    });
+  }
+}
+
+function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
+function escapeHtml(s){ return (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function updatePreview(){
+  const name = computeFolderName();
+  folderNamePreview.textContent = name;
+  statusChip.textContent = statusType === 'presales' ? 'PRE-SALES' : 'AWARDED';
+  statusChip.className = 'chip ' + (statusType === 'presales' ? 'presales' : 'awarded');
+
+  treePreview.innerHTML = subfolders.map(sf => `
+    <div class="tree-row">
+      ${FOLDER_ICON}
+      <div>
+        <div class="tree-name">${escapeHtml(sf.name) || '(unnamed)'}</div>
+        <div class="tree-note">${escapeHtml(sf.note) || 'No note added'}</div>
+      </div>
+    </div>
+  `).join('') || '<span class="hint">No subfolders yet — add at least one.</span>';
+
+  generateBtn.disabled = !parentHandle || !supportsFS();
+}
+
+function supportsFS(){ return typeof window.showDirectoryPicker === 'function'; }
+
+function logLine(msg, cls){
+  if(logBox.querySelector('.empty')) logBox.innerHTML = '';
+  const line = document.createElement('div');
+  if(cls) line.className = cls;
+  line.textContent = msg;
+  logBox.appendChild(line);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+function clearLog(){ logBox.innerHTML = ''; }
+
+// status toggle
+$('btnPresales').addEventListener('click', () => {
+  statusType = 'presales';
+  $('btnPresales').classList.add('active');
+  $('btnAwarded').classList.remove('active');
+  numLabel.textContent = 'PS number';
+  numberInput.placeholder = 'e.g. 14';
+  padRow.style.display = '';
+  padHint.style.display = '';
+  updatePreview();
+});
+$('btnAwarded').addEventListener('click', () => {
+  statusType = 'awarded';
+  $('btnAwarded').classList.add('active');
+  $('btnPresales').classList.remove('active');
+  numLabel.textContent = 'Running number (from Finance)';
+  numberInput.placeholder = 'e.g. 0245 — used exactly as given';
+  padRow.style.display = 'none';
+  padHint.style.display = 'none';
+  updatePreview();
+});
+
+[numberInput, nameInput, psDigitsInput].forEach(el => {
+  el.addEventListener('input', updatePreview);
+});
+
+$('addRowBtn').addEventListener('click', () => {
+  subfolders.push({name:'New Folder', note:''});
+  renderRows();
+  updatePreview();
+});
+$('resetBtn').addEventListener('click', () => {
+  if(confirm('Reset the subfolder list to the default 8? This clears any changes you made.')){
+    subfolders = JSON.parse(JSON.stringify(DEFAULT_SUBFOLDERS));
+    renderRows();
+    updatePreview();
+  }
+});
+$('clearBtn').addEventListener('click', () => {
+  if(subfolders.length === 0){ return; }
+  subfolders = [];
+  renderRows();
+  updatePreview();
+});
+
+$('pickBtn').addEventListener('click', async () => {
+  if(!supportsFS()){ return; }
+  try{
+    parentHandle = await window.showDirectoryPicker();
+    parentPathEl.textContent = parentHandle.name;
+    logLine(`Selected folder: ${parentHandle.name}`, 'info');
+    await tryLoadTemplate();
+    updatePreview();
+  } catch(e){
+    if(e.name !== 'AbortError'){
+      logLine(`Could not open folder picker: ${e.message}`, 'err');
+    }
+  }
+});
+
+async function tryLoadTemplate(){
+  try{
+    const fileHandle = await parentHandle.getFileHandle('.project-template.json');
+    const file = await fileHandle.getFile();
+    const data = JSON.parse(await file.text());
+    if(Array.isArray(data.subfolders) && data.subfolders.length){
+      subfolders = data.subfolders;
+    }
+    if(data.psDigits) psDigitsInput.value = data.psDigits;
+    renderRows();
+    const savedNote = data.savedAt ? ` (saved ${new Date(data.savedAt).toLocaleDateString()})` : '';
+    logLine(`Loaded saved subfolder template from this location${savedNote}.`, 'ok');
+  } catch(e){
+    logLine('No saved template here yet — using current list.', 'info');
+  }
+}
+
+$('saveTemplateBtn').addEventListener('click', async () => {
+  if(!parentHandle){ alert('Select a parent folder first.'); return; }
+  try{
+    const data = {
+      subfolders,
+      psDigits: parseInt(psDigitsInput.value||'3',10),
+      savedAt: new Date().toISOString()
+    };
+    const fileHandle = await parentHandle.getFileHandle('.project-template.json', {create:true});
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(data, null, 2));
+    await writable.close();
+    logLine('Saved this subfolder list as the default for this location.', 'ok');
+  } catch(e){
+    logLine(`Could not save template: ${e.message}`, 'err');
+  }
+});
+
+$('generateBtn').addEventListener('click', async () => {
+  if(!parentHandle){ alert('Select a parent folder first.'); return; }
+  const projectNameRaw = sanitize(nameInput.value.trim());
+  if(!projectNameRaw){ alert('Enter a project name.'); return; }
+  const numRaw = numberInput.value.trim();
+  if(!numRaw){ alert(statusType === 'presales' ? 'Enter a PS number.' : 'Enter the running number from Finance.'); return; }
+  if(statusType === 'presales' && isNaN(numRaw)){ alert('PS number should be numeric.'); return; }
+  if(!subfolders.length){ alert('Add at least one subfolder.'); return; }
+
+  const folderName = computeFolderName();
+
+  let exists = false;
+  try{
+    await parentHandle.getDirectoryHandle(folderName, {create:false});
+    exists = true;
+  } catch(e){ exists = false; }
+
+  if(exists){
+    const proceed = confirm(`"${folderName}" already exists here. Continue and add/update its subfolders?`);
+    if(!proceed) return;
+  }
+
+  clearLog();
+  logLine(`Creating "${folderName}"...`, 'info');
+
+  let projectHandle;
+  try{
+    projectHandle = await parentHandle.getDirectoryHandle(folderName, {create:true});
+  } catch(e){
+    logLine(`Failed to create project folder: ${e.message}`, 'err');
+    return;
+  }
+
+  for(const sf of subfolders){
+    const name = sanitize(sf.name);
+    if(!name){ continue; }
+    try{
+      const subHandle = await projectHandle.getDirectoryHandle(name, {create:true});
+      try{
+        const noteText = sf.note && sf.note.trim() ? sf.note.trim() : 'Add a note on what belongs in this folder.';
+        const fileHandle = await subHandle.getFileHandle('_ReadMe.txt', {create:true});
+        const writable = await fileHandle.createWritable();
+        await writable.write(noteText);
+        await writable.close();
+        logLine(`✓ ${name}`, 'ok');
+      } catch(fileErr){
+        logLine(`⚠ ${name} — folder created, but note file failed (${fileErr.message})`, 'err');
+      }
+    } catch(dirErr){
+      logLine(`✗ ${name} — could not create (${dirErr.message})`, 'err');
+    }
+  }
+  logLine(`Done. "${folderName}" is ready.`, 'ok');
+});
+
+// init
+if(!supportsFS()){
+  $('compatBanner').style.display = 'block';
+  $('pickBtn').disabled = true;
+  $('saveTemplateBtn').disabled = true;
+}
+renderRows();
+updatePreview();
+
+})();
+</script>
+
+<script>
+
+(function(){
+  // ---------- Renamer tool ----------
+  const IMAGE_EXT = new Set(['jpg','jpeg','png','gif','bmp','webp','heic','heif','tif','tiff']);
+  const VIDEO_EXT = new Set(['mp4','mov','avi','mkv','wmv','m4v','3gp','webm']);
+
+  const els = {
+    projectName: document.getElementById('projectName'),
+    category: document.getElementById('category'),
+    dateInput: document.getElementById('dateInput'),
+    dashDate: document.getElementById('dashDate'),
+    padNumbers: document.getElementById('padNumbers'),
+    livePreview: document.getElementById('livePreview'),
+    errProject: document.getElementById('err-project'),
+    errCategory: document.getElementById('err-category'),
+    btnFolder: document.getElementById('btnFolder'),
+    btnFiles: document.getElementById('btnFiles'),
+    fileInput: document.getElementById('fileInput'),
+    selectError: document.getElementById('selectError'),
+    selectCard: document.getElementById('selectCard'),
+    previewCard: document.getElementById('previewCard'),
+    previewBody: document.getElementById('previewBody'),
+    countImages: document.getElementById('countImages'),
+    countVideos: document.getElementById('countVideos'),
+    conflictBanner: document.getElementById('conflictBanner'),
+    confirmBtn: document.getElementById('confirmBtn'),
+    cancelBtn: document.getElementById('cancelBtn'),
+    resultCard: document.getElementById('resultCard'),
+    resultBody: document.getElementById('resultBody'),
+    anotherBtn: document.getElementById('anotherBtn'),
+  };
+
+  // Default date = today
+  els.dateInput.value = new Date().toISOString().slice(0,10);
+
+  let mode = null;          // 'folder' | 'zip'
+  let dirHandleRef = null;  // FileSystemDirectoryHandle, for folder mode
+  let currentPlan = [];     // array of plan items
+  let hasConflict = false;
+
+  function sanitize(str){
+    return String(str || '')
+      .trim()
+      .replace(/\s+/g,'_')
+      .replace(/[^a-zA-Z0-9_-]/g,'')
+      .replace(/_+/g,'_')
+      .replace(/^_+|_+$/g,'');
+  }
+
+  function getExt(name){
+    const m = name.match(/\.([^.]+)$/);
+    return m ? m[1].toLowerCase() : '';
+  }
+
+  function naturalSort(a,b){
+    return a.localeCompare(b, undefined, {numeric:true, sensitivity:'base'});
+  }
+
+  function formatDate(){
+    const val = els.dateInput.value;
+    let y,m,d;
+    if(val){
+      [y,m,d] = val.split('-');
+    } else {
+      const now = new Date();
+      y = now.getFullYear();
+      m = String(now.getMonth()+1).padStart(2,'0');
+      d = String(now.getDate()).padStart(2,'0');
+    }
+    return els.dashDate.checked ? `${y}-${m}-${d}` : `${y}${m}${d}`;
+  }
+
+  function updateLivePreview(){
+    const project = sanitize(els.projectName.value) || 'projectname';
+    const category = sanitize(els.category.value) || 'category';
+    const date = formatDate();
+    els.livePreview.innerHTML = `${project}_${category}_${date}_<span class="num">1</span>.jpg`;
+  }
+  ['input'].forEach(evt=>{
+    els.projectName.addEventListener(evt, updateLivePreview);
+    els.category.addEventListener(evt, updateLivePreview);
+  });
+  els.dateInput.addEventListener('change', updateLivePreview);
+  els.dashDate.addEventListener('change', updateLivePreview);
+  updateLivePreview();
+
+  function validateInputs(){
+    let ok = true;
+    if(!sanitize(els.projectName.value)){
+      els.projectName.classList.add('invalid');
+      els.errProject.style.display = 'block';
+      ok = false;
+    } else {
+      els.projectName.classList.remove('invalid');
+      els.errProject.style.display = 'none';
+    }
+    if(!sanitize(els.category.value)){
+      els.category.classList.add('invalid');
+      els.errCategory.style.display = 'block';
+      ok = false;
+    } else {
+      els.category.classList.remove('invalid');
+      els.errCategory.style.display = 'none';
+    }
+    return ok;
+  }
+
+  function classify(name){
+    const ext = getExt(name);
+    if(IMAGE_EXT.has(ext)) return 'image';
+    if(VIDEO_EXT.has(ext)) return 'video';
+    return null;
+  }
+
+  // entries: [{name, type, ext, ...ref}]
+  function buildRenamePlan(entries){
+    const project = sanitize(els.projectName.value) || 'project';
+    const category = sanitize(els.category.value) || 'misc';
+    const date = formatDate();
+    const pad = els.padNumbers.checked;
+
+    const images = entries.filter(e=>e.type==='image').sort((a,b)=>naturalSort(a.name,b.name));
+    const videos = entries.filter(e=>e.type==='video').sort((a,b)=>naturalSort(a.name,b.name));
+
+    const imgWidth = pad ? String(images.length).length : 0;
+    const vidWidth = pad ? String(videos.length).length : 0;
+
+    const plan = [];
+    images.forEach((e,i)=>{
+      const num = pad ? String(i+1).padStart(Math.max(imgWidth,2),'0') : String(i+1);
+      plan.push(Object.assign({}, e, {
+        newName: `${project}_${category}_${date}_${num}.${e.ext}`,
+        numLabel: num
+      }));
+    });
+    videos.forEach((e,i)=>{
+      const num = pad ? 'v'+String(i+1).padStart(Math.max(vidWidth,2),'0') : 'v'+(i+1);
+      plan.push(Object.assign({}, e, {
+        newName: `${project}_${category}_${date}_${num}.${e.ext}`,
+        numLabel: num
+      }));
+    });
+    return plan;
+  }
+
+  function renderPreview(plan, otherExistingNames){
+    currentPlan = plan;
+    hasConflict = false;
+
+    const newNameSet = new Set();
+    els.previewBody.innerHTML = '';
+    let imgCount = 0, vidCount = 0;
+
+    plan.forEach(item=>{
+      if(item.type==='image') imgCount++; else vidCount++;
+
+      let conflict = false;
+      if(newNameSet.has(item.newName)) conflict = true;
+      if(otherExistingNames && otherExistingNames.has(item.newName) && item.newName !== item.name) conflict = true;
+      newNameSet.add(item.newName);
+      if(conflict) hasConflict = true;
+
+      const tr = document.createElement('tr');
+      if(conflict) tr.className = 'conflict';
+
+      const icon = item.type === 'image' ? '📷' : '🎥';
+      const unchanged = item.name === item.newName;
+
+      // highlight the running-number portion of the new name
+      const safeNew = item.newName;
+      const numLabel = item.numLabel;
+      const highlighted = safeNew.replace(
+        new RegExp('_' + numLabel.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '\\.'),
+        '_<span class="num">' + numLabel + '</span>.'
+      );
+
+      tr.innerHTML = `
+        <td><span class="typetag">${icon} ${item.type}</span></td>
+        <td class="fname-old">${escapeHtml(item.name)}</td>
+        <td class="arrow">→</td>
+        <td>
+          <span class="fname-new">${unchanged ? escapeHtml(item.newName) + ' <span style=\"color:var(--muted)\">(already correct)</span>' : highlighted}</span>
+          ${conflict ? '<div class="conflict-msg">This name is already taken — try a different category.</div>' : ''}
+        </td>
+      `;
+      els.previewBody.appendChild(tr);
+    });
+
+    els.countImages.textContent = imgCount;
+    els.countVideos.textContent = vidCount;
+    els.conflictBanner.classList.toggle('show', hasConflict);
+    els.confirmBtn.disabled = hasConflict || plan.length === 0;
+
+    els.selectCard.style.display = 'none';
+    els.previewCard.style.display = 'block';
+    els.resultCard.style.display = 'none';
+    els.previewCard.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function showSelectError(msg){
+    els.selectError.textContent = msg;
+    els.selectError.classList.add('show');
+  }
+  function clearSelectError(){
+    els.selectError.classList.remove('show');
+  }
+
+  // ---------- Folder mode (File System Access API) ----------
+  els.btnFolder.addEventListener('click', async ()=>{
+    if(!validateInputs()) return;
+    clearSelectError();
+    if(!('showDirectoryPicker' in window)){
+      showSelectError("Your browser doesn't support direct folder renaming. Use \"Choose files\" instead — it works the same way but downloads a ZIP.");
+      return;
+    }
+    try{
+      const dirHandle = await window.showDirectoryPicker({mode:'readwrite'});
+      if(dirHandle.queryPermission){
+        const perm = await dirHandle.queryPermission({mode:'readwrite'});
+        if(perm !== 'granted'){
+          const req = await dirHandle.requestPermission({mode:'readwrite'});
+          if(req !== 'granted'){
+            showSelectError('Permission to edit this folder was not granted.');
+            return;
+          }
+        }
+      }
+      dirHandleRef = dirHandle;
+      mode = 'folder';
+
+      const entries = [];
+      const allNames = new Set();
+      for await (const [name, handle] of dirHandle.entries()){
+        if(handle.kind === 'file'){
+          allNames.add(name);
+          const type = classify(name);
+          if(type){
+            entries.push({name, ext:getExt(name), type, handle});
+          }
+        }
+      }
+      if(entries.length === 0){
+        showSelectError('No image or video files were found in that folder.');
+        return;
+      }
+      const plan = buildRenamePlan(entries);
+      renderPreview(plan, allNames);
+    } catch(err){
+      if(err.name !== 'AbortError'){
+        showSelectError('Could not open that folder: ' + err.message);
+      }
+    }
+  });
+
+  // ---------- File mode (ZIP fallback) ----------
+  els.btnFiles.addEventListener('click', ()=>{
+    if(!validateInputs()) return;
+    clearSelectError();
+    els.fileInput.click();
+  });
+
+  els.fileInput.addEventListener('change', (e)=>{
+    const files = Array.from(e.target.files);
+    const entries = [];
+    files.forEach(f=>{
+      const type = classify(f.name);
+      if(type){
+        entries.push({name:f.name, ext:getExt(f.name), type, fileObj:f});
+      }
+    });
+    if(entries.length === 0){
+      showSelectError('No image or video files were found in that selection.');
+      e.target.value = '';
+      return;
+    }
+    mode = 'zip';
+    const plan = buildRenamePlan(entries);
+    renderPreview(plan, null);
+    e.target.value = '';
+  });
+
+  els.cancelBtn.addEventListener('click', ()=>{
+    els.previewCard.style.display = 'none';
+    els.selectCard.style.display = 'block';
+  });
+
+  // ---------- Confirm: execute rename ----------
+  els.confirmBtn.addEventListener('click', async ()=>{
+    if(hasConflict || currentPlan.length === 0) return;
+    els.confirmBtn.disabled = true;
+    els.confirmBtn.textContent = 'Working…';
+
+    if(mode === 'folder'){
+      await executeFolderRename();
+    } else {
+      await executeZipDownload();
+    }
+
+    els.confirmBtn.disabled = false;
+    els.confirmBtn.textContent = 'Rename now';
+  });
+
+  async function executeFolderRename(){
+    const results = {success:0, skipped:0, failed:[]};
+    for(const item of currentPlan){
+      if(item.name === item.newName){
+        results.skipped++;
+        continue;
+      }
+      try{
+        const file = await item.handle.getFile();
+        const newHandle = await dirHandleRef.getFileHandle(item.newName, {create:true});
+        const writable = await newHandle.createWritable();
+        await file.stream().pipeTo(writable);
+        await dirHandleRef.removeEntry(item.name);
+        results.success++;
+      } catch(err){
+        results.failed.push({name:item.name, error: err.message});
+      }
+    }
+    showResult(results, false);
+  }
+
+  async function executeZipDownload(){
+    try{
+      const zip = new JSZip();
+      currentPlan.forEach(item=>{
+        zip.file(item.newName, item.fileObj);
+      });
+      const blob = await zip.generateAsync({type:'blob'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'renamed_files.zip';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      showResult({success: currentPlan.length, skipped:0, failed: []}, true);
+    } catch(err){
+      showResult({success:0, skipped:0, failed:[{name:'ZIP file', error: err.message}]}, true);
+    }
+  }
+
+  function showResult(results, isZip){
+    els.previewCard.style.display = 'none';
+    els.resultCard.style.display = 'block';
+
+    const ok = results.failed.length === 0;
+    let html = '';
+    if(isZip){
+      html += `<div class="result-banner ${ok ? 'ok' : 'warn'}">
+        <b>${ok ? 'ZIP downloaded' : 'ZIP downloaded with some issues'}</b>
+        ${results.success} file${results.success===1?'':'s'} renamed and packaged into <code>renamed_files.zip</code>. Extract it and move the files where you need them.
+      </div>`;
+    } else {
+      html += `<div class="result-banner ${ok ? 'ok' : 'warn'}">
+        <b>${ok ? 'All done' : 'Finished with some issues'}</b>
+        ${results.success} file${results.success===1?'':'s'} renamed${results.skipped ? `, ${results.skipped} already had the correct name` : ''} directly in the folder.
+      </div>`;
+    }
+    if(results.failed.length){
+      html += `<div class="fail-list">${results.failed.map(f=>`<div>⚠ ${escapeHtml(f.name)} — ${escapeHtml(f.error)}</div>`).join('')}</div>`;
+    }
+    els.resultBody.innerHTML = html;
+    els.resultCard.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  els.anotherBtn.addEventListener('click', ()=>{
+    els.resultCard.style.display = 'none';
+    els.selectCard.style.display = 'block';
+    currentPlan = [];
+    dirHandleRef = null;
+    mode = null;
+    els.selectCard.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+
+})();
+
+</script>
+
+</body>
+</html>

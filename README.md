@@ -3,23 +3,32 @@
 Static site — checklist tools sharing one home page, one manifest, one service worker.
 
 ```
-index.html                hub — links to every tool below
-trade_entry_form.html     Trade Entry Desk — log a trade, grade it, copy the spreadsheet row
-trade_entry_guide.html    Trade Entry Desk companion guide (opened via the small 📖 tab on its card)
-trading-checklist.html    Trading Operations (Plan V1.0)
-mms-checklist.html        MMS Strategy SOP
-gemspot-checklist.html    GemSpot 盤前關卡 (pre-market gate)
-task-checklist.html       Task Report → WhatsApp
-site-survey.html          Avera Energy site survey (print-friendly)
-manifest.json             install config (name, icons, shortcuts)
-service-worker.js         offline cache
-icon192.png / icon512.png app icon
+index.html                    hub — links to every tool below
+trade_entry_form.html         Trade Entry Desk — log a trade, grade it, copy the spreadsheet row
+trade_entry_guide.html        Trade Entry Desk companion guide (opened via the small 📖 tab on its card)
+trading-checklist.html        Trading Operations (Plan V1.0)
+mms-checklist.html            MMS Strategy SOP
+gemspot-checklist.html        GemSpot 盤前關卡 (pre-market gate)
+task-checklist.html           Task Report → WhatsApp
+site-survey.html              Avera Energy site survey (print-friendly)
+solar-atap-toolkit.html       Solar ATAP Toolkit — capacity/fee calc, ATAP vs NEM, timeline, doc checklist
+avera_solar_calc_suite.html   Solar PV Calculator Suite — sizing, electrical, financial, unit converter, glossary
+avera-project-tools.html      Avera internal tools — folder sync checker, project folder generator, file renamer
+manifest.json                 install config (name, icons, shortcuts)
+service-worker.js             offline cache
+icon192.png / icon512.png     app icon
 ```
 
-Every page links back to the hub with a small "← All tools" nav, plus its own siblings:
-Trading Ops / MMS / GemSpot are one group, Task Report / Site Survey are another, and
-Trade Entry Desk / Guide are a third. The Site Survey nav is marked `no-print` so it
-doesn't show up in the printed or exported PDF version of a survey.
+Every page links back to the hub with a small "← All tools" nav, plus its own siblings,
+grouped by domain:
+- Trading Ops / MMS / GemSpot / Trade Entry Desk / Guide — trading tools
+- Task Report / Site Survey / Solar ATAP Toolkit / Solar PV Calculator Suite / Project
+  Tools — Avera Energy tools (this is the "🔆 Avera Energy" group on the hub)
+
+The Site Survey nav is marked `no-print` so it doesn't show up in the printed or
+exported PDF version of a survey. The three Avera internal tools (ATAP toolkit, solar
+calc suite, project tools) each keep their own navy/orange brand styling rather than
+matching the other tools' look — that's intentional, not a leftover to fix.
 
 Everything sits at the top level and links by plain filename, so the site works from any
 folder depth — a repo root, a subfolder, or opened straight from disk.
@@ -41,7 +50,7 @@ The service worker serves the cached copy first, so phones can keep showing the 
 Open `service-worker.js` and bump the version:
 
 ```js
-const CACHE_NAME = 'checklists-v15';  // → 'checklists-v16'
+const CACHE_NAME = 'checklists-v16';  // → 'checklists-v17'
 ```
 
 Old caches are deleted automatically on the next visit. If you add a new top-level page,
@@ -53,6 +62,10 @@ Checkboxes and saved reports are in the browser's `localStorage`, tied to the do
 Nothing syncs between devices, and clearing browser data for the site erases it.
 Moving the site to a different domain starts you with an empty slate.
 
+The Solar ATAP Toolkit, Solar PV Calculator Suite and Project Tools save nothing
+between visits (same as Site Survey) — each is a fresh calculator every time you open
+it. Their hub cards don't have a progress ring for that reason.
+
 ## Things you may want to change
 
 - `trading-checklist.html` → `STAGE1_GOAL_DATE` is set to `2028-12-24`, which sits well
@@ -61,7 +74,8 @@ Moving the site to a different domain starts you with an empty slate.
 - `manifest.json` → `shortcuts` are the long-press menu on an installed app icon. Most
   platforms only show the first four, so Trade Entry Desk, Trading Operations, MMS and
   GemSpot are the ones that'll actually appear there; reorder the list if you'd rather
-  surface different tools.
+  surface different tools (there are 9 defined now — Task Report, Site Survey, Solar
+  ATAP Toolkit, Solar PV Calculator Suite and Project Tools are 5th–9th).
 - `site-survey.html` deliberately saves nothing — each survey starts blank, and you
   print or screenshot the result before leaving the page. Closing the tab loses the
   entries (the page warns you first). If you'd rather it autosave, that's a change

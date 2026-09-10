@@ -1,5 +1,5 @@
 // Bump CACHE_NAME whenever you edit any page — that's what forces phones to pick up changes.
-const CACHE_NAME = 'checklists-v15';
+const CACHE_NAME = 'checklists-v16';
 
 const ASSETS = [
   './',
@@ -11,6 +11,9 @@ const ASSETS = [
   './gemspot-checklist.html',
   './task-checklist.html',
   './site-survey.html',
+  './solar-atap-toolkit.html',
+  './avera_solar_calc_suite.html',
+  './avera-project-tools.html',
   './manifest.json',
   './icon192.png',
   './icon512.png'
