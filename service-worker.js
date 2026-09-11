@@ -11,9 +11,6 @@ const ASSETS = [
   './gemspot-checklist.html',
   './task-checklist.html',
   './site-survey.html',
-  './solar-atap-toolkit.html',
-  './avera_solar_calc_suite.html',
-  './avera-project-tools.html',
   './manifest.json',
   './icon192.png',
   './icon512.png'

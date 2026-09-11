@@ -1087,31 +1087,54 @@
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   function buildHtmlCard(d) {
-    var photoHtml = PHOTO_SECTIONS.map(function (s) {
+    // Outcome pill: Win/Loss/Breakeven map to the three tone classes;
+    // no result yet (still open / not selected) falls back to a neutral accent tone.
+    var outcomeClass = { Win: 'win', Loss: 'loss', Breakeven: 'breakeven' }[d.result] || 'plain';
+    var outcomeBits = [d.result || 'Ungraded'];
+    if (d.grade) outcomeBits.push(gradeWord(d.grade));
+    if (d.rrAchieved) outcomeBits.push('RR ' + d.rrAchieved);
+    var outcomeText = outcomeBits.join(' \u00B7 ');
+
+    // Stat grid: the six numbers worth seeing at a glance, everything else moves to Trade facts.
+    var resultValueClass = d.result === 'Win' ? 'win' : (d.result === 'Loss' ? 'loss' : '');
+    var stats = [
+      ['Position', d.position, ''],
+      ['SL / TP (pips)', (d.slPips || '—') + ' / ' + (d.tpPips || '—'), ''],
+      ['Risk %', d.riskPct, ''],
+      ['RR target / achieved', (d.rrTarget || '—') + ' / ' + (d.rrAchieved || '—'), ''],
+      ['Emotional score', d.emotionalScore, ''],
+      ['Result', (d.result || '—') + (d.rrAchieved ? ' \u00B7 ' + d.rrAchieved : ''), resultValueClass]
+    ];
+    var statsHtml = stats.map(function (s) {
+      return '<div class="stat"><p class="label">' + esc(s[0]) + '</p><p class="value' + (s[2] ? ' ' + s[2] : '') +
+        '">' + esc(s[1] || '\u2014') + '</p></div>';
+    }).join('\n');
+
+    // Photos grouped by section (Daily bias / H1 POC / setup / Entry), only sections that have photos.
+    var photoGroupsHtml = PHOTO_SECTIONS.map(function (s) {
       var items = photos[s.key];
       if (!items.length) return '';
-      return '<h2>' + esc(s.label) + '</h2>' + items.map(function (p, i) {
+      var figures = items.map(function (p, i) {
         return '<figure><img src="' + p.dataUrl + '" alt="' + esc(p.caption || (s.label + ' ' + (i + 1))) + '">' +
           (p.caption ? '<figcaption>' + esc(p.caption) + '</figcaption>' : '') + '</figure>';
       }).join('\n');
+      return '<div class="photo-group"><p class="photo-group-label">' + esc(s.label) + '</p>' + figures + '</div>';
     }).join('\n');
-    var gradeClass = (d.grade || '').indexOf('A') === 0 ? 'good' : 'plain';
+
+    // Trade facts: everything not already surfaced in the stat grid or header.
     var factsRows = [
-      ['Date', d.date], ['Strategy', d.strategy], ['Instrument', d.instrument], ['Position', d.position],
       ['Setup', d.setup], ['Entry Type', d.entryType], ['Value Location', d.valueLocation], ['Market State', d.marketState],
-      ['HTF / Entry TF', (d.htf || '—') + ' / ' + (d.entryTf || '—')],
-      ['Entry Logic', d.entryLogic], ['SL / TP (pips)', (d.slPips || '—') + ' / ' + (d.tpPips || '—')],
-      ['Risk %', d.riskPct], ['RR Target / Achieved', (d.rrTarget || '—') + ' / ' + (d.rrAchieved || '—')],
-      ['Emotional Score', d.emotionalScore], ['Valid / Invalid', d.validInvalid], ['Loss Type', d.lossType]
+      ['HTF / Entry TF', (d.htf || '\u2014') + ' / ' + (d.entryTf || '\u2014')],
+      ['Entry Logic', d.entryLogic], ['Valid / Invalid', d.validInvalid], ['Loss Type', d.lossType]
     ];
     if (d.strategy === 'X Framework Swing') {
-      factsRows.push(['X-COT Reading', d.xfsXcot], ['RR Signal / Optimized', (d.xfsRrSignal || '—') + ' / ' + (d.xfsRrOptimized || '—')],
+      factsRows.push(['X-COT Reading', d.xfsXcot], ['RR Signal / Optimized', (d.xfsRrSignal || '\u2014') + ' / ' + (d.xfsRrOptimized || '\u2014')],
         ['Entry Optimization', d.xfsOptOutcome], ['A+ Upgrade Path', d.xfsUpgradePath], ['Heikin-Ashi Subtype', d.xfsHaSubtype]);
     }
     if (d.strategy === 'GemSpot - Gold Line' || d.strategy === 'GemSpot - Index Line') {
       factsRows.push(['Line', d.gsLine], ['Session Block', d.gsSessionBlock], ['Entry Optimization', d.gsOptOutcome],
-        ['RR Direct / Actual', (d.gsRrDirect || '—') + ' / ' + (d.gsRrActual || '—')],
-        ['Leverage Used', d.gsLeverage], ['Leverage ≤20x OK', d.gsLeverageOk]);
+        ['RR Direct / Actual', (d.gsRrDirect || '\u2014') + ' / ' + (d.gsRrActual || '\u2014')],
+        ['Leverage Used', d.gsLeverage], ['Leverage \u226420x OK', d.gsLeverageOk]);
     }
     if (d.strategy === 'MMS') {
       factsRows.push(['Market Category', d.mmsMarketCategory], ['Buffer %', d.mmsBufferPct],
@@ -1125,40 +1148,70 @@
         ['Entry Time Remaining', d.omgEntryTimeRemaining]);
     }
     var factsHtml = factsRows.map(function (r) {
-      return '<tr><th>' + esc(r[0]) + '</th><td>' + esc(r[1] || '—') + '</td></tr>';
+      return '<tr><th>' + esc(r[0]) + '</th><td>' + esc(r[1] || '\u2014') + '</td></tr>';
     }).join('\n');
 
     return '<!doctype html>\n<html lang="en"><head><meta charset="utf-8">' +
-      '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">' +
       '<title>' + esc(tradeTitle(d)) + '</title>' +
+      '<meta name="theme-color" content="#F5F5F7">' +
       '<style>' +
-      ':root{--bg:#F5F5F7;--surface:#fff;--border:#E5E5EA;--text:#1D1D1F;--muted:#6E6E73;--accent:#0071E3;--accentsoft:#E8F1FC;--win:#248A3D;--winsoft:#E3F7E9;--loss:#D70015;--losssoft:#FFE8E6;}' +
-      '@media (prefers-color-scheme: dark){:root{--bg:#000;--surface:#1C1C1E;--border:#38383A;--text:#F5F5F7;--muted:#98989D;--accent:#0A84FF;--accentsoft:#122840;--win:#30D158;--winsoft:#0F2A18;--loss:#FF453A;--losssoft:#3A1512;}}' +
-      '*{box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;margin:0;padding:32px 18px;line-height:1.55;-webkit-font-smoothing:antialiased}' +
-      '.card{max-width:760px;margin:0 auto;background:var(--surface);border:none;border-radius:20px;padding:30px 32px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 10px 28px rgba(0,0,0,.07)}' +
-      'h1{font-weight:700;font-size:26px;margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance}' +
-      '.meta{font-size:13.5px;color:var(--muted);margin-bottom:20px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}' +
-      '.pill{display:inline-block;padding:4px 12px;border-radius:980px;font-weight:600;font-family:ui-monospace,"SF Mono",Menlo,monospace}' +
-      '.pill.good{background:var(--winsoft);color:var(--win)}.pill.plain{background:var(--accentsoft);color:var(--accent)}' +
-      'figure{margin:0 0 18px}figure img{width:100%;border-radius:14px;border:none;display:block}' +
-      'figcaption{font-size:12.5px;color:var(--muted);margin-top:6px;text-align:center}' +
-      'h2{font-size:17px;font-weight:600;margin:26px 0 10px;letter-spacing:-.005em}' +
-      '.narrative{white-space:pre-wrap;font-size:14.5px}' +
-      'table{width:100%;border-collapse:collapse;font-size:13.5px}' +
-      'th{text-align:left;color:var(--muted);font-weight:600;padding:7px 10px 7px 0;width:38%;vertical-align:top}' +
-      'td{padding:7px 0;font-family:ui-monospace,"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}' +
-      'tr{border-bottom:1px solid var(--border)}' +
-      '.foot{margin-top:24px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:12px}' +
-      '</style></head><body><div class="card">' +
-      '<h1>' + esc(tradeTitle(d)) + '</h1>' +
-      '<div class="meta"><span>' + esc(d.accountNo || '—') + '</span>' +
-      '<span class="pill ' + gradeClass + '">' + esc(gradeWord(d.grade)) + '</span>' +
-      '<span>' + esc(d.result || '—') + '</span><span>RR ' + esc(d.rrAchieved || '—') + '</span>' +
-      '<span>' + esc(d.session || '—') + '</span></div>' +
-      photoHtml +
-      (d.narrative ? '<h2>Narrative</h2><div class="narrative">' + esc(d.narrative) + '</div>' : '') +
-      '<h2>Trade facts</h2><table>' + factsHtml + '</table>' +
-      '<div class="foot">Generated by Trade Entry Desk on ' + new Date().toISOString().slice(0, 10) + '.</div>' +
+      ':root{--font-sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;' +
+      '--bg:#F5F5F7;--surface:#FFFFFF;--surface-2:#F2F2F4;--border:#E5E5EA;--text:#1D1D1F;--text-muted:#6E6E73;--text-secondary:#48484A;' +
+      '--accent:#0071E3;--accent-strong:#0059B3;--accent-soft:#E8F1FC;--win:#248A3D;--win-soft:#E3F7E9;--loss:#D70015;--loss-soft:#FFE8E6;--warn:#C46200;--warn-soft:#FFF1DC;' +
+      '--shadow:0 1px 2px rgba(0,0,0,0.04),0 10px 28px rgba(0,0,0,0.07);}' +
+      '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#000;--surface:#1C1C1E;--surface-2:#2C2C2E;--border:#38383A;--text:#F5F5F7;--text-muted:#98989D;--text-secondary:#C7C7CC;' +
+      '--accent:#0A84FF;--accent-strong:#409CFF;--accent-soft:rgba(10,132,255,.16);--win:#30D158;--win-soft:rgba(48,209,88,.16);--loss:#FF453A;--loss-soft:rgba(255,69,58,.16);--warn:#FF9F0A;--warn-soft:rgba(255,159,10,.16);' +
+      '--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);}}' +
+      ':root[data-theme="dark"]{--bg:#000;--surface:#1C1C1E;--surface-2:#2C2C2E;--border:#38383A;--text:#F5F5F7;--text-muted:#98989D;--text-secondary:#C7C7CC;' +
+      '--accent:#0A84FF;--accent-strong:#409CFF;--accent-soft:rgba(10,132,255,.16);--win:#30D158;--win-soft:rgba(48,209,88,.16);--loss:#FF453A;--loss-soft:rgba(255,69,58,.16);--warn:#FF9F0A;--warn-soft:rgba(255,159,10,.16);' +
+      '--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.4);}' +
+      '*{box-sizing:border-box}body{background:var(--bg);color:var(--text);font-family:var(--font-sans);margin:0;line-height:1.55;-webkit-font-smoothing:antialiased}' +
+      '.wrap{max-width:720px;margin:0 auto;padding:56px 24px 96px}' +
+      'header.page-head{margin-bottom:22px}' +
+      '.eyebrow{font-size:13px;font-weight:600;color:var(--accent);letter-spacing:.02em;margin:0 0 8px}' +
+      'h1{font-size:32px;font-weight:700;letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}' +
+      '.lede{font-size:16px;color:var(--text-muted);margin:0;max-width:62ch}' +
+      'section{margin-bottom:32px}' +
+      'h2{font-size:19px;font-weight:650;margin:0 0 4px;letter-spacing:-.005em}' +
+      '.card{background:var(--surface);border-radius:18px;box-shadow:var(--shadow);padding:22px 24px}' +
+      '.outcome-pill{display:inline-flex;align-items:center;gap:8px;border-radius:980px;padding:8px 18px;font-size:15px;font-weight:650;margin-bottom:24px}' +
+      '.outcome-pill.win{background:var(--win-soft);color:var(--win)}.outcome-pill.loss{background:var(--loss-soft);color:var(--loss)}' +
+      '.outcome-pill.breakeven{background:var(--warn-soft);color:var(--warn)}.outcome-pill.plain{background:var(--accent-soft);color:var(--accent-strong)}' +
+      '.outcome-dot{width:8px;height:8px;border-radius:50%;background:currentColor}' +
+      '.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}' +
+      '@media (max-width:560px){.stat-grid{grid-template-columns:repeat(2,1fr)}}' +
+      '.stat{background:var(--surface-2);border-radius:12px;padding:14px 16px}' +
+      '.stat .label{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.03em;margin:0 0 4px}' +
+      '.stat .value{font-size:18px;font-weight:650;color:var(--text);font-family:var(--font-mono);margin:0}' +
+      '.stat .value.win{color:var(--win)}.stat .value.loss{color:var(--loss)}' +
+      'figure{margin:0 0 18px}figure:last-child{margin-bottom:0}figure img{width:100%;border-radius:12px;border:1px solid var(--border);display:block}' +
+      'figcaption{font-size:12.5px;color:var(--text-muted);margin-top:6px;text-align:center}' +
+      '.photo-group-label{font-size:12.5px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.03em;margin:0 0 10px}' +
+      '.photo-group+.photo-group{margin-top:22px}' +
+      '.narrative{white-space:pre-wrap;font-size:15px;margin:0}' +
+      'table.ref{width:100%;border-collapse:collapse;font-size:14px}' +
+      'table.ref th,table.ref td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}' +
+      'table.ref th{color:var(--text-muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;width:42%;vertical-align:top}' +
+      'table.ref td{font-family:var(--font-mono);font-variant-numeric:tabular-nums}' +
+      'table.ref tr:last-child td,table.ref tr:last-child th{border-bottom:none}' +
+      'footer.page-foot{margin-top:40px;font-size:13px;color:var(--text-muted)}' +
+      '@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}' +
+      '@media (max-width:640px){.wrap{padding:36px 16px 72px}h1{font-size:25px}.lede{font-size:15px}.eyebrow{font-size:14px}' +
+      'h2{font-size:18px}.card{padding:18px 16px}.stat .value{font-size:17px}table.ref{font-size:15px}' +
+      'table.ref th,table.ref td{padding:9px 8px}table.ref th{font-size:13px}footer.page-foot{font-size:14px}}' +
+      '</style></head><body><div class="wrap">' +
+      '<header class="page-head">' +
+      '<p class="eyebrow">' + esc((d.strategy || 'Trade').toUpperCase()) + (d.accountNo ? ' \u00B7 ' + esc(d.accountNo) : '') + '</p>' +
+      '<h1>' + esc((d.instrument || 'Trade') + (d.position ? ' ' + d.position : '')) + '</h1>' +
+      '<p class="lede">' + esc(d.date || '\u2014') + (d.session ? ', ' + esc(d.session) : '') + '</p>' +
+      '</header>' +
+      '<div class="outcome-pill ' + outcomeClass + '"><span class="outcome-dot"></span>' + esc(outcomeText) + '</div>' +
+      '<section><div class="card"><div class="stat-grid">' + statsHtml + '</div></div></section>' +
+      (photoGroupsHtml ? '<section><h2>Charts</h2><div class="card">' + photoGroupsHtml + '</div></section>' : '') +
+      (d.narrative ? '<section><h2>Narrative</h2><div class="card"><p class="narrative">' + esc(d.narrative) + '</p></div></section>' : '') +
+      '<section><h2>Trade facts</h2><div class="card"><table class="ref">' + factsHtml + '</table></div></section>' +
+      '<footer class="page-foot">Generated by Trade Entry Desk on ' + new Date().toISOString().slice(0, 10) + '.</footer>' +
       '</div></body></html>';
   }
 
