@@ -475,6 +475,23 @@
   .accent-rule .seg1{ width: 34px; height: 3px; background: var(--solar); border-radius: 2px; }
   .accent-rule .seg2{ width: 90px; max-width: 30vw; height: 1px; background: var(--line); margin-left: 6px; }
 </style>
+<style id="mobile-patch">
+  /* Mobile pass (Oct 2026): bigger thumb targets, one-row nav, no font inflation */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  @media (max-width:640px){
+    .toolnav,.site-nav-inner{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .toolnav::-webkit-scrollbar,.site-nav-inner::-webkit-scrollbar{display:none;}
+    .toolnav a,.site-nav a{flex:none;}
+  }
+  @media (pointer:coarse){
+    .toolnav a,.site-nav a{min-height:40px;display:inline-flex;align-items:center;}
+  }
+  .date-native{font-size:16px;}
+  @media (pointer:coarse){
+    .history-toggle{min-height:40px;padding:8px 2px;display:inline-flex;align-items:center;}
+    .ghost-btn{min-height:40px;}
+  }
+</style>
 </head>
 <body>
 <div class="app">

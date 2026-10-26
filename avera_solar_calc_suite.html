@@ -146,6 +146,23 @@ footer{max-width:1060px;margin:0 auto;padding:16px 20px 40px;font-size:12px;colo
   body{background:#fff}
 }
 </style>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<meta name="theme-color" content="#103F5F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style id="mobile-patch">
+  /* Mobile pass (Oct 2026): bigger thumb targets, one-row nav, no font inflation */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  @media (max-width:640px){
+    .toolnav,.site-nav-inner{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .toolnav::-webkit-scrollbar,.site-nav-inner::-webkit-scrollbar{display:none;}
+    .toolnav a,.site-nav a{flex:none;}
+  }
+  @media (pointer:coarse){
+    .toolnav a,.site-nav a{min-height:40px;display:inline-flex;align-items:center;}
+  }
+</style>
 </head>
 <body>
 
@@ -795,6 +812,13 @@ settingsToForm();
 $('fs_tariff').value=S.tariff; $('pb_cost').value=S.cost; $('co_f').value=S.co2; $('pa_watt').value=S.pw;
 recalcAll();
 })();
+</script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('service-worker.js').catch(function () {});
+    });
+  }
 </script>
 </body>
 </html>

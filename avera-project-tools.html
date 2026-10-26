@@ -823,6 +823,46 @@
     color:var(--muted);font-size:12.5px;
   }
 </style>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<meta name="theme-color" content="#103F5F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style id="mobile-patch">
+  /* Mobile pass (Oct 2026): bigger thumb targets, one-row nav, no font inflation */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  @media (max-width:640px){
+    .toolnav,.site-nav-inner{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .toolnav::-webkit-scrollbar,.site-nav-inner::-webkit-scrollbar{display:none;}
+    .toolnav a,.site-nav a{flex:none;}
+  }
+  @media (pointer:coarse){
+    .toolnav a,.site-nav a{min-height:40px;display:inline-flex;align-items:center;}
+  }
+  @media (max-width:640px){
+    .app-topbar{position:static;}
+    .app-topbar-inner{padding:10px 16px;gap:10px;}
+    .app-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;width:100%;}
+    .app-tabs::-webkit-scrollbar{display:none;}
+    .app-tab{flex:none;}
+    .site-nav-inner{padding:8px 16px;}
+    #tool-sync .app{padding:22px 16px 80px;}
+    #tool-sync .folder-row{flex-direction:column;}
+    #tool-gen{padding:22px 14px 60px;}
+    #tool-gen .sf-row,#tool-gen .sf-head{grid-template-columns:1fr auto;}
+    #tool-gen .sf-row textarea{grid-column:1 / -1;grid-row:2;}
+    #tool-gen .sf-head span:nth-child(2){display:none;}
+    #tool-rename .hero{padding:28px 16px 24px;}
+    #tool-rename main{padding:20px 16px 60px;}
+    #tool-rename .card{padding:18px 16px;}
+    #tool-rename h1{font-size:26px;}
+  }
+  @media (pointer:coarse){
+    .app-tab{min-height:40px;}
+    #tool-sync .row-actions button,#tool-sync .filter-btn,#tool-sync button.pick{min-height:40px;}
+    #tool-gen button.btn.small{min-height:40px;}
+  }
+</style>
+<script src="jszip.min.js"></script>
 </head>
 <body>
 
@@ -2619,5 +2659,12 @@ updatePreview();
 
 </script>
 
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('service-worker.js').catch(function () {});
+    });
+  }
+</script>
 </body>
 </html>

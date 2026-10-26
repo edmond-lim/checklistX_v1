@@ -1,7 +1,7 @@
 {
   "name": "Edmond's Checklists",
   "short_name": "Checklists",
-  "description": "Trade entry desk, trading operations, MMS strategy, GemSpot gate, task report, site survey, Solar ATAP toolkit, solar PV calculator suite and Avera project tools.",
+  "description": "Trade entry desk, trading operations, MMS strategy, GemSpot gate, task report, site survey, Solar ATAP toolkit, solar PV calculator suite and Avera project tools, MSB & roof markup.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -87,6 +87,18 @@
       "name": "Site Survey",
       "short_name": "Survey",
       "url": "./site-survey.html",
+      "icons": [
+        {
+          "src": "icon192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "MSB & Roof Markup",
+      "short_name": "Markup",
+      "url": "./msb-roof-markup.html",
       "icons": [
         {
           "src": "icon192.png",

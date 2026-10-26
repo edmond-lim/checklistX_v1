@@ -550,6 +550,18 @@
     text-align:center;
   }
 </style>
+<style id="mobile-patch">
+  /* Mobile pass (Oct 2026): bigger thumb targets, one-row nav, no font inflation */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  @media (max-width:640px){
+    .toolnav,.site-nav-inner{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .toolnav::-webkit-scrollbar,.site-nav-inner::-webkit-scrollbar{display:none;}
+    .toolnav a,.site-nav a{flex:none;}
+  }
+  @media (pointer:coarse){
+    .toolnav a,.site-nav a{min-height:40px;display:inline-flex;align-items:center;}
+  }
+</style>
 </head>
 <body>
 

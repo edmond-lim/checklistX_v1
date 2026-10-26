@@ -1,19 +1,28 @@
 // Bump CACHE_NAME whenever you edit any page — that's what forces phones to pick up changes.
-const CACHE_NAME = 'checklists-v16';
+const CACHE_NAME = 'checklists-v18';
 
 const ASSETS = [
   './',
   './index.html',
+  // Trading
   './trade_entry_form.html',
   './trade_entry_guide.html',
   './trading-checklist.html',
   './mms-checklist.html',
   './gemspot-checklist.html',
+  // Work / Avera Energy
   './task-checklist.html',
   './site-survey.html',
+  './msb-roof-markup.html',
+  './solar-atap-toolkit.html',
+  './avera_solar_calc_suite.html',
+  './avera-project-tools.html',
+  // Shared
   './manifest.json',
   './icon192.png',
-  './icon512.png'
+  './icon512.png',
+  // Used by Project Tools' File Renamer (ZIP option); cached so it works offline
+  './jszip.min.js'
 ];
 
 self.addEventListener('install', (event) => {

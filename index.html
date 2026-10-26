@@ -311,6 +311,22 @@
   #installBtn:hover{opacity:.9;}
   #installBtn:active{transform:scale(.96);}
 </style>
+<style id="mobile-patch">
+  /* Mobile pass (Oct 2026): bigger thumb targets, one-row nav, no font inflation */
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%;}
+  @media (max-width:640px){
+    .toolnav,.site-nav-inner{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+    .toolnav::-webkit-scrollbar,.site-nav-inner::-webkit-scrollbar{display:none;}
+    .toolnav a,.site-nav a{flex:none;}
+  }
+  @media (pointer:coarse){
+    .toolnav a,.site-nav a{min-height:40px;display:inline-flex;align-items:center;}
+  }
+  @media (pointer:coarse){
+    .guide-badge{width:36px;height:36px;font-size:15px;top:10px;right:12px;}
+    .guide-badge::after{content:"";position:absolute;inset:-6px;}
+  }
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -403,6 +419,20 @@
       </span>
       <span class="desc">Solar site survey — project info, roof &amp; electrical data, photos, LMRA.</span>
       <span class="stat" id="statSurvey">📋 44 checks · print when done</span>
+    </span>
+    <span class="arrow">›</span>
+  </a>
+
+  <a class="card" href="msb-roof-markup.html"
+     style="--tint:var(--loss); --tint-soft:var(--loss-soft)">
+    <span class="ring"><span class="face">📍</span></span>
+    <span class="body">
+      <span class="row1">
+        <span class="name">MSB &amp; Roof Markup</span>
+        <span class="pill">Avera</span>
+      </span>
+      <span class="desc">Mark the MSB, panel areas and cable route on a satellite screenshot, then share it on WhatsApp.</span>
+      <span class="stat">🛰️ photos stay on your phone</span>
     </span>
     <span class="arrow">›</span>
   </a>

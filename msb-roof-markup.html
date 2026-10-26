@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MSB &amp; Roof Markup</title>
+<meta name="theme-color" content="#F5F5F7">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon192.png">
+<link rel="icon" href="icon192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="MSB Markup">
+<style>
+/* Layout: one 760px column of Apple-style cards; the photo canvas is the hero, tools sit right above it */
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --bg: #F5F5F7; --surface: #FFFFFF; --surface-2: #F2F2F4; --border: #E5E5EA;
+  --text: #1D1D1F; --text-muted: #6E6E73;
+  --accent: #0071E3; --accent-strong: #0059B3; --accent-soft: #E8F1FC;
+  --win: #248A3D; --win-soft: #E3F7E9; --loss: #D70015; --loss-soft: #FFE8E6;
+  --warn: #C46200; --warn-soft: #FFF1DC;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 10px 28px rgba(0,0,0,0.07);
+  /* marker colours: fixed, because they are painted onto the photo itself */
+  --m-msb: #FF3B30; --m-area: #FFCC00; --m-avoid: #1D1D1F; --m-note: #0A84FF; --m-route: #FF9500;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000; --surface: #1C1C1E; --surface-2: #2C2C2E; --border: #38383A;
+    --text: #F5F5F7; --text-muted: #98989D;
+    --accent: #0A84FF; --accent-strong: #409CFF; --accent-soft: rgba(10,132,255,0.16);
+    --win: #30D158; --win-soft: rgba(48,209,88,0.16); --loss: #FF453A; --loss-soft: rgba(255,69,58,0.16);
+    --warn: #FF9F0A; --warn-soft: rgba(255,159,10,0.16);
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.4);
+    --m-avoid: #F5F5F7;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --surface: #1C1C1E; --surface-2: #2C2C2E; --border: #38383A;
+  --text: #F5F5F7; --text-muted: #98989D;
+  --accent: #0A84FF; --accent-strong: #409CFF; --accent-soft: rgba(10,132,255,0.16);
+  --win: #30D158; --win-soft: rgba(48,209,88,0.16); --loss: #FF453A; --loss-soft: rgba(255,69,58,0.16);
+  --warn: #FF9F0A; --warn-soft: rgba(255,159,10,0.16);
+  --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 28px rgba(0,0,0,0.4);
+  --m-avoid: #F5F5F7;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-sans); margin: 0; line-height: 1.55; overflow-x: hidden; }
+.wrap {
+  max-width: 760px; margin: 0 auto;
+  padding-top: calc(40px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(24px, env(safe-area-inset-left, 0px));
+  padding-right: max(24px, env(safe-area-inset-right, 0px));
+}
+
+/* Cross-tool nav */
+.toolnav { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
+.toolnav a {
+  font-size: 13px; font-weight: 600; color: var(--text-muted); text-decoration: none;
+  border: 1px solid var(--border); background: var(--surface); border-radius: 980px;
+  padding: 8px 14px; min-height: 36px; display: inline-flex; align-items: center;
+}
+.toolnav a:hover { border-color: var(--accent); color: var(--accent); }
+.toolnav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toolnav a.current { color: var(--accent-strong); border-color: var(--accent); background: var(--accent-soft); }
+
+header.page-head { margin-bottom: 32px; }
+h1 { font-size: 34px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px; text-wrap: balance; }
+.lede { font-size: 17px; color: var(--text-muted); margin: 0; max-width: 62ch; }
+section { margin-bottom: 32px; }
+h2 { font-size: 21px; font-weight: 650; margin: 0 0 4px; letter-spacing: -0.005em; text-wrap: balance; }
+.section-sub { font-size: 14px; color: var(--text-muted); margin: 0 0 14px; }
+.card { background: var(--surface); border-radius: 18px; box-shadow: var(--shadow); padding: 22px 24px; }
+.callout { background: var(--accent-soft); border-radius: 14px; padding: 14px 16px; font-size: 14.5px; color: var(--text); }
+.callout.warn { background: var(--warn-soft); }
+.callout strong { font-weight: 650; }
+
+/* Legend of what each colour means */
+.key { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px 18px; margin: 0; padding: 0; list-style: none; font-size: 14.5px; }
+.key li { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }
+.key b { font-weight: 650; }
+.key span.t { color: var(--text-muted); display: block; font-size: 13.5px; }
+.sw { flex: none; width: 22px; height: 22px; border-radius: 50%; margin-top: 2px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; }
+.sw.msb { border: 3px solid var(--m-msb); }
+.sw.area { background: rgba(255,204,0,0.35); border: 2px solid var(--m-area); border-radius: 6px; }
+.sw.avoid { color: var(--m-avoid); font-size: 17px; }
+.sw.route { border-radius: 0; height: 0; border-top: 4px solid var(--m-route); margin-top: 11px; }
+.tool .sw.route { margin: 9px 0; }
+.sw.note { background: var(--m-note); }
+
+/* Buttons: 44px minimum so they are easy to hit with a thumb */
+.btn {
+  appearance: none; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font: 600 15px var(--font-sans); text-decoration: none;
+  border-radius: 980px; padding: 10px 18px; min-height: 44px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  transition: border-color .15s ease, color .15s ease, background .15s ease;
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn:active { transform: scale(.97); }
+.btn:focus-visible, .tool:focus-visible, .thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+.btn:disabled { opacity: .45; cursor: default; }
+.btn.big { font-size: 16px; padding: 13px 22px; min-height: 50px; }
+input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* Photo strip */
+.thumbs { display: flex; gap: 10px; overflow-x: auto; padding: 4px 2px 6px; margin-top: 16px; -webkit-overflow-scrolling: touch; }
+.thumbs:empty { display: none; }
+.thumb {
+  flex: none; position: relative; width: 84px; height: 64px; border-radius: 10px; overflow: hidden;
+  border: 2px solid transparent; padding: 0; background: var(--surface-2); cursor: pointer;
+}
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb.on { border-color: var(--accent); }
+.thumb .count {
+  position: absolute; right: 4px; bottom: 4px; background: rgba(0,0,0,.65); color: #fff;
+  font-size: 11px; font-weight: 650; border-radius: 980px; padding: 1px 7px; font-variant-numeric: tabular-nums;
+}
+
+/* Tools */
+.tools { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; margin-bottom: 12px; }
+.tool {
+  appearance: none; border: 1.5px solid var(--border); background: var(--surface-2); color: var(--text);
+  border-radius: 14px; padding: 10px 6px 8px; min-height: 60px; cursor: pointer; font: 600 13.5px var(--font-sans);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; min-width: 0;
+}
+.tool .sw { margin: 0; }
+.tool[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); }
+.hint { font-size: 14px; color: var(--text-muted); margin: 0 0 12px; min-height: 1.55em; }
+.stage { position: relative; border-radius: 12px; overflow: hidden; background: var(--surface-2); }
+canvas#board { display: block; width: 100%; height: auto; touch-action: none; cursor: crosshair; -webkit-user-select: none; user-select: none; }
+.example-tag {
+  position: absolute; left: 10px; top: 10px; background: rgba(0,0,0,.6); color: #fff;
+  font-size: 12.5px; font-weight: 600; border-radius: 980px; padding: 4px 11px; pointer-events: none;
+}
+.under { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+/* Notes */
+.notes { display: grid; gap: 10px; margin-bottom: 16px; }
+.notes:empty { display: none; }
+.note-row { display: flex; gap: 10px; align-items: center; }
+.note-row .sw { margin: 0; }
+.note-row input { flex: 1; min-width: 0; }
+/* 16px stops iPhone Safari zooming the page when a field is tapped */
+input[type=text], textarea {
+  font: 16px var(--font-sans); color: var(--text); background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; width: 100%; min-height: 44px;
+}
+input[type=text]:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; border-color: transparent; }
+textarea { min-height: 88px; resize: vertical; }
+label.lbl { display: block; font-size: 13.5px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+.empty-notes { font-size: 14px; color: var(--text-muted); margin: 0 0 16px; }
+
+/* Results */
+.results { display: grid; gap: 20px; }
+.result img { width: 100%; border-radius: 12px; display: block; border: 1px solid var(--border); -webkit-touch-callout: default; }
+.result .row { margin-top: 10px; justify-content: space-between; }
+.result .cap { font-size: 14px; color: var(--text-muted); }
+.result .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.msg { font-size: 14px; color: var(--loss); margin: 8px 0 0; }
+.msg:empty { display: none; }
+
+footer.page-foot { margin-top: 40px; font-size: 13px; color: var(--text-muted); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@media (max-width: 640px) {
+  .wrap {
+    padding-top: calc(20px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  h1 { font-size: 27px; }
+  .lede { font-size: 15.5px; }
+  h2 { font-size: 19px; }
+  .section-sub { font-size: 15px; }
+  .card { padding: 18px 16px; }
+  .key { grid-template-columns: 1fr; font-size: 15px; }
+  .tools { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .tool { font-size: 13px; padding: 9px 4px 7px; }
+  .btn.big { width: 100%; }
+  .under .row { width: 100%; }
+  .under .row .btn { flex: 1; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="toolnav">
+    <a href="index.html">← All tools</a>
+    <a href="site-survey.html">Site Survey</a>
+    <a href="msb-roof-markup.html" class="current" aria-current="page">MSB Markup</a>
+    <a href="task-checklist.html">Task Report</a>
+  </nav>
+  <header class="page-head">
+    <h1>MSB &amp; Roof Markup</h1>
+    <p class="lede">On a satellite view of the site, mark where the main switchboard (MSB) is, which roofs can take solar panels, and how a cable could run between them. When you are done, save the marked image and send it back on WhatsApp.</p>
+  </header>
+
+  <section>
+    <h2>What to mark</h2>
+    <p class="section-sub">Each marker has its own colour so the photos are easy to read later.</p>
+    <div class="card">
+      <ul class="key">
+        <li><span class="sw msb"></span><div><b>MSB</b><span class="t">Tap on the switchboard room or its door.</span></div></li>
+        <li><span class="sw area"></span><div><b>Panel area</b><span class="t">Draw around the roof that can take panels.</span></div></li>
+        <li><span class="sw route"></span><div><b>Cable route</b><span class="t">Draw the path from the MSB to the panel area.</span></div></li>
+        <li><span class="sw avoid">✕</span><div><b>Avoid</b><span class="t">Tap on tall trees, water tanks, skylights, aircon units, weak roof.</span></div></li>
+        <li><span class="sw note">1</span><div><b>Note</b><span class="t">Tap a spot, then type what it is below.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>1. Add your satellite screenshot</h2>
+    <p class="section-sub">Open Google Maps or Google Earth, switch to Satellite, zoom in until the whole building and the MSB room fill the screen, then take a screenshot. You can add more than one.</p>
+    <div class="card">
+      <div class="row">
+        <label class="btn primary" for="file">Add screenshots</label>
+        <input id="file" type="file" accept="image/*" multiple>
+        <span class="section-sub" id="photoCount" style="margin:0">Showing an example image</span>
+      </div>
+      <p class="msg" id="loadMsg"></p>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Mark the photo</h2>
+    <p class="section-sub">Pick a marker, then tap or draw on the photo.</p>
+    <div class="card">
+      <div class="tools" role="group" aria-label="Marker">
+        <button class="tool" id="t-msb" data-tool="msb" aria-pressed="true"><span class="sw msb"></span>MSB</button>
+        <button class="tool" id="t-area" data-tool="area" aria-pressed="false"><span class="sw area"></span>Panel area</button>
+        <button class="tool" id="t-route" data-tool="route" aria-pressed="false"><span class="sw route"></span>Cable route</button>
+        <button class="tool" id="t-avoid" data-tool="avoid" aria-pressed="false"><span class="sw avoid">✕</span>Avoid</button>
+        <button class="tool" id="t-note" data-tool="note" aria-pressed="false"><span class="sw note">#</span>Note</button>
+      </div>
+      <p class="hint" id="hint"></p>
+      <div class="stage">
+        <canvas id="board" width="1200" height="800" aria-label="Photo to mark"></canvas>
+        <span class="example-tag" id="exampleTag">Example satellite view</span>
+      </div>
+      <div class="under">
+        <div class="row">
+          <button class="btn" id="undo">Undo</button>
+          <button class="btn" id="clear">Clear this photo</button>
+        </div>
+        <span class="section-sub" id="markCount" style="margin:0"></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. Add details</h2>
+    <p class="section-sub">Notes are printed under the photo when you save it.</p>
+    <div class="card">
+      <div class="notes" id="notes"></div>
+      <p class="empty-notes" id="noNotes">No numbered notes on this photo yet. Use the Note marker to add one.</p>
+      <label class="lbl" for="comment">Anything else about this photo?</label>
+      <textarea id="comment" placeholder="For example: MSB is on the ground floor behind the store room. Roof is metal deck, about 10 years old."></textarea>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. Save and send</h2>
+    <p class="section-sub">Makes one marked image per photo, with your notes underneath.</p>
+    <div class="card">
+      <button class="btn primary big" id="finish">Make marked photos</button>
+      <div class="callout" id="howSave" style="margin-top:16px">
+        <strong>To send:</strong> tap <strong>Share</strong> under a marked photo and pick WhatsApp. If Share isn't offered, press and hold the photo, choose <strong>Save image</strong> or <strong>Add to Photos</strong>, then send it. On a computer, use <strong>Download image</strong>.
+      </div>
+      <p class="msg" id="saveMsg"></p>
+      <div class="results" id="results" style="margin-top:18px"></div>
+    </div>
+  </section>
+
+  <footer class="page-foot">Photos stay on your phone. Nothing is uploaded until you send the saved image yourself.</footer>
+</div>
+
+<script>
+(function () {
+  const board = document.getElementById('board');
+  const ctx = board.getContext('2d');
+  const COLORS = { msb: '#FF3B30', area: '#FFCC00', avoid: '#1D1D1F', note: '#0A84FF', route: '#FF9500' };
+  const HINTS = {
+    msb: 'Tap on the roof of the MSB room.',
+    area: 'Drag your finger around the roof area that can take panels.',
+    route: 'Drag from the MSB to the panel area, along the path the cable can follow.',
+    avoid: 'Tap on anything panels must stay away from, like tall trees that cast shade.',
+    note: 'Tap a spot, then type the note in step 3.'
+  };
+
+  let photos = [];   // { src: canvas, thumb: dataURL, name, marks: [], comment, example }
+  let cur = 0;
+  let tool = 'msb';
+  let drawing = null;
+
+  /* ---------- example photo ---------- */
+  // Top-down example in the style of a satellite screenshot
+  function makeExample() {
+    const c = document.createElement('canvas'); c.width = 1200; c.height = 800;
+    const g = c.getContext('2d');
+    // grass with speckle
+    g.fillStyle = '#7F9466'; g.fillRect(0, 0, 1200, 800);
+    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    for (let i = 0; i < 2600; i++) { g.fillStyle = rnd() > .5 ? 'rgba(60,80,40,.18)' : 'rgba(170,180,120,.16)'; g.fillRect(rnd() * 1200, rnd() * 800, 3, 3); }
+    // road + car park
+    g.fillStyle = '#6E7073'; g.fillRect(0, 660, 1200, 90);
+    g.strokeStyle = '#E8E3C8'; g.lineWidth = 4; g.setLineDash([30, 26]);
+    g.beginPath(); g.moveTo(0, 705); g.lineTo(1200, 705); g.stroke(); g.setLineDash([]);
+    g.fillStyle = '#8B8D8F'; g.fillRect(860, 420, 300, 230);
+    g.strokeStyle = '#D9D9D9'; g.lineWidth = 2;
+    for (let x = 880; x <= 1140; x += 52) { g.beginPath(); g.moveTo(x, 430); g.lineTo(x, 500); g.moveTo(x, 570); g.lineTo(x, 640); g.stroke(); }
+    const cars = [[892, 445, '#C9CDD2'], [996, 448, '#3A4A66'], [1100, 446, '#B23A32'], [944, 590, '#E8E8E8'], [1048, 588, '#2B2B2B']];
+    cars.forEach(([x, y, col]) => { g.fillStyle = col; g.fillRect(x, y, 30, 48); });
+    // main building: hipped metal roof seen from above
+    const L = 180, T = 150, R = 800, B = 560;
+    g.fillStyle = '#5E6873'; g.fillRect(L, T, R - L, B - T);
+    g.fillStyle = '#6F7A86'; g.beginPath(); g.moveTo(L, T); g.lineTo(R, T); g.lineTo(R - 200, 355); g.lineTo(L + 200, 355); g.closePath(); g.fill();
+    g.fillStyle = '#525C66'; g.beginPath(); g.moveTo(L, B); g.lineTo(R, B); g.lineTo(R - 200, 355); g.lineTo(L + 200, 355); g.closePath(); g.fill();
+    g.fillStyle = '#66717C';
+    g.beginPath(); g.moveTo(L, T); g.lineTo(L + 200, 355); g.lineTo(L, B); g.closePath(); g.fill();
+    g.beginPath(); g.moveTo(R, T); g.lineTo(R - 200, 355); g.lineTo(R, B); g.closePath(); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,.08)'; g.lineWidth = 2;
+    for (let x = L + 20; x < R; x += 22) { g.beginPath(); g.moveTo(x, T); g.lineTo(x, B); g.stroke(); }
+    g.strokeStyle = '#B9C0C7'; g.lineWidth = 4;
+    g.beginPath(); g.moveTo(L, T); g.lineTo(L + 200, 355); g.lineTo(R - 200, 355); g.lineTo(R, T);
+    g.moveTo(L, B); g.lineTo(L + 200, 355); g.moveTo(R - 200, 355); g.lineTo(R, B); g.stroke();
+    // aircon units + water tank on roof
+    g.fillStyle = '#D8DCDF'; g.fillRect(250, 470, 40, 30); g.fillRect(300, 470, 40, 30);
+    g.fillStyle = '#3D6FA8'; g.beginPath(); g.arc(720, 210, 26, 0, Math.PI * 2); g.fill();
+    // MSB room: small flat concrete roof
+    g.fillStyle = '#B9B3A6'; g.fillRect(820, 300, 90, 80);
+    g.strokeStyle = '#8F897D'; g.lineWidth = 3; g.strokeRect(820, 300, 90, 80);
+    // trees
+    [[110, 120, 70], [60, 300, 55], [120, 560, 60], [960, 140, 80], [1100, 260, 60]].forEach(([x, y, r]) => {
+      g.fillStyle = 'rgba(0,0,0,.25)'; g.beginPath(); g.arc(x + 14, y + 14, r, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#3F6B34'; g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+      g.fillStyle = '#4F7F40'; g.beginPath(); g.arc(x - r * .25, y - r * .25, r * .6, 0, Math.PI * 2); g.fill();
+    });
+    return c;
+  }
+
+  function addExample() {
+    const src = makeExample();
+    photos = [{
+      src, thumb: src.toDataURL('image/jpeg', 0.6), name: 'example', example: true, comment: '',
+      marks: [
+        { type: 'area', pts: [[230, 175], [680, 175], [590, 340], [390, 340]] },
+        { type: 'area', pts: [[380, 375], [600, 375], [740, 540], [370, 540]] },
+        { type: 'msb', x: 865, y: 340 },
+        { type: 'route', pts: [[865, 340], [800, 345], [740, 330], [680, 300], [620, 280]] },
+        { type: 'avoid', x: 720, y: 210 },
+        { type: 'avoid', x: 960, y: 140 },
+        { type: 'note', x: 295, y: 485, text: 'Aircon units, keep panels clear' }
+      ]
+    }];
+    photos[0].comment = 'Example only. Replace with your own satellite screenshot.';
+    cur = 0;
+  }
+
+  /* ---------- loading photos ---------- */
+  function loadFile(file) {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const max = 2000;
+        const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url);
+        const t = document.createElement('canvas'); const tk = 200 / Math.max(c.width, c.height);
+        t.width = Math.round(c.width * tk); t.height = Math.round(c.height * tk);
+        t.getContext('2d').drawImage(c, 0, 0, t.width, t.height);
+        resolve({ src: c, thumb: t.toDataURL('image/jpeg', 0.7), name: file.name, marks: [], comment: '' });
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(file.name); };
+      img.src = url;
+    });
+  }
+
+  document.getElementById('file').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    const msg = document.getElementById('loadMsg'); msg.textContent = '';
+    if (!files.length) return;
+    if (photos.length && photos[0].example) { photos = []; }
+    const failed = [];
+    for (const f of files) {
+      try { photos.push(await loadFile(f)); } catch (n) { failed.push(n); }
+    }
+    if (failed.length) msg.textContent = 'Could not open ' + failed.join(', ') + '. Take a screenshot of the photo and add the screenshot instead.';
+    if (!photos.length) addExample();
+    cur = photos[0].example ? 0 : Math.max(0, photos.length - files.length + failed.length);
+    if (cur >= photos.length) cur = photos.length - 1;
+    e.target.value = '';
+    document.getElementById('results').innerHTML = '';
+    renderAll();
+  });
+
+  /* ---------- drawing ---------- */
+  function unit(c) { return Math.max(c.width, c.height) / 700; }
+
+  function pill(g, text, x, y, color, textColor, u) {
+    g.font = '700 ' + Math.round(15 * u) + 'px -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+    const w = g.measureText(text).width + 18 * u, h = 26 * u;
+    let px = Math.min(Math.max(x - w / 2, 4), g.canvas.width - w - 4);
+    let py = Math.min(Math.max(y - h / 2, 4), g.canvas.height - h - 4);
+    g.fillStyle = color;
+    g.beginPath();
+    if (g.roundRect) g.roundRect(px, py, w, h, h / 2); else g.rect(px, py, w, h);
+    g.fill();
+    g.fillStyle = textColor; g.textBaseline = 'middle'; g.textAlign = 'center';
+    g.fillText(text, px + w / 2, py + h / 2 + 0.5);
+    g.textAlign = 'start'; g.textBaseline = 'alphabetic';
+  }
+
+  function drawMarks(g, photo, live) {
+    const u = unit(g.canvas);
+    let n = 0;
+    const list = live ? photo.marks.concat([live]) : photo.marks;
+    for (const m of list) {
+      if (m.type === 'area' && m.pts.length > 1) {
+        g.beginPath(); g.moveTo(m.pts[0][0], m.pts[0][1]);
+        for (const p of m.pts.slice(1)) g.lineTo(p[0], p[1]);
+        if (m !== live) g.closePath();
+        g.fillStyle = 'rgba(255,204,0,0.30)'; if (m !== live) g.fill();
+        g.lineJoin = 'round'; g.lineCap = 'round';
+        g.strokeStyle = 'rgba(0,0,0,0.45)'; g.lineWidth = 7 * u; g.stroke();
+        g.strokeStyle = COLORS.area; g.lineWidth = 4 * u; g.stroke();
+        if (m !== live) {
+          let cx = 0, cy = 0; m.pts.forEach(p => { cx += p[0]; cy += p[1]; });
+          pill(g, 'Panel area', cx / m.pts.length, cy / m.pts.length, COLORS.area, '#1D1D1F', u);
+        }
+      }
+    }
+    for (const m of list) {
+      if (m.type === 'route' && m.pts.length > 1) {
+        g.beginPath(); g.moveTo(m.pts[0][0], m.pts[0][1]);
+        for (const p of m.pts.slice(1)) g.lineTo(p[0], p[1]);
+        g.lineJoin = 'round'; g.lineCap = 'round';
+        g.strokeStyle = '#fff'; g.lineWidth = 9 * u; g.stroke();
+        g.strokeStyle = COLORS.route; g.lineWidth = 5 * u; g.setLineDash([14 * u, 9 * u]); g.stroke(); g.setLineDash([]);
+        if (m !== live) {
+          const e = m.pts[m.pts.length - 1], s = m.pts[Math.max(0, m.pts.length - 3)];
+          const a = Math.atan2(e[1] - s[1], e[0] - s[0]), h = 16 * u;
+          g.beginPath(); g.moveTo(e[0], e[1]);
+          g.lineTo(e[0] - h * Math.cos(a - 0.5), e[1] - h * Math.sin(a - 0.5));
+          g.lineTo(e[0] - h * Math.cos(a + 0.5), e[1] - h * Math.sin(a + 0.5)); g.closePath();
+          g.fillStyle = COLORS.route; g.fill(); g.strokeStyle = '#fff'; g.lineWidth = 2 * u; g.stroke();
+          const mid = m.pts[Math.floor(m.pts.length / 2)];
+          pill(g, 'Cable route', mid[0], mid[1] + 24 * u, COLORS.route, '#1D1D1F', u);
+        }
+      }
+    }
+    for (const m of photo.marks) {
+      if (m.type === 'msb') {
+        const r = 30 * u;
+        g.beginPath(); g.arc(m.x, m.y, r, 0, Math.PI * 2);
+        g.strokeStyle = '#fff'; g.lineWidth = 9 * u; g.stroke();
+        g.strokeStyle = COLORS.msb; g.lineWidth = 5 * u; g.stroke();
+        pill(g, 'MSB', m.x, m.y - r - 18 * u, COLORS.msb, '#fff', u);
+      } else if (m.type === 'avoid') {
+        const s = 16 * u;
+        g.lineCap = 'round';
+        for (const [w, col] of [[10 * u, '#fff'], [5 * u, '#FF3B30']]) {
+          g.strokeStyle = col; g.lineWidth = w;
+          g.beginPath(); g.moveTo(m.x - s, m.y - s); g.lineTo(m.x + s, m.y + s);
+          g.moveTo(m.x + s, m.y - s); g.lineTo(m.x - s, m.y + s); g.stroke();
+        }
+        pill(g, 'Avoid', m.x, m.y + s + 18 * u, '#1D1D1F', '#fff', u);
+      } else if (m.type === 'note') {
+        n++;
+        const r = 15 * u;
+        g.beginPath(); g.arc(m.x, m.y, r + 3 * u, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill();
+        g.beginPath(); g.arc(m.x, m.y, r, 0, Math.PI * 2); g.fillStyle = COLORS.note; g.fill();
+        g.fillStyle = '#fff'; g.font = '700 ' + Math.round(16 * u) + 'px -apple-system, "Segoe UI", Roboto, sans-serif';
+        g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(n), m.x, m.y + 1);
+        g.textAlign = 'start'; g.textBaseline = 'alphabetic';
+      }
+    }
+  }
+
+  function redraw() {
+    const p = photos[cur];
+    if (board.width !== p.src.width || board.height !== p.src.height) { board.width = p.src.width; board.height = p.src.height; }
+    ctx.clearRect(0, 0, board.width, board.height);
+    ctx.drawImage(p.src, 0, 0);
+    drawMarks(ctx, p, drawing);
+  }
+
+  function pos(e) {
+    const r = board.getBoundingClientRect();
+    return [(e.clientX - r.left) * board.width / r.width, (e.clientY - r.top) * board.height / r.height];
+  }
+
+  // Tap tolerance is measured in screen pixels, so a small finger wobble on a phone
+  // still counts as a tap however large the screenshot is.
+  function screenToCanvas(px) { const r = board.getBoundingClientRect(); return px * board.width / Math.max(1, r.width); }
+
+  let down = null;
+  board.addEventListener('pointerdown', (e) => {
+    board.setPointerCapture(e.pointerId);
+    const p = pos(e);
+    down = p;
+    if (tool === 'area' || tool === 'route') { drawing = { type: tool, pts: [p] }; }
+  });
+  board.addEventListener('pointermove', (e) => {
+    if (!drawing) return;
+    const p = pos(e), last = drawing.pts[drawing.pts.length - 1];
+    if (Math.hypot(p[0] - last[0], p[1] - last[1]) > unit(board) * 4) { drawing.pts.push(p); redraw(); }
+  });
+  function endPointer(e) {
+    if (!down) return;
+    const p = pos(e);
+    const ph = photos[cur];
+    if (tool === 'area' || tool === 'route') {
+      const ok = drawing && drawing.pts.length >= (tool === 'area' ? 4 : 2);
+      if (ok) { ph.marks.push({ type: tool, pts: drawing.pts }); }
+      drawing = null;
+      if (!ok) { down = null; redraw(); setHint('Drag your finger to draw. A short tap does not draw anything.'); return; }
+    } else if (Math.hypot(p[0] - down[0], p[1] - down[1]) < Math.max(unit(board) * 20, screenToCanvas(12))) {
+      if (tool === 'note') ph.marks.push({ type: 'note', x: p[0], y: p[1], text: '' });
+      else ph.marks.push({ type: tool, x: p[0], y: p[1] });
+    }
+    down = null;
+    afterChange(tool === 'note');
+  }
+  board.addEventListener('pointerup', endPointer);
+  board.addEventListener('pointercancel', () => { down = null; drawing = null; redraw(); });
+  // iOS long-press on a canvas opens a callout menu mid-drawing; suppress it
+  board.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  function afterChange(focusNote) {
+    redraw(); renderThumbs(); renderNotes(); renderCounts();
+    document.getElementById('results').innerHTML = '';
+    if (focusNote) {
+      const inputs = document.querySelectorAll('#notes input');
+      const last = inputs[inputs.length - 1];
+      if (last) { last.focus({ preventScroll: true }); setHint('Note added. Type what it is in step 3.'); }
+    } else setHint(HINTS[tool]);
+  }
+
+  /* ---------- UI ---------- */
+  function setHint(t) { document.getElementById('hint').textContent = t; }
+
+  document.querySelectorAll('.tool').forEach(b => b.addEventListener('click', () => {
+    tool = b.dataset.tool;
+    document.querySelectorAll('.tool').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    setHint(HINTS[tool]);
+  }));
+
+  document.getElementById('undo').addEventListener('click', () => { photos[cur].marks.pop(); afterChange(false); });
+  document.getElementById('clear').addEventListener('click', function () {
+    if (!photos[cur].marks.length) return;
+    if (this.dataset.armed) {
+      photos[cur].marks = []; delete this.dataset.armed; this.textContent = 'Clear this photo'; afterChange(false);
+    } else {
+      this.dataset.armed = '1'; this.textContent = 'Tap again to clear';
+      setTimeout(() => { delete this.dataset.armed; this.textContent = 'Clear this photo'; }, 3000);
+    }
+  });
+
+  document.getElementById('comment').addEventListener('input', (e) => { photos[cur].comment = e.target.value; });
+
+  function renderThumbs() {
+    const box = document.getElementById('thumbs'); box.innerHTML = '';
+    photos.forEach((p, i) => {
+      const b = document.createElement('button');
+      b.className = 'thumb' + (i === cur ? ' on' : '');
+      b.setAttribute('aria-label', 'Photo ' + (i + 1));
+      const img = document.createElement('img'); img.src = p.thumb; img.alt = '';
+      b.appendChild(img);
+      if (p.marks.length) { const c = document.createElement('span'); c.className = 'count'; c.textContent = p.marks.length; b.appendChild(c); }
+      b.addEventListener('click', () => { cur = i; renderAll(); });
+      box.appendChild(b);
+    });
+    const ex = photos[0] && photos[0].example;
+    document.getElementById('photoCount').textContent = ex ? 'Showing an example image' : photos.length + (photos.length === 1 ? ' photo' : ' photos');
+    document.getElementById('exampleTag').hidden = !photos[cur].example;
+  }
+
+  function renderNotes() {
+    const box = document.getElementById('notes'); box.innerHTML = '';
+    let n = 0;
+    photos[cur].marks.forEach(m => {
+      if (m.type !== 'note') return;
+      n++;
+      const row = document.createElement('div'); row.className = 'note-row';
+      const sw = document.createElement('span'); sw.className = 'sw note'; sw.textContent = n;
+      const inp = document.createElement('input'); inp.type = 'text'; inp.id = 'note-' + cur + '-' + n;
+      inp.placeholder = 'What is at point ' + n + '?'; inp.value = m.text || '';
+      inp.addEventListener('input', () => { m.text = inp.value; });
+      row.append(sw, inp); box.appendChild(row);
+    });
+    document.getElementById('noNotes').hidden = n > 0;
+    document.getElementById('comment').value = photos[cur].comment || '';
+  }
+
+  function renderCounts() {
+    const m = photos[cur].marks;
+    const c = t => m.filter(x => x.type === t).length;
+    const parts = [];
+    if (c('msb')) parts.push(c('msb') + ' MSB');
+    if (c('area')) parts.push(c('area') + ' panel area' + (c('area') > 1 ? 's' : ''));
+    if (c('route')) parts.push(c('route') + ' cable route' + (c('route') > 1 ? 's' : ''));
+    if (c('avoid')) parts.push(c('avoid') + ' avoid');
+    if (c('note')) parts.push(c('note') + ' note' + (c('note') > 1 ? 's' : ''));
+    document.getElementById('markCount').textContent = parts.length ? parts.join(' · ') : 'Nothing marked yet';
+  }
+
+  function renderAll() { redraw(); renderThumbs(); renderNotes(); renderCounts(); setHint(HINTS[tool]); }
+
+  /* ---------- export ---------- */
+  function wrapLines(g, text, maxW) {
+    const words = String(text).split(/\s+/); const lines = []; let line = '';
+    for (const w of words) {
+      const t = line ? line + ' ' + w : w;
+      if (g.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t;
+    }
+    if (line) lines.push(line);
+    return lines;
+  }
+
+  function buildImage(p, idx, total) {
+    const W = p.src.width, H = p.src.height;
+    const f = Math.max(18, Math.round(W / 48)), pad = Math.round(f * 1.2), lh = Math.round(f * 1.45);
+    const meas = document.createElement('canvas').getContext('2d');
+    const font = (wt) => wt + ' ' + f + 'px -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+    meas.font = font('400');
+    const rows = [];
+    rows.push({ bold: true, text: 'Site markup · photo ' + (idx + 1) + ' of ' + total });
+    const has = t => p.marks.some(m => m.type === t);
+    const keyBits = [];
+    if (has('msb')) keyBits.push('Red circle = MSB');
+    if (has('area')) keyBits.push('Yellow outline = panel area');
+    if (has('route')) keyBits.push('Orange dashed line = cable route');
+    if (has('avoid')) keyBits.push('Red X = avoid');
+    if (keyBits.length) rows.push({ text: keyBits.join('   ·   '), muted: true });
+    let n = 0;
+    p.marks.forEach(m => { if (m.type === 'note') { n++; rows.push({ dot: n, text: m.text && m.text.trim() ? m.text.trim() : '(no note typed)' }); } });
+    if (p.comment && p.comment.trim()) rows.push({ text: p.comment.trim() });
+    const textW = W - pad * 2 - f * 1.8;
+    let legendH = pad;
+    const laid = rows.map(r => { const ls = wrapLines(meas, r.text, r.dot ? textW : W - pad * 2); legendH += ls.length * lh + Math.round(f * 0.35); return { ...r, ls }; });
+    legendH += pad - Math.round(f * 0.35);
+
+    const c = document.createElement('canvas'); c.width = W; c.height = H + legendH;
+    const g = c.getContext('2d');
+    g.drawImage(p.src, 0, 0); drawMarks(g, p, null);
+    g.fillStyle = '#FFFFFF'; g.fillRect(0, H, W, legendH);
+    g.fillStyle = '#E5E5EA'; g.fillRect(0, H, W, Math.max(1, Math.round(f / 12)));
+    let y = H + pad;
+    for (const r of laid) {
+      g.font = font(r.bold ? '700' : '400');
+      g.fillStyle = r.muted ? '#6E6E73' : '#1D1D1F';
+      g.textBaseline = 'top';
+      let x = pad;
+      if (r.dot) {
+        const rr = f * 0.62;
+        g.beginPath(); g.arc(pad + rr, y + lh / 2 - f * 0.12, rr, 0, Math.PI * 2); g.fillStyle = '#0A84FF'; g.fill();
+        g.fillStyle = '#fff'; g.font = font('700'); g.textAlign = 'center';
+        g.fillText(String(r.dot), pad + rr, y + (lh - f) / 2 - f * 0.08);
+        g.textAlign = 'start'; g.font = font('400'); g.fillStyle = '#1D1D1F';
+        x = pad + f * 1.8;
+      }
+      for (const l of r.ls) { g.fillText(l, x, y + (lh - f) / 2); y += lh; }
+      y += Math.round(f * 0.35);
+    }
+    return c;
+  }
+
+  // Share sheet (iPhone/Android) sends the image straight to WhatsApp; falls back to download.
+  function canShareFiles() {
+    try {
+      return !!(navigator.canShare && navigator.share &&
+        navigator.canShare({ files: [new File([new Blob(['x'], { type: 'image/jpeg' })], 't.jpg', { type: 'image/jpeg' })] }));
+    } catch (e) { return false; }
+  }
+  const SHARE_OK = canShareFiles();
+
+  document.getElementById('finish').addEventListener('click', () => {
+    const box = document.getElementById('results'); box.innerHTML = '';
+    const saveMsg = document.getElementById('saveMsg'); saveMsg.textContent = '';
+    const list = photos.map((p, i) => ({ p, i })).filter(o => o.p.marks.length || (o.p.comment && o.p.comment.trim()));
+    if (!list.length) { saveMsg.textContent = 'Nothing is marked yet. Mark at least one photo first.'; return; }
+    list.forEach(({ p, i }) => {
+      const c = buildImage(p, i, photos.length);
+      const fname = 'site-markup-photo-' + (i + 1) + '.jpg';
+      const div = document.createElement('div'); div.className = 'result';
+      const img = document.createElement('img'); img.src = c.toDataURL('image/jpeg', 0.9);
+      img.alt = 'Marked photo ' + (i + 1);
+      const row = document.createElement('div'); row.className = 'row';
+      const cap = document.createElement('span'); cap.className = 'cap';
+      cap.textContent = (p.example ? 'Example · ' : '') + 'Photo ' + (i + 1);
+      const acts = document.createElement('div'); acts.className = 'acts';
+      if (SHARE_OK) {
+        const s = document.createElement('button'); s.className = 'btn primary'; s.textContent = 'Share';
+        s.addEventListener('click', () => {
+          c.toBlob(async (blob) => {
+            try {
+              await navigator.share({ files: [new File([blob], fname, { type: 'image/jpeg' })], title: 'Site markup' });
+            } catch (err) {
+              if (err && err.name === 'AbortError') return;
+              saveMsg.textContent = 'Sharing did not work here. Press and hold the image to save it instead.';
+            }
+          }, 'image/jpeg', 0.9);
+        });
+        acts.appendChild(s);
+      }
+      const a = document.createElement('a'); a.className = 'btn'; a.textContent = 'Download image';
+      a.href = img.src; a.download = fname;
+      acts.appendChild(a);
+      row.append(cap, acts);
+      div.append(img, row); box.appendChild(div);
+    });
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ---------- start ---------- */
+  addExample();
+  renderAll();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    });
+  }
+})();
+</script>
+</body>
+</html>
